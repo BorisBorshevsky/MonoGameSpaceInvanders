@@ -38,10 +38,7 @@ namespace Infrastructure.ObjectModel
             this.Game.Components.Add(this);
         }
 
-        public LoadableDrawableComponent(
-            string i_AssetName,
-            Game i_Game,
-            int i_CallsOrder)
+        public LoadableDrawableComponent(string i_AssetName, Game i_Game, int i_CallsOrder)
             : this(i_AssetName, i_Game, i_CallsOrder, i_CallsOrder)
         { }
 

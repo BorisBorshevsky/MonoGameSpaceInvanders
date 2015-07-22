@@ -9,7 +9,7 @@ namespace SpaceInvaders.ObjectModel
 
     public class SpaceShip : Sprite
 	{
-		private const string k_AssteName = @"Sprites\Ship01_32x32";
+        private const string k_AssteName = @"Sprites\Ship01_32x32";
 
         IInputManager m_InputManager;
 
@@ -73,8 +73,7 @@ namespace SpaceInvaders.ObjectModel
             Bullet bullet = new Bullet(this.Game);
             bullet.Initialize();
             bullet.TintColor = Color.Red;
-            bullet.Position = new Vector2(m_Position.X + m_Width / 2,
-                m_Position.Y - bullet.Height / 2);
+            bullet.Position = new Vector2(m_Position.X + m_Width / 2,m_Position.Y - bullet.Height / 2);
             bullet.Velocity = new Vector2(0, -k_BulletVelocity);
         }
     }

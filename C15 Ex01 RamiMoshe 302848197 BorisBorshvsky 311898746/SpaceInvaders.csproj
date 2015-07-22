@@ -41,6 +41,7 @@
     <Compile Include="ObjectModel\Background.cs" />
     <Compile Include="ObjectModel\Bullet.cs" />
     <Compile Include="ObjectModel\Enemy.cs" />
+    <Compile Include="ObjectModel\EnemyMatrix.cs" />
     <Compile Include="ObjectModel\SpaceShip.cs" />
     <Compile Include="SpaceInvadersGame.cs" />
     <Compile Include="Program.cs" />

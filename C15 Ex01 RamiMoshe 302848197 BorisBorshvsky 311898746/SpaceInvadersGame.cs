@@ -20,11 +20,16 @@ namespace SpaceInvaders
 
             InputManager inputManager = new InputManager(this);
 
-            Enemy enemy = new Enemy(this, Color.LightPink);
+            
 
-            SpaceShip ship = new SpaceShip(this);
+            //SpaceShip ship = new SpaceShip(this);
 
             Background background = new Background(this, @"Sprites\BG_Space01_1024x768", 0.3f);
+            //Enemy enemy = new Enemy(this, Color.LightPink);
+
+            EnemyMatrix enemyMatrix = new EnemyMatrix(this);
+
+
         }
 
         protected override void Initialize()

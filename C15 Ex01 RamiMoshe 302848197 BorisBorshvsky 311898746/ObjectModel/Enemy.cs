@@ -6,9 +6,9 @@ namespace SpaceInvaders.ObjectModel
 {
     public class Enemy : Sprite
     {
-        private const string k_AssteName = @"Sprites\Enemy01_32x32";
+        private const string k_AssteName = @"Sprites\Enemy0101_32x32";
 
-        public Enemy(SapceInvadersGame i_Game, Color i_EnemyColor)
+        public Enemy(Game i_Game, Color i_EnemyColor)
             : base(k_AssteName, i_Game)
         {
             m_TintColor = i_EnemyColor;
@@ -16,17 +16,9 @@ namespace SpaceInvaders.ObjectModel
 
         protected override void InitBounds()
         {
-            base.InitBounds();
-
-            // put in bottom center of view port:
-            // get the bottom and center
-            float x = (float)GraphicsDevice.Viewport.Width / 2;
-            float y = 50;
-
-            // offset:
-            x -= m_Width / 2;
-
-            m_Position = new Vector2(x, y);
+            m_Width = Texture.Width;
+            m_Height = Texture.Height;
+            //m_Position
         }
     }
 }
