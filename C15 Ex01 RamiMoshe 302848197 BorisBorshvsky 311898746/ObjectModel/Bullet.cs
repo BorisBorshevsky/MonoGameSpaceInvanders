@@ -12,5 +12,7 @@ namespace SpaceInvaders.ObjectModel
 			: base(k_AssteName, i_Game)
 		{
 		}
-    }
+
+
+	}
 }

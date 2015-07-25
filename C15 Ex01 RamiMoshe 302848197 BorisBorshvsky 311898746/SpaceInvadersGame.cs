@@ -12,6 +12,8 @@ namespace SpaceInvaders
     {
         GraphicsDeviceManager m_Graphics;
         SpriteBatch m_SpriteBatch;
+        CollisionDetector m_CollisionDetector;
+
 
         public SapceInvadersGame()
         {
@@ -19,17 +21,26 @@ namespace SpaceInvaders
             Content.RootDirectory = "Content";
 
             InputManager inputManager = new InputManager(this);
-
+            m_CollisionDetector = new CollisionDetector(this);
             
 
-            //SpaceShip ship = new SpaceShip(this);
+            SpaceShip ship = new SpaceShip(this);
+            m_CollisionDetector.Add(ship);
+
+            new MotherShipManager(this);
+
 
             Background background = new Background(this, @"Sprites\BG_Space01_1024x768", 0.3f);
             //Enemy enemy = new Enemy(this, Color.LightPink);
 
-            EnemyMatrix enemyMatrix = new EnemyMatrix(this);
+            InvaderGrid enemyMatrix = new InvaderGrid(this);
+            m_CollisionDetector.Add(enemyMatrix);
+        }
 
+        protected override void Update(GameTime gameTime)
+        {
 
+            base.Update(gameTime);
         }
 
         protected override void Initialize()
@@ -39,6 +50,8 @@ namespace SpaceInvaders
 
             base.Initialize();
         }
+
+
 
         protected override void Draw(GameTime gameTime)
         {

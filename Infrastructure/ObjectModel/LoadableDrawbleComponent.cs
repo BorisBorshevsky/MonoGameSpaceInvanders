@@ -52,5 +52,7 @@ namespace Infrastructure.ObjectModel
         }
 
         protected abstract void InitBounds();
-    }
+    
+    
+}
 }

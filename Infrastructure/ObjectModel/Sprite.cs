@@ -1,4 +1,6 @@
 //*** Guy Ronen (c) 2008-2011 ***//
+
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -6,6 +8,11 @@ namespace Infrastructure.ObjectModel
 {
     public class Sprite : LoadableDrawableComponent
     {
+        public Rectangle BoundingRect { get; set; }
+
+        //TODO: Refactor and move to it another layter
+        public bool IsAlive { get; set; }
+
         private Texture2D m_Texture;
         public Texture2D Texture
         {
@@ -54,17 +61,11 @@ namespace Infrastructure.ObjectModel
             set { m_Velocity = value; }
         }
 
-        public Sprite(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder)
-            : base(i_AssetName, i_Game, i_UpdateOrder, i_DrawOrder)
-        { }
-
-        public Sprite(string i_AssetName, Game i_Game, int i_CallsOrder)
-            : base(i_AssetName, i_Game, i_CallsOrder)
-        { }
-
         public Sprite(string i_AssetName, Game i_Game)
             : base(i_AssetName, i_Game, int.MaxValue)
-        { }
+        {
+            IsAlive = true;
+        }
 
         /// <summary>
         /// Default initialization of bounds
@@ -77,7 +78,7 @@ namespace Infrastructure.ObjectModel
             // default initialization of bounds
             m_Width = m_Texture.Width;
             m_Height = m_Texture.Height;
-            m_Position = Vector2.Zero;
+            CalculateBoundingRect();
         }
 
 
@@ -99,8 +100,7 @@ namespace Infrastructure.ObjectModel
 
             if (m_SpriteBatch == null)
             {
-                m_SpriteBatch =
-                    Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
+                m_SpriteBatch =Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
 
                 if (m_SpriteBatch == null)
                 {
@@ -122,7 +122,7 @@ namespace Infrastructure.ObjectModel
         public override void Update(GameTime gameTime)
         {
             this.Position += this.Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+            CalculateBoundingRect();
             base.Update(gameTime);
         }
 
@@ -146,5 +146,28 @@ namespace Infrastructure.ObjectModel
 
             base.Draw(gameTime);
         }
+
+        private void CalculateBoundingRect()
+        {
+            
+                int left = (int)Position.X;
+                int top = (int)Position.Y;
+
+                BoundingRect = new Rectangle(left, top, Width, Height);    
+           
+        }
+
+        public virtual void Remove()
+        {
+            IsAlive = false;
+            Game.Components.Remove(this);
+        }
+
+        public virtual bool IsOutOfBounts()
+        {
+            return !BoundingRect.Intersects(Game.GraphicsDevice.Viewport.Bounds);
+        }
+
     }
+
 }

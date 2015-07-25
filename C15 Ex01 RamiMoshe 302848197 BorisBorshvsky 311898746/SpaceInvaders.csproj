@@ -38,11 +38,17 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CollisionDetector.cs" />
+    <Compile Include="GameLogic.cs" />
+    <Compile Include="MotherShipManager.cs" />
     <Compile Include="ObjectModel\Background.cs" />
+    <Compile Include="ObjectModel\InvaderBullet.cs" />
+    <Compile Include="ObjectModel\MotherShip.cs" />
     <Compile Include="ObjectModel\Bullet.cs" />
-    <Compile Include="ObjectModel\Enemy.cs" />
-    <Compile Include="ObjectModel\EnemyMatrix.cs" />
+    <Compile Include="ObjectModel\Invader.cs" />
+    <Compile Include="ObjectModel\InvaderGrid.cs" />
     <Compile Include="ObjectModel\SpaceShip.cs" />
+    <Compile Include="ObjectModel\SpaceShipBullet.cs" />
     <Compile Include="SpaceInvadersGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

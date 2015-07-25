@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Managers\InputManager.cs" />
+    <Compile Include="Managers\SpriteCollisionCoordinator.cs" />
     <Compile Include="ObjectModel\GameService.cs" />
     <Compile Include="ObjectModel\LoadableDrawbleComponent.cs" />
     <Compile Include="ObjectModel\RegisteredComponent.cs" />
