@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Infrastructure.ObjectModel;
 using Infrastructure.ServiceInterfaces;
@@ -10,21 +11,28 @@ namespace SpaceInvaders.ObjectModel
     public class SpaceShip : Sprite
 	{
         private const string k_AssteName = @"Sprites\Ship01_32x32";
+        public const int k_ScoreReduceOnHit = -1000;
         CollisionDetector m_CollisionDetector { get; set; }
         int Lives { get; set; }
 
         IInputManager m_InputManager;
+        private SpaceShipBulletManager m_BulletManager;
+        private GameStateManagerService m_GameStateManagerService;
+
 
         public SpaceShip(SapceInvadersGame i_Game)
             : base(k_AssteName, i_Game)
         {
             Lives = 3;
+            m_BulletManager = new SpaceShipBulletManager(Game);
         }
 
         public override void Initialize()
         {
             m_InputManager = Game.Services.GetService(typeof(IInputManager)) as IInputManager;
             m_CollisionDetector = Game.Services.GetService(typeof(CollisionDetector)) as CollisionDetector;
+            m_GameStateManagerService = Game.Services.GetService(typeof(GameStateManagerService)) as GameStateManagerService;
+            
 
             base.Initialize();
         }
@@ -74,32 +82,28 @@ namespace SpaceInvaders.ObjectModel
 
             if (m_InputManager.KeyPressed(Keys.Enter) || m_InputManager.ButtonPressed(eInputButtons.Left))
             {
-                Shoot();
+                ShootIfPossible();
             }
 
         }
 
-        protected void Shoot()
+        protected void ShootIfPossible()
         {
-            SpaceShipBullet bullet = new SpaceShipBullet(this.Game);
-            bullet.Initialize();
-            bullet.Position = new Vector2(m_Position.X + m_Width / 2 - bullet.Width / 2 , m_Position.Y - bullet.Height);
-            bullet.Velocity = new Vector2(0, -k_BulletVelocity);
-
-            m_CollisionDetector.Add(bullet);
+            m_BulletManager.ShootIfPossible(BoundingRect, new Vector2(0, -k_BulletVelocity));
         }
 
-        public void NotifyOnHit()
+        public void HitByBullet()
         {
             LoseLife();
             this.InitBounds();
         }
 
+        
         public void LoseLife()
         {
             if (--Lives == 0)
             {
-                //Game.GameOver()
+                m_GameStateManagerService.GameOver();
             }
         }
 	}

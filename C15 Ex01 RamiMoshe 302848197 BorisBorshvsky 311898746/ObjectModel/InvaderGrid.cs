@@ -9,36 +9,43 @@ using Microsoft.Xna.Framework;
 
 namespace SpaceInvaders.ObjectModel
 {
-    class InvaderGrid : DrawableGameComponent
+    class InvaderGrid : RegisteredComponent
     {
-        private const int EnemiesInColumn = 5;
-        //private const int EnemiesInColumn = 1;
-        private const int EnemiesInRow = 9;
-        //private const int EnemiesInRow = 1;
+        private const int InvadersInRow = 9;
+        private const int PinkInvadersInColumn = 1;
+        private const int LightBlueInvadersInColumn = 2;
+        private const int YellowInvadersInColumn = 2;
+        private const int InvadersInColumn = PinkInvadersInColumn + LightBlueInvadersInColumn + YellowInvadersInColumn;
 
-        private readonly int m_InitialLeftPadding = 0; //enemy units
-        private readonly int m_InitialTopPadding = 3;  //enemy units
+        private const int m_InitialLeftPadding = 0; //enemy units
+        private const int m_InitialTopPadding = 3;  //enemy units
+
+        private const float initialTimeBetweenJumpsInSeconds = 0.5f;
+        private float timeBetweenJumpsInSeconds = initialTimeBetweenJumpsInSeconds;
+        private const float speedAfterNewLine = 0.95f;
 
         private float m_LeftPadding = 0;
         private float m_TopPadding = 0;
 
-        float matrixTotalWidth;
-        float matrixTotlaHeight;
+        //private float matrixTotalWidth;
+        //private float matrixTotlaHeight;
 
-        int enemyWidth;
-        int enemyHeight;
-
-        float horizontalDistanceBetweenEnemies;
-        float verticalDistanceBetweenEnemies;
+        private int enemyWidth;
+        private int enemyHeight;
 
 
-        const float speedAfterNewLine = 0.95f;
+        private EnemyDirection currentDirection = EnemyDirection.RIGHT;
 
-        public Invader[,] Invades { get; set; }
+        private float horizontalDistanceBetweenEnemies;
+        private float verticalDistanceBetweenEnemies;
 
-        float timeBetweenJumpsInSeconds = 0.5f;
+        private bool jumpDownOnNextJump = false;
 
-        EnemyDirection currentDirection = EnemyDirection.RIGHT;
+
+        public Invader[,] Invaders { get; set; }
+
+
+
 
         public double CurrentElapsedTime { get; set; }
 
@@ -46,14 +53,29 @@ namespace SpaceInvaders.ObjectModel
         public InvaderGrid(Game game)
             : base(game)
         {
-            Invades = new Invader[EnemiesInRow, EnemiesInColumn];
-            this.Game.Components.Add(this);
+            Invaders = new Invader[InvadersInRow, InvadersInColumn];
 
-            for (int col = 0; col < EnemiesInRow; col++)
+            for (int col = 0; col < InvadersInRow; col++)
             {
-                for (int row = 0; row < EnemiesInColumn; row++)
+                for (int row = 0; row < PinkInvadersInColumn; row++)
                 {
-                    Invades[col, row] = new Invader(this.Game, Color.AliceBlue);
+                    Invaders[col, row] = new PinkInvader(this.Game);
+                }
+            }
+
+            for (int col = 0; col < InvadersInRow; col++)
+            {
+                for (int row = PinkInvadersInColumn; row < PinkInvadersInColumn + LightBlueInvadersInColumn; row++)
+                {
+                    Invaders[col, row] = new LightBlueInvader(this.Game);
+                }
+            }
+
+            for (int col = 0; col < InvadersInRow; col++)
+            {
+                for (int row = PinkInvadersInColumn + LightBlueInvadersInColumn; row < InvadersInColumn; row++)
+                {
+                    Invaders[col, row] = new YellowInvader(this.Game);
                 }
             }
 
@@ -69,24 +91,23 @@ namespace SpaceInvaders.ObjectModel
         {
             base.Initialize();
 
-            foreach (Invader enemy in Invades)
+            foreach (Invader enemy in Invaders)
             {
                 enemy.Initialize();
             }
-            Invader enemyForInitialization = Invades[0, 0];
+
+            Invader enemyForInitialization = Invaders[0, 0];
             enemyWidth = enemyForInitialization.Width;
             enemyHeight = enemyForInitialization.Height;
             horizontalDistanceBetweenEnemies = 0.6f * enemyWidth;
             verticalDistanceBetweenEnemies = 0.6f * enemyHeight;
-            matrixTotalWidth = (enemyWidth * EnemiesInRow) + (horizontalDistanceBetweenEnemies * (EnemiesInRow - 1));
-            matrixTotlaHeight = (enemyHeight * EnemiesInColumn) + (verticalDistanceBetweenEnemies * (EnemiesInColumn - 1));
 
 
-            for (int col = 0; col < EnemiesInRow; col++)
+            for (int col = 0; col < InvadersInRow; col++)
             {
-                for (int row = 0; row < EnemiesInColumn; row++)
+                for (int row = 0; row < InvadersInColumn; row++)
                 {
-                    Invader enemy = Invades[col, row];
+                    Invader enemy = Invaders[col, row];
                     enemy.Initialize();
                     float enemyXPosition = m_InitialLeftPadding * enemy.Width + m_LeftPadding + col * (horizontalDistanceBetweenEnemies + enemy.Width);
                     float enemyYPosition = m_InitialTopPadding * enemy.Height + m_TopPadding + row * (verticalDistanceBetweenEnemies + enemy.Height);
@@ -96,30 +117,78 @@ namespace SpaceInvaders.ObjectModel
             }
         }
 
-        protected override void LoadContent()
-        {
-            base.LoadContent();
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
-            base.Draw(gameTime);
-        }
-
         public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);
+
+
+
 
             CurrentElapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
-            if (CurrentElapsedTime >= timeBetweenJumpsInSeconds) 
+            if (CurrentElapsedTime >= timeBetweenJumpsInSeconds)
             {
 
+                //decide enemy position
+                
 
-                for (int col = 0; col < EnemiesInRow; col++)
+                if (jumpDownOnNextJump)
                 {
-                    for (int row = 0; row < EnemiesInColumn; row++)
+                    m_TopPadding += enemyHeight / 2;
+                    jumpDownOnNextJump = false;
+                }
+                else
+                {
+
+                    float minX = int.MaxValue;
+                    float maxX = int.MinValue;
+                 
+                    foreach (var invader in Invaders)
                     {
-                        Invader enemy = Invades[col, row];
+                        if (invader.IsAlive)
+                        {
+                            if (invader.Position.X < minX) minX = invader.Position.X;
+                            if (invader.Position.X + invader.Width > maxX) maxX = invader.Position.X + invader.Width;
+                        }
+                    }
+                    float matrixTotalWidth = maxX - minX;
+
+                    //change direction part
+                    if (currentDirection == EnemyDirection.RIGHT)
+                    {
+                        if (maxX + enemyWidth / 2 >= Game.GraphicsDevice.Viewport.Width)
+                        {
+                            m_LeftPadding = Game.GraphicsDevice.Viewport.Width - matrixTotalWidth;
+                            jumpDownOnNextJump = true;
+                            timeBetweenJumpsInSeconds *= speedAfterNewLine;
+                            currentDirection = EnemyDirection.LEFT;
+                        }
+                        else
+                        {
+                            m_LeftPadding += enemyWidth / 2;
+                        }
+                    }
+                    else
+                    {
+                        if (minX - enemyWidth / 2 <= 0)
+                        {
+                            m_LeftPadding = 0;
+                            jumpDownOnNextJump = true;
+                            timeBetweenJumpsInSeconds *= speedAfterNewLine;
+                            currentDirection = EnemyDirection.RIGHT;
+                        }
+                        else
+                        {
+                            m_LeftPadding -= enemyWidth / 2;
+                        }
+
+                    }
+                }
+
+                //update enemies position
+                for (int col = 0; col < InvadersInRow; col++)
+                {
+                    for (int row = 0; row < InvadersInColumn; row++)
+                    {
+                        Invader enemy = Invaders[col, row];
 
                         float enemyXPosition = m_InitialLeftPadding * enemy.Width + m_LeftPadding + col * (horizontalDistanceBetweenEnemies + enemy.Width);
                         float enemyYPosition = m_InitialTopPadding * enemy.Height + m_TopPadding + row * (verticalDistanceBetweenEnemies + enemy.Height);
@@ -128,34 +197,9 @@ namespace SpaceInvaders.ObjectModel
                     }
                 }
 
-                //change direction part
-                if (currentDirection == EnemyDirection.RIGHT)
-                {
-                    if (m_LeftPadding + matrixTotalWidth + enemyWidth / 2 >= Game.GraphicsDevice.Viewport.Width)
-                    {
-                        m_LeftPadding = Game.GraphicsDevice.Viewport.Width - matrixTotalWidth;
-                        m_TopPadding += enemyHeight / 2;
-                        timeBetweenJumpsInSeconds *= speedAfterNewLine;
-                        currentDirection = EnemyDirection.LEFT;
-                    } else{
-                        m_LeftPadding += enemyWidth / 2;
-                    }
-                }
-                else
-                {
-                    if (m_LeftPadding - enemyWidth /2 <= 0){
-                        m_LeftPadding = 0;
-                        m_TopPadding += enemyHeight / 2;
-                        timeBetweenJumpsInSeconds *= speedAfterNewLine;
-                        currentDirection = EnemyDirection.RIGHT;
-                    } else{
-                        m_LeftPadding -= enemyWidth / 2;
-                    }
-                    
-                }
-
                 CurrentElapsedTime -= timeBetweenJumpsInSeconds;
             }
+            base.Update(gameTime);
 
         }
 

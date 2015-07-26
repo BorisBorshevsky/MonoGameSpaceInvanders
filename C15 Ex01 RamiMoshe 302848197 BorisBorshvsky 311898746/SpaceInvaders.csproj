@@ -38,6 +38,8 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ScoreManagerService.cs" />
+    <Compile Include="SpaceShipBulletManager.cs" />
     <Compile Include="CollisionDetector.cs" />
     <Compile Include="GameLogic.cs" />
     <Compile Include="MotherShipManager.cs" />
@@ -49,6 +51,9 @@
     <Compile Include="ObjectModel\InvaderGrid.cs" />
     <Compile Include="ObjectModel\SpaceShip.cs" />
     <Compile Include="ObjectModel\SpaceShipBullet.cs" />
+    <Compile Include="ObjectModel\LightBlueInvader.cs" />
+    <Compile Include="ObjectModel\PinkInvader.cs" />
+    <Compile Include="ObjectModel\YellowInvader.cs" />
     <Compile Include="SpaceInvadersGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,6 +63,7 @@
       <HintPath>$(MSBuildProgramFiles32)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>

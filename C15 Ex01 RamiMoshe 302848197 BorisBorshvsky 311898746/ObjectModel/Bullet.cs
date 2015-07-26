@@ -13,6 +13,13 @@ namespace SpaceInvaders.ObjectModel
 		{
 		}
 
-
+        public override void Update(GameTime gameTime)
+        {
+            if (this.IsOutOfBounts())
+            {
+                this.Remove();
+            }
+            base.Update(gameTime);
+        }
 	}
 }

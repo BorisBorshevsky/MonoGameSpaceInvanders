@@ -7,11 +7,12 @@ namespace SpaceInvaders.ObjectModel
     public class MotherShip : Sprite
 	{
         private const string k_AssteName = @"Sprites\MotherShip_32x120";
+        public const int k_ScoreOnHit = 750;
 
         public MotherShip(Game i_Game)
             : base(k_AssteName, i_Game)
         {
-            
+            this.m_TintColor = Color.Red;
         }
 
         protected override void InitBounds()

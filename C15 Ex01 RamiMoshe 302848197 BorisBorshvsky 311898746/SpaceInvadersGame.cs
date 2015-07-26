@@ -14,7 +14,7 @@ namespace SpaceInvaders
         SpriteBatch m_SpriteBatch;
         CollisionDetector m_CollisionDetector;
 
-
+        
         public SapceInvadersGame()
         {
             m_Graphics = new GraphicsDeviceManager(this);
@@ -22,6 +22,8 @@ namespace SpaceInvaders
 
             InputManager inputManager = new InputManager(this);
             m_CollisionDetector = new CollisionDetector(this);
+            new GameStateManagerService(this);
+            new ScoreManagerService(this);
             
 
             SpaceShip ship = new SpaceShip(this);

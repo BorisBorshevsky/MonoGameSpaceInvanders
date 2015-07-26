@@ -10,8 +10,11 @@ namespace Infrastructure.ObjectModel
     {
         public Rectangle BoundingRect { get; set; }
 
-        //TODO: Refactor and move to it another layter
-        public bool IsAlive { get; set; }
+        private bool m_IsAlive = true;
+        public bool IsAlive {
+            get { return m_IsAlive; } 
+            set { m_IsAlive = value; }
+        }
 
         private Texture2D m_Texture;
         public Texture2D Texture
@@ -63,9 +66,7 @@ namespace Infrastructure.ObjectModel
 
         public Sprite(string i_AssetName, Game i_Game)
             : base(i_AssetName, i_Game, int.MaxValue)
-        {
-            IsAlive = true;
-        }
+        {}
 
         /// <summary>
         /// Default initialization of bounds
@@ -137,7 +138,7 @@ namespace Infrastructure.ObjectModel
                 m_SpriteBatch.Begin();
             }
 
-            m_SpriteBatch.Draw(m_Texture, m_Position, m_TintColor);
+            m_SpriteBatch.Draw(m_Texture, m_Position, m_TintColor * Opacity);
 
             if (!m_UseSharedBatch)
             {
@@ -152,9 +153,7 @@ namespace Infrastructure.ObjectModel
             
                 int left = (int)Position.X;
                 int top = (int)Position.Y;
-
                 BoundingRect = new Rectangle(left, top, Width, Height);    
-           
         }
 
         public virtual void Remove()

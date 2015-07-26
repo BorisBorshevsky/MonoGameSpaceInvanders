@@ -10,6 +10,9 @@ namespace SpaceInvaders
 {
     class CollisionDetector : GameService
     {
+        private GameStateManagerService m_CollisionDetector;
+        private GameStateManagerService m_GameStateManagerService;
+        private ScoreManagerService m_ScoreManagerService;
         public List<Bullet> SpaceShipBullets { get; set; }
         public List<Bullet> InvaderBullets { get; set; } 
         public MotherShip MotherShip { get; set; }
@@ -26,15 +29,42 @@ namespace SpaceInvaders
 
         public override void Update(GameTime gameTime)
         {
+
+            //Detect Collision
+            OnEnemyHitsSpaceShip();
             OnEnemyBulletHitsSpaceShip();
             OnSpaceShipBulletHitsEnemy();
             OnSpaceShipBulletHitsMotherShip();
-            //Detect Collision
             base.Update(gameTime);
+        }
+
+        public override void Initialize()
+        {
+            m_GameStateManagerService = Game.Services.GetService(typeof(GameStateManagerService)) as GameStateManagerService;
+            m_ScoreManagerService = Game.Services.GetService(typeof(ScoreManagerService)) as ScoreManagerService;
+            base.Initialize();
+        }
+
+        private void OnEnemyHitsSpaceShip()
+        {
+            foreach (var invader in InvaderGrid.Invaders)
+            {
+                if (invader.IsAlive)
+                {
+                  
+                    if (SpaceShip.BoundingRect.Intersects(invader.BoundingRect))
+                        {
+                            m_GameStateManagerService.GameOver();
+                            break;
+                        
+                    }
+                }
+            }
         }
 
         private void OnEnemyBulletHitsSpaceShip()
         {
+ 
             foreach (var bullet in InvaderBullets)
             {
                 if (bullet.IsAlive)
@@ -42,8 +72,10 @@ namespace SpaceInvaders
                     if (bullet.BoundingRect.Intersects(SpaceShip.BoundingRect))
                     {
                         bullet.Remove();
-                        SpaceShip.NotifyOnHit();
+                        m_ScoreManagerService.AddToScore(SpaceShip.k_ScoreReduceOnHit);
+                        SpaceShip.HitByBullet();
                         SpaceShipBullets.Remove(bullet);
+
                         
 
                         break;
@@ -56,7 +88,7 @@ namespace SpaceInvaders
 
         private void OnSpaceShipBulletHitsEnemy()
         {
-            foreach (var invader in InvaderGrid.Invades)
+            foreach (var invader in InvaderGrid.Invaders)
             {
                 if (invader.IsAlive)
                 {
@@ -67,6 +99,7 @@ namespace SpaceInvaders
                             bullet.Remove();
                             invader.Remove();
                             SpaceShipBullets.Remove(bullet);
+                            m_ScoreManagerService.AddToScore(invader.Score);
                             InvaderGrid.NotifyOnDeadInvader();
                             
                             break;

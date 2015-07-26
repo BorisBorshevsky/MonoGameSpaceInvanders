@@ -4,18 +4,34 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace SpaceInvaders
 {
-    class GameLogic 
+    public class GameStateManagerService : GameService
     {
-        public Game Game { get; set; }
+        private ScoreManagerService m_ScoreManagerService;
 
-        public GameLogic(Game i_Game)
+        public override void Initialize()
         {
-            Game = i_Game;
+            m_ScoreManagerService = Game.Services.GetService(typeof(ScoreManagerService)) as ScoreManagerService;
+
+            base.Initialize();
         }
 
+        public GameStateManagerService(Game i_Game)
+            : base(i_Game)
+        {
+        }
+
+        public void GameOver()
+        {
+            if (Game.IsActive)
+            {
+                MessageBox.Show(String.Format("Score: {0}", m_ScoreManagerService.Score), "Game Over", MessageBoxButtons.OK);
+                Game.Exit();
+            }
+        }
 
     }
 }
