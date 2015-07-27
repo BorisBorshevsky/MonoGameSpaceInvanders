@@ -7,21 +7,19 @@ namespace SpaceInvaders.ObjectModel
 {
     public abstract class Invader : Sprite
     {
-        
-        const float k_BulletVelocity = 115f;
+        private const float k_BulletVelocity = 115f;
 
-        static Random random = new Random();
+        private static Random random = new Random();
         private CollisionDetector m_CollisionDetector;
-        private GameStateManagerService m_GameStateManagerService
+        private GameStateManagerService m_GameStateManagerService;
             
-            ;
+        public abstract int Score { get; }
 
-        public Invader(Game i_Game, String i_AssteName, Color i_EnemyColor)
+        protected Invader(Game i_Game, String i_AssteName, Color i_EnemyColor)
             : base(i_AssteName, i_Game)
         {
             m_TintColor = i_EnemyColor;
         }
-
 
         public override void Initialize()
         {
@@ -56,11 +54,5 @@ namespace SpaceInvaders.ObjectModel
             bullet.Velocity = new Vector2(0, k_BulletVelocity);
             m_CollisionDetector.Add(bullet);
         }
-
-                
-
-
-
-        public abstract int Score { get; }
     }
  }

@@ -10,15 +10,15 @@ namespace SpaceInvaders.ObjectModel
 
         public Bullet(Game i_Game)
 			: base(k_AssteName, i_Game)
-		{
-		}
+		{ }
 
         public override void Update(GameTime gameTime)
         {
-            if (this.IsOutOfBounts())
+            if (IsOutOfBounts())
             {
-                this.Remove();
+                Remove();
             }
+
             base.Update(gameTime);
         }
 	}
