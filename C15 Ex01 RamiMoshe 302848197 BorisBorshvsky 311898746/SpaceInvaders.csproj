@@ -38,22 +38,18 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ScoreManagerService.cs" />
-    <Compile Include="SpaceShipBulletManager.cs" />
-    <Compile Include="CollisionDetector.cs" />
-    <Compile Include="GameLogic.cs" />
-    <Compile Include="MotherShipManager.cs" />
+    <Compile Include="Services\GameStateService.cs" />
+    <Compile Include="Managers\MotherShipDeployer.cs" />
     <Compile Include="ObjectModel\Background.cs" />
-    <Compile Include="ObjectModel\InvaderBullet.cs" />
     <Compile Include="ObjectModel\MotherShip.cs" />
     <Compile Include="ObjectModel\Bullet.cs" />
     <Compile Include="ObjectModel\Invader.cs" />
-    <Compile Include="ObjectModel\InvaderGrid.cs" />
+    <Compile Include="Managers\InvaderGrid.cs" />
     <Compile Include="ObjectModel\SpaceShip.cs" />
-    <Compile Include="ObjectModel\SpaceShipBullet.cs" />
     <Compile Include="ObjectModel\LightBlueInvader.cs" />
     <Compile Include="ObjectModel\PinkInvader.cs" />
     <Compile Include="ObjectModel\YellowInvader.cs" />
+    <Compile Include="Services\IGameStateManager.cs" />
     <Compile Include="SpaceInvadersGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

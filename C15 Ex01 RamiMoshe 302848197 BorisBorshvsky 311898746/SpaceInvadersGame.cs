@@ -1,67 +1,52 @@
 ﻿using Infrastructure.Managers;
-using SpaceInvaders.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SpaceInvaders.Managers;
+using SpaceInvaders.ObjectModel;
+using SpaceInvaders.Services;
 
 namespace SpaceInvaders
 {
     /// <summary>
-    /// This is the main type for your game.
+    ///     This is the main type for your game.
     /// </summary>
     public class SapceInvadersGame : Game
     {
-        GraphicsDeviceManager m_Graphics;
-        SpriteBatch m_SpriteBatch;
-        CollisionDetector m_CollisionDetector;
+        private readonly GraphicsDeviceManager r_Graphics;
+        private SpriteBatch m_SpriteBatch;
 
-        
         public SapceInvadersGame()
         {
-            m_Graphics = new GraphicsDeviceManager(this);
+            r_Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
-            InputManager inputManager = new InputManager(this);
-            m_CollisionDetector = new CollisionDetector(this);
-            new GameStateManagerService(this);
-            new ScoreManagerService(this);
-            
-
-            SpaceShip ship = new SpaceShip(this);
-            m_CollisionDetector.Add(ship);
-
-            new MotherShipManager(this);
+            //services
+            new InputManager(this);
+            new GameStateManager(this);
+            new CollisionManager(this);
 
 
-            Background background = new Background(this, @"Sprites\BG_Space01_1024x768", 0.3f);
-            //Enemy enemy = new Enemy(this, Color.LightPink);
-
-            InvaderGrid enemyMatrix = new InvaderGrid(this);
-            m_CollisionDetector.Add(enemyMatrix);
-        }
-
-        protected override void Update(GameTime gameTime)
-        {
-
-            base.Update(gameTime);
+            //sprites
+            new Background(this, @"Sprites\BG_Space01_1024x768", 0.3f);
+            new SpaceShip(this);
+            new MotherShipDeployer(this);
+            new InvaderGrid(this);
         }
 
         protected override void Initialize()
         {
             m_SpriteBatch = new SpriteBatch(GraphicsDevice);
-            this.Services.AddService(typeof(SpriteBatch), m_SpriteBatch);
+            Services.AddService(typeof (SpriteBatch), m_SpriteBatch);
 
             base.Initialize();
         }
 
-
-
-        protected override void Draw(GameTime gameTime)
+        protected override void Draw(GameTime i_GameTime)
         {
-            m_Graphics.GraphicsDevice.Clear(Color.Black);
+            r_Graphics.GraphicsDevice.Clear(Color.Black);
 
-            // TODO: Add your drawing code here
             m_SpriteBatch.Begin();
-            base.Draw(gameTime);
+            base.Draw(i_GameTime);
             m_SpriteBatch.End();
         }
     }

@@ -1,6 +1,6 @@
 //*** Guy Ronen (c) 2008-2011 ***//
 
-using System;
+using Infrastructure.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -8,43 +8,55 @@ namespace Infrastructure.ObjectModel
 {
     public class Sprite : LoadableDrawableComponent
     {
-        public Rectangle BoundingRect { get; set; }
-
+        protected int m_Height;
         private bool m_IsAlive = true;
-        public bool IsAlive {
-            get { return m_IsAlive; } 
+        protected Vector2 m_Position;
+        protected SpriteBatch m_SpriteBatch;
+        protected Color m_TintColor = Color.White;
+        private bool m_UseSharedBatch = true;
+        protected Vector2 m_Velocity = Vector2.Zero;
+        protected int m_Width;
+
+        public Sprite(string i_AssetName, Game i_Game)
+            : base(i_AssetName, i_Game, int.MaxValue)
+        {
+        }
+
+        public Rectangle BoundingRect
+        {
+            get { return new Rectangle((int) Position.X, (int) Position.Y, Width, Height); }
+        }
+
+        public bool IsAlive
+        {
+            get { return m_IsAlive; }
             set { m_IsAlive = value; }
         }
 
-        private Texture2D m_Texture;
-        public Texture2D Texture
-        {
-            get { return m_Texture; }
-            set { m_Texture = value; }
-        }
+        public Texture2D Texture { get; set; }
 
-        protected int m_Width;
         public int Width
         {
             get { return m_Width; }
             set { m_Width = value; }
         }
 
-        protected int m_Height;
         public int Height
         {
             get { return m_Height; }
             set { m_Height = value; }
         }
 
-        protected Vector2 m_Position;
         public Vector2 Position
         {
             get { return m_Position; }
-            set { m_Position = value; }
+            set
+            {
+                m_Position = value;
+                RaisePositionChanged();
+            }
         }
 
-        protected Color m_TintColor = Color.White;
         public Color TintColor
         {
             get { return m_TintColor; }
@@ -53,39 +65,16 @@ namespace Infrastructure.ObjectModel
 
         public float Opacity
         {
-            get { return (float)m_TintColor.A / (float)byte.MaxValue; }
-            set { m_TintColor.A = (byte)(value * (float)byte.MaxValue); }
+            get { return m_TintColor.A/(float) byte.MaxValue; }
+            set { m_TintColor.A = (byte) (value*byte.MaxValue); }
         }
 
-        protected Vector2 m_Velocity = Vector2.Zero;
         public Vector2 Velocity
         {
             get { return m_Velocity; }
             set { m_Velocity = value; }
         }
 
-        public Sprite(string i_AssetName, Game i_Game)
-            : base(i_AssetName, i_Game, int.MaxValue)
-        {}
-
-        /// <summary>
-        /// Default initialization of bounds
-        /// </summary>
-        /// <remarks>
-        /// Derived classes are welcome to override this to implement their specific boudns initialization
-        /// </remarks>
-        protected override void InitBounds()
-        {
-            // default initialization of bounds
-            m_Width = m_Texture.Width;
-            m_Height = m_Texture.Height;
-            CalculateBoundingRect();
-        }
-
-
-        private bool m_UseSharedBatch = true;
-
-        protected SpriteBatch m_SpriteBatch;
         public SpriteBatch SpriteBatch
         {
             set
@@ -95,13 +84,41 @@ namespace Infrastructure.ObjectModel
             }
         }
 
+        /// <summary>
+        ///     Default initialization of bounds
+        /// </summary>
+        /// <remarks>
+        ///     Derived classes are welcome to override this to implement their specific boudns initialization
+        /// </remarks>
+        protected override void InitBounds()
+        {
+            // default initialization of bounds
+            m_Width = Texture.Width;
+            m_Height = Texture.Height;
+        }
+
+        public virtual void Collided(ICollidable2D i_Collidable)
+        {
+            Remove();
+            Dispose();
+        }
+
+        public virtual bool CollidesWith(ICollidable2D i_Collidable)
+        {
+            if (Visible && i_Collidable.Visible)
+            {
+                return BoundingRect.Intersects(i_Collidable.BoundingRect);
+            }
+            return false;
+        }
+
         protected override void LoadContent()
         {
-            m_Texture = Game.Content.Load<Texture2D>(m_AssetName);
+            Texture = Game.Content.Load<Texture2D>(m_AssetName);
 
             if (m_SpriteBatch == null)
             {
-                m_SpriteBatch =Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
+                m_SpriteBatch = Game.Services.GetService(typeof (SpriteBatch)) as SpriteBatch;
 
                 if (m_SpriteBatch == null)
                 {
@@ -114,51 +131,43 @@ namespace Infrastructure.ObjectModel
         }
 
         /// <summary>
-        /// Basic movement logic (position += velocity * totalSeconds)
+        ///     Basic movement logic (position += velocity * totalSeconds)
         /// </summary>
-        /// <param name="gameTime"></param>
+        /// <param name="i_GameTime"></param>
         /// <remarks>
-        /// Derived classes are welcome to extend this logic.
+        ///     Derived classes are welcome to extend this logic.
         /// </remarks>
-        public override void Update(GameTime gameTime)
+        public override void Update(GameTime i_GameTime)
         {
-            this.Position += this.Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            CalculateBoundingRect();
-            base.Update(gameTime);
+            Position += Velocity*(float) i_GameTime.ElapsedGameTime.TotalSeconds;
+            base.Update(i_GameTime);
         }
 
         /// <summary>
-        /// Basic texture draw behavior, using a shared/own sprite batch
+        ///     Basic texture draw behavior, using a shared/own sprite batch
         /// </summary>
-        /// <param name="gameTime"></param>
-        public override void Draw(GameTime gameTime)
+        /// <param name="i_GameTime"></param>
+        public override void Draw(GameTime i_GameTime)
         {
             if (!m_UseSharedBatch)
             {
                 m_SpriteBatch.Begin();
             }
 
-            m_SpriteBatch.Draw(m_Texture, m_Position, m_TintColor * Opacity);
+            m_SpriteBatch.Draw(Texture, m_Position, m_TintColor*Opacity);
 
             if (!m_UseSharedBatch)
             {
                 m_SpriteBatch.End();
             }
 
-            base.Draw(gameTime);
-        }
-
-        private void CalculateBoundingRect()
-        {
-            
-                int left = (int)Position.X;
-                int top = (int)Position.Y;
-                BoundingRect = new Rectangle(left, top, Width, Height);    
+            base.Draw(i_GameTime);
         }
 
         public virtual void Remove()
         {
             IsAlive = false;
+            Visible = false;
             Game.Components.Remove(this);
         }
 
@@ -166,7 +175,5 @@ namespace Infrastructure.ObjectModel
         {
             return !BoundingRect.Intersects(Game.GraphicsDevice.Viewport.Bounds);
         }
-
     }
-
 }
