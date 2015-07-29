@@ -41,7 +41,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Common\ICollidable.cs" />
+    <Compile Include="Common\ICollidable2D.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Managers\CollisionManager.cs" />
     <Compile Include="ServiceInterfaces\ICollisionManager.cs" />

@@ -6,11 +6,8 @@ namespace Infrastructure.Common
     public interface ICollidable2D
     {
         bool Visible { get; }
-        //size changed
-        //position changed
-        //visible changed
-        //visible : bool
-        //dispose 
+        bool IsAlive { get; }
+
         Rectangle BoundingRect { get; }
         Vector2 Velocity { get; }
         bool CollidesWith(ICollidable2D i_Collidable);

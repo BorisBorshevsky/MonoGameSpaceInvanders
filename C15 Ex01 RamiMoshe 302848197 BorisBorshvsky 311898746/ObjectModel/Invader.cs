@@ -11,7 +11,7 @@ namespace SpaceInvaders.ObjectModel
         private const float k_BulletVelocity = 115f;
         private const int k_MinTimeBetweenShoots = 3000;
         private const int k_MaxTimeBetweenShoots = 10000;
-        private static readonly Random r_Random = new Random();
+        private static readonly Random sr_Random = new Random();
         private IGameStateManager m_GameStateManagerService;
         private int m_TimeToNextShooting;
 
@@ -19,7 +19,7 @@ namespace SpaceInvaders.ObjectModel
             : base(i_AssteName, i_Game)
         {
             m_TintColor = i_EnemyColor;
-            m_TimeToNextShooting = r_Random.Next(k_MinTimeBetweenShoots, k_MaxTimeBetweenShoots);
+            m_TimeToNextShooting = sr_Random.Next(k_MinTimeBetweenShoots, k_MaxTimeBetweenShoots);
         }
 
         public abstract int Score { get; }
@@ -63,7 +63,7 @@ namespace SpaceInvaders.ObjectModel
             {
                 Shoot();
                 CurrentElapsedTime = 0;
-                m_TimeToNextShooting = r_Random.Next(k_MinTimeBetweenShoots, k_MaxTimeBetweenShoots);
+                m_TimeToNextShooting = sr_Random.Next(k_MinTimeBetweenShoots, k_MaxTimeBetweenShoots);
             }
 
             base.Update(i_GameTime);
