@@ -41,16 +41,24 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Common\ICollidable2D.cs" />
+    <Compile Include="Animators\CompositeAnimator.cs" />
+    <Compile Include="Animators\ConcreteAnimators\BlinkAnimator.cs" />
+    <Compile Include="Animators\ConcreteAnimators\CellAnimator.cs" />
+    <Compile Include="Animators\ConcreteAnimators\SequencialAnimator.cs" />
+    <Compile Include="Animators\ConcreteAnimators\WaypointsAnymator.cs" />
+    <Compile Include="Animators\SpriteAnimator.cs" />
+    <Content Include="Common\ICollidable2D.txt" />
     <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="Managers\CollisionManager.cs" />
-    <Compile Include="ServiceInterfaces\ICollisionManager.cs" />
+    <Content Include="Managers\CollisionManagerOld.txt" />
+    <Compile Include="Managers\CollisionsManager.cs" />
+    <Content Include="ServiceInterfaces\ICollisionManager.txt" />
     <Compile Include="Managers\InputManager.cs" />
     <Compile Include="ObjectModel\GameService.cs" />
     <Compile Include="ObjectModel\LoadableDrawbleComponent.cs" />
     <Compile Include="ObjectModel\RegisteredComponent.cs" />
     <Compile Include="ObjectModel\Sprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceInterfaces\ICollisionsManager.cs" />
     <Compile Include="ServiceInterfaces\IInputManager.cs" />
   </ItemGroup>
   <ItemGroup>

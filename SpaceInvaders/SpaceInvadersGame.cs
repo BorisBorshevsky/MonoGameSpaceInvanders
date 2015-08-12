@@ -23,7 +23,7 @@ namespace SpaceInvaders
             //services
             new InputManager(this);
             new GameStateManager(this);
-            new CollisionManager(this);
+            new CollisionsManager(this);
 
 
             //sprites
@@ -31,12 +31,33 @@ namespace SpaceInvaders
             new SpaceShip(this);
             new MotherShipDeployer(this);
             new InvaderGrid(this);
+
+            /*
+             * Color[] allpixels = new Color[texture height * texture width]
+             * texture.getDate(allpixels)
+             * if (allpixel[i + j * width].A != 0)
+             * {
+             * 
+             * }
+             *
+             * texture.SetDate(allpixels) 
+             *
+             */
+
+
+        }
+
+        protected override void LoadContent()
+        {
+            m_SpriteBatch = new SpriteBatch(GraphicsDevice);
+            Services.AddService(typeof(SpriteBatch), m_SpriteBatch);
+
+            base.LoadContent();
         }
 
         protected override void Initialize()
         {
-            m_SpriteBatch = new SpriteBatch(GraphicsDevice);
-            Services.AddService(typeof (SpriteBatch), m_SpriteBatch);
+
 
             base.Initialize();
         }

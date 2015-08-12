@@ -8,7 +8,7 @@ namespace Infrastructure.Common
         bool Visible { get; }
         bool IsAlive { get; }
 
-        Rectangle BoundingRect { get; }
+        Rectangle Bounds { get; }
         Vector2 Velocity { get; }
         bool CollidesWith(ICollidable2D i_Collidable);
         void Collided(ICollidable2D i_Collidable);

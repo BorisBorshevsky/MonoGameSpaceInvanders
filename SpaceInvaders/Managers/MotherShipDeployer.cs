@@ -26,7 +26,7 @@ namespace SpaceInvaders.Managers
             CurrentElapsedTime += i_GameTime.ElapsedGameTime.TotalMilliseconds;
             if (CurrentElapsedTime >= m_TimeToNextMotherShip)
             {
-                if (m_MotherShip == null || !m_MotherShip.IsAlive)
+                if (m_MotherShip == null)
                 {
                     m_MotherShip = new MotherShip(Game);
                 }
@@ -39,8 +39,8 @@ namespace SpaceInvaders.Managers
             {
                 if (m_MotherShip.IsOutOfBounts())
                 {
-                    m_MotherShip.Remove();
                     m_MotherShip.Dispose();
+                    m_MotherShip = null;
                 }
             }
 

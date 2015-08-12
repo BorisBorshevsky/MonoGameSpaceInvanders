@@ -1,5 +1,6 @@
-using Infrastructure.Common;
+
 using Infrastructure.ObjectModel;
+using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using SpaceInvaders.Services;
 
@@ -17,14 +18,13 @@ namespace SpaceInvaders.ObjectModel
             m_TintColor = Color.Red;
         }
 
-        public override void Collided(ICollidable2D i_Collidable)
+        public override void Collided(ICollidable i_Collidable)
         {
             Bullet bullet = i_Collidable as Bullet;
             if (bullet != null)
             {
                 if (bullet.Velocity.Y < 0)
                 {
-                    Remove();
                     Dispose();
                     m_GameStateManagerService.AddToScore(k_ScoreOnHit);
                 }
@@ -34,7 +34,7 @@ namespace SpaceInvaders.ObjectModel
         protected override void InitBounds()
         {
             base.InitBounds();
-            m_Position = new Vector2(Width*-1f + 1, Height*1f);
+            m_Position = new Vector2(Width * -1f + 1, Height * 1f);
             Velocity = new Vector2(110, 0);
         }
 
@@ -49,7 +49,6 @@ namespace SpaceInvaders.ObjectModel
             base.Update(i_GameTime);
             if (IsOutOfBounts())
             {
-                Remove();
                 Dispose();
             }
         }

@@ -3,9 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceInvaders", "C15 Ex01 RamiMoshe 302848197 BorisBorshvsky 311898746\SpaceInvaders.csproj", "{90DC0AF8-630C-468F-998B-893AFECDC75E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{BA2FC29B-8640-463C-B7C0-1D1AED9C67BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceInvaders", "SpaceInvaders\SpaceInvaders.csproj", "{90DC0AF8-630C-468F-998B-893AFECDC75E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0FA8F95F-385C-45F3-A65C-BDEE61347F26}"
+	ProjectSection(SolutionItems) = preProject
+		Report.txt = Report.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +18,14 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{90DC0AF8-630C-468F-998B-893AFECDC75E}.Debug|x86.ActiveCfg = Debug|x86
-		{90DC0AF8-630C-468F-998B-893AFECDC75E}.Debug|x86.Build.0 = Debug|x86
-		{90DC0AF8-630C-468F-998B-893AFECDC75E}.Release|x86.ActiveCfg = Release|x86
-		{90DC0AF8-630C-468F-998B-893AFECDC75E}.Release|x86.Build.0 = Release|x86
 		{BA2FC29B-8640-463C-B7C0-1D1AED9C67BF}.Debug|x86.ActiveCfg = Debug|x86
 		{BA2FC29B-8640-463C-B7C0-1D1AED9C67BF}.Debug|x86.Build.0 = Debug|x86
 		{BA2FC29B-8640-463C-B7C0-1D1AED9C67BF}.Release|x86.ActiveCfg = Release|x86
 		{BA2FC29B-8640-463C-B7C0-1D1AED9C67BF}.Release|x86.Build.0 = Release|x86
+		{90DC0AF8-630C-468F-998B-893AFECDC75E}.Debug|x86.ActiveCfg = Debug|x86
+		{90DC0AF8-630C-468F-998B-893AFECDC75E}.Debug|x86.Build.0 = Debug|x86
+		{90DC0AF8-630C-468F-998B-893AFECDC75E}.Release|x86.ActiveCfg = Release|x86
+		{90DC0AF8-630C-468F-998B-893AFECDC75E}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

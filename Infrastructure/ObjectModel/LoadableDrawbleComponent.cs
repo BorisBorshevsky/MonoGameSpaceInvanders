@@ -1,70 +1,38 @@
-//*** Guy Ronen (c) 2008-2011 ***//
-
-using System;
-using Infrastructure.Common;
-using Infrastructure.ServiceInterfaces;
+//*** Guy Ronen © 2008-2011 ***//
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Infrastructure.ServiceInterfaces;
+using System;
 
 namespace Infrastructure.ObjectModel
 {
-
     public abstract class LoadableDrawableComponent : DrawableGameComponent
     {
+        public event EventHandler<EventArgs> Disposed;
+        protected virtual void OnDisposed(object sender, EventArgs args)
+        {
+            if (Disposed != null)
+            {
+                Disposed.Invoke(sender, args);
+            }
+        }
+        protected override void Dispose(bool i_Disposing)
+        {
+            base.Dispose(i_Disposing);
+            OnDisposed(this, EventArgs.Empty);
+        }
+
         protected string m_AssetName;
-
-        protected LoadableDrawableComponent(
-            string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder)
-            : base(i_Game)
-        {
-            AssetName = i_AssetName;
-            UpdateOrder = i_UpdateOrder;
-            DrawOrder = i_DrawOrder;
-
-            // register in the game:
-            Game.Components.Add(this);
-        }
-
-        protected LoadableDrawableComponent(string i_AssetName, Game i_Game, int i_CallsOrder)
-            : this(i_AssetName, i_Game, i_CallsOrder, i_CallsOrder)
-        {
-        }
 
         // used to load the sprite:
         protected ContentManager ContentManager
         {
-            get { return Game.Content; }
+            get { return this.Game.Content; }
         }
 
-        public string AssetName
-        {
-            get { return m_AssetName; }
-            set { m_AssetName = value; }
-        }
-
-        public override void Initialize()
-        {
-            base.Initialize();
-
-            if (this is ICollidable2D)
-            {
-                ICollisionManager collisionMaanager =
-                    Game.Services.GetService(typeof (ICollisionManager)) as ICollisionManager;
-                if (collisionMaanager != null)
-                {
-                    collisionMaanager.Add(this as ICollidable2D);
-                }
-            }
-
-            InitBounds(); // a call to an abstract method;
-        }
-
-        protected abstract void InitBounds();
-        public virtual event EventHandler<EventArgs> Disposed;
-        public virtual event EventHandler<EventArgs> PositionChanged;
-        public virtual event EventHandler<EventArgs> SizeChanged;
-
-        protected void RaisePositionChanged()
+        // TODO 11: Implement the PositionChanged event:
+        public event EventHandler<EventArgs> PositionChanged;
+        protected virtual void OnPositionChanged()
         {
             if (PositionChanged != null)
             {
@@ -72,20 +40,88 @@ namespace Infrastructure.ObjectModel
             }
         }
 
-        protected void RaiseSizeChanged()
+        public event EventHandler<EventArgs> SizeChanged;
+        protected virtual void OnSizeChanged()
         {
             if (SizeChanged != null)
             {
                 SizeChanged(this, EventArgs.Empty);
             }
         }
+        // -- end of TODO 11
 
-        protected void RaiseDisposed()
+        public string AssetName
         {
-            if (Disposed != null)
-            {
-                Disposed(this, EventArgs.Empty);
-            }
+            get { return m_AssetName; }
+            set { m_AssetName = value; }
         }
+
+        public LoadableDrawableComponent(
+            string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder)
+            : base(i_Game)
+        {
+            this.AssetName = i_AssetName;
+            this.UpdateOrder = i_UpdateOrder;
+            this.DrawOrder = i_DrawOrder;
+
+            // register in the game:
+            this.Game.Components.Add(this);
+        }
+
+        public LoadableDrawableComponent(
+            string i_AssetName,
+            Game i_Game,
+            int i_CallsOrder)
+            : this(i_AssetName, i_Game, i_CallsOrder, i_CallsOrder)
+        { }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            // TODO 12: Register in the collisions manager:
+            if (this is ICollidable)
+            {
+                ICollisionsManager collisionMgr =
+                    this.Game.Services.GetService(typeof(ICollisionsManager))
+                        as ICollisionsManager;
+
+                if (collisionMgr != null)
+                {
+                    collisionMgr.AddObjectToMonitor(this as ICollidable);
+                }
+            }
+            // -- end of TODO 12
+
+            // After everything is loaded and initialzied,
+            // lets init graphical aspects:
+            InitBounds();   // a call to an abstract method;
+        }
+
+        // TODO 02: Show/Hide Bounding box
+#if DEBUG
+        protected bool m_ShowBoundingBox = true;
+#else
+        protected bool m_ShowBoundingBox = false;
+#endif
+
+        public bool ShowBoundingBox
+        {
+            get { return m_ShowBoundingBox; }
+            set { m_ShowBoundingBox = value; }
+        }
+        // -- end of TODO 02
+
+        protected abstract void InitBounds();
+
+        // TODO 03: enforce the logic of drawing the bounding box to the derivies:
+        public override void Draw(GameTime gameTime)
+        {
+            DrawBoundingBox();
+            base.Draw(gameTime);
+        }
+
+        protected abstract void DrawBoundingBox();
+        // -- end of TODO 03
     }
 }

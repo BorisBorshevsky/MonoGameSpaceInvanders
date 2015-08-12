@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Infrastructure.Common;
 using Infrastructure.ObjectModel;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
@@ -23,7 +22,7 @@ namespace SpaceInvaders.ObjectModel
         {
         }
 
-        public override void Collided(ICollidable2D i_Collidable)
+        public override void Collided(ICollidable i_Collidable)
         {
             Bullet bullet = i_Collidable as Bullet;
             if (bullet != null)
@@ -52,7 +51,7 @@ namespace SpaceInvaders.ObjectModel
         protected override void InitBounds()
         {
             base.InitBounds();
-            Position = new Vector2(0, GraphicsDevice.Viewport.Height - 30 - m_Height/2);
+            Position = new Vector2(0, GraphicsDevice.Viewport.Height - 30 - Bounds.Height/2);
         }
 
         public override void Update(GameTime i_GameTime)
@@ -72,7 +71,7 @@ namespace SpaceInvaders.ObjectModel
                 m_Velocity.X = m_InputManager.MousePositionDelta.X*60;
             }
 
-            m_Position.X = MathHelper.Clamp(m_Position.X, 0, Game.GraphicsDevice.Viewport.Width - m_Width);
+            m_Position.X = MathHelper.Clamp(m_Position.X, 0, Game.GraphicsDevice.Viewport.Width - Bounds.Width);
 
             if (m_InputManager.KeyPressed(Keys.Enter) || m_InputManager.ButtonPressed(eInputButtons.Left))
             {
@@ -87,8 +86,8 @@ namespace SpaceInvaders.ObjectModel
             {
                 Bullet bullet = new Bullet(Game);
                 bullet.Initialize();
-                bullet.Position = new Vector2(BoundingRect.Left + BoundingRect.Width/2 - bullet.Width/2,
-                    BoundingRect.Top - bullet.Height);
+                bullet.Position = new Vector2(Bounds.Left + Bounds.Width/2 - bullet.Width/2,
+                    Bounds.Top - bullet.Height);
                 bullet.Velocity = new Vector2(0, -k_BulletVelocity);
                 r_Bullets.Add(bullet);
             }

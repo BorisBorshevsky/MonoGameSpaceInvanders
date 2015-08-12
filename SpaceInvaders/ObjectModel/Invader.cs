@@ -1,6 +1,6 @@
 using System;
-using Infrastructure.Common;
 using Infrastructure.ObjectModel;
+using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using SpaceInvaders.Services;
 
@@ -8,12 +8,16 @@ namespace SpaceInvaders.ObjectModel
 {
     public abstract class Invader : Sprite, ICollidable2D
     {
+        
         private const float k_BulletVelocity = 115f;
         private const int k_MinTimeBetweenShoots = 3000;
         private const int k_MaxTimeBetweenShoots = 10000;
         private static readonly Random sr_Random = new Random();
         private IGameStateManager m_GameStateManagerService;
         private int m_TimeToNextShooting;
+
+
+        //protected const string k_AssteName = @"Sprites\AllInvaders";
 
         protected Invader(Game i_Game, String i_AssteName, Color i_EnemyColor)
             : base(i_AssteName, i_Game)
@@ -25,14 +29,15 @@ namespace SpaceInvaders.ObjectModel
         public abstract int Score { get; }
         public double CurrentElapsedTime { get; set; }
 
-        public override void Collided(ICollidable2D i_Collidable)
+        public override void Collided(ICollidable i_Collidable)
         {
             Bullet bullet = i_Collidable as Bullet;
             if (bullet != null)
             {
                 if (bullet.Velocity.Y < 0)
                 {
-                    Remove();
+                    //Remove();
+                    IsAlive = false;
                     Dispose();
                     m_GameStateManagerService.AddToScore(Score);
                     if (InvaderDied != null)
@@ -53,7 +58,7 @@ namespace SpaceInvaders.ObjectModel
 
         public override void Update(GameTime i_GameTime)
         {
-            if (BoundingRect.Bottom > Game.GraphicsDevice.Viewport.Bounds.Bottom)
+            if (Bounds.Bottom > Game.GraphicsDevice.Viewport.Bounds.Bottom)
             {
                 m_GameStateManagerService.GameOver();
             }
@@ -74,7 +79,7 @@ namespace SpaceInvaders.ObjectModel
             Bullet bullet = new Bullet(Game);
             bullet.Initialize();
             bullet.TintColor = Color.OrangeRed;
-            bullet.Position = new Vector2(BoundingRect.Left + BoundingRect.Width/2 - bullet.Width/2, BoundingRect.Bottom);
+            bullet.Position = new Vector2(Bounds.Left + Bounds.Width / 2 - bullet.Width / 2, Bounds.Bottom);
             bullet.Velocity = new Vector2(0, k_BulletVelocity);
         }
     }

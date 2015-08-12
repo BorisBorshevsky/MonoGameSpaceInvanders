@@ -1,5 +1,6 @@
-using Infrastructure.Common;
+
 using Infrastructure.ObjectModel;
+using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 
 namespace SpaceInvaders.ObjectModel
@@ -10,17 +11,16 @@ namespace SpaceInvaders.ObjectModel
 
         public Bullet(Game i_Game)
             : base(k_AssteName, i_Game)
-        {
-        }
+        {}
 
-        public override void Collided(ICollidable2D i_Collidable)
+        public override void Collided(ICollidable i_Collidable)
         {
             SpaceShip spaceShip = i_Collidable as SpaceShip;
             if (spaceShip != null)
             {
                 if (Velocity.Y > 0)
                 {
-                    Remove();
+                    //Remove();
                     Dispose();
                 }
             }
@@ -30,7 +30,7 @@ namespace SpaceInvaders.ObjectModel
             {
                 if (Velocity.Y < 0)
                 {
-                    Remove();
+                    //Remove();
                     Dispose();
                 }
             }
@@ -40,7 +40,7 @@ namespace SpaceInvaders.ObjectModel
             {
                 if (Velocity.Y < 0)
                 {
-                    Remove();
+                    //Remove();
                     Dispose();
                 }
             }
@@ -50,7 +50,7 @@ namespace SpaceInvaders.ObjectModel
         {
             if (IsOutOfBounts())
             {
-                Remove();
+                Dispose();
             }
 
             base.Update(i_GameTime);

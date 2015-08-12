@@ -22,8 +22,8 @@ namespace SpaceInvaders.Managers
         private const float k_SpeedAfterNewLine = 0.95f;
         private int m_AmountOfEnemiesDead;
         private int m_Direction = 1; // 1 = right   // -1 = left
-        private int m_EnemyHeight;
-        private int m_EnemyWidth;
+        private float m_EnemyHeight;
+        private float m_EnemyWidth;
         private IGameStateManager m_GameStateManager;
         private float m_HorizontalDistanceBetweenEnemies;
         private bool m_JumpDownOnNextJump;
@@ -41,7 +41,7 @@ namespace SpaceInvaders.Managers
         public double CurrentElapsedTime { get; set; }
         public Invader[,] Invaders { get; set; }
 
-        private Rectangle BoundingRect
+        private Rectangle Bounds
         {
             get
             {
@@ -57,22 +57,22 @@ namespace SpaceInvaders.Managers
                     {
                         if (invader.Position.X < minX)
                         {
-                            minX = invader.BoundingRect.X;
+                            minX = invader.Bounds.X;
                         }
 
                         if (invader.Position.X + invader.Width > maxX)
                         {
-                            maxX = invader.BoundingRect.X + invader.BoundingRect.Width;
+                            maxX = invader.Bounds.X + invader.Bounds.Width;
                         }
 
                         if (invader.Position.Y < minY)
                         {
-                            minY = invader.BoundingRect.Y;
+                            minY = invader.Bounds.Y;
                         }
 
                         if (invader.Position.Y + invader.Height > maxY)
                         {
-                            maxY = invader.BoundingRect.Y + invader.BoundingRect.Height;
+                            maxY = invader.Bounds.Y + invader.Bounds.Height;
                         }
                     }
                 }
@@ -95,9 +95,7 @@ namespace SpaceInvaders.Managers
 
             for (int col = 0; col < k_InvadersInRow; col++)
             {
-                for (int row = k_PinkInvadersInColumn;
-                    row < k_PinkInvadersInColumn + k_LightBlueInvadersInColumn;
-                    row++)
+                for (int row = k_PinkInvadersInColumn;row < k_PinkInvadersInColumn + k_LightBlueInvadersInColumn; row++)
                 {
                     Invaders[col, row] = new LightBlueInvader(Game);
                 }
@@ -161,7 +159,7 @@ namespace SpaceInvaders.Managers
                 }
                 else
                 {
-                    moveHorizontally(BoundingRect);
+                    moveHorizontally(Bounds);
                 }
 
                 updateInvadersPositions();
@@ -177,20 +175,18 @@ namespace SpaceInvaders.Managers
             m_TimeBetweenJumpsInSeconds *= k_SpeedAfterNewLine;
         }
 
-        private void moveHorizontally(Rectangle i_BoundingRectangle)
+        private void moveHorizontally(Rectangle i_Boundsangle)
         {
-            bool willMissRight = i_BoundingRectangle.Right + (m_EnemyWidth/2)*m_Direction >=
-                                 Game.GraphicsDevice.Viewport.Bounds.Right;
-            bool willMissLeft = i_BoundingRectangle.Left + (m_EnemyWidth/2)*m_Direction <=
-                                Game.GraphicsDevice.Viewport.Bounds.Left;
+            bool willMissRight = i_Boundsangle.Right + (m_EnemyWidth/2)*m_Direction >=                                  Game.GraphicsDevice.Viewport.Bounds.Right;
+            bool willMissLeft = i_Boundsangle.Left + (m_EnemyWidth/2)*m_Direction <=                                 Game.GraphicsDevice.Viewport.Bounds.Left;
 
             if (willMissLeft)
             {
-                m_LeftPadding -= i_BoundingRectangle.Left;
+                m_LeftPadding -= i_Boundsangle.Left;
             }
             else if (willMissRight)
             {
-                m_LeftPadding += Game.GraphicsDevice.Viewport.Width - i_BoundingRectangle.Right;
+                m_LeftPadding += Game.GraphicsDevice.Viewport.Width - i_Boundsangle.Right;
             }
             else
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Infrastructure.Common;
 using Infrastructure.ObjectModel;
 using Infrastructure.ServiceInterfaces;
@@ -36,7 +37,7 @@ namespace Infrastructure.Managers
 
         protected override void RegisterAsService()
         {
-            Game.Services.AddService(typeof (ICollisionManager), this);
+            Game.Services.AddService(typeof(ICollisionManager), this);
         }
 
         private void onCollidabeleDisposed(object i_Sender, EventArgs i_Args)
@@ -63,28 +64,19 @@ namespace Infrastructure.Managers
 
         private void checkCollisions(ICollidable2D i_CurrentCollidable2D)
         {
-            List<ICollidable2D> colidedWithList = new List<ICollidable2D>();
 
             if (i_CurrentCollidable2D != null)
             {
-                r_Collidables.ForEach(i_IteratedCollidable =>
-                {
-                    if (i_IteratedCollidable != i_CurrentCollidable2D)
-                    {
-                        if (i_CurrentCollidable2D.CollidesWith(i_IteratedCollidable))
-                        {
-                            colidedWithList.Add(i_IteratedCollidable);
-                        }
-                    }
-                });
+                List<ICollidable2D> colidedWith = r_Collidables.Where(
+                    i_IteratedCollidable =>
+                        i_IteratedCollidable != i_CurrentCollidable2D &&
+                        i_CurrentCollidable2D.CollidesWith(i_IteratedCollidable)).ToList();
 
-                if (colidedWithList.Count > 0)
+
+                foreach (ICollidable2D iteratedCollidable in colidedWith)
                 {
-                    colidedWithList.ForEach(i_IteratedCollidable =>
-                    {
-                        i_IteratedCollidable.Collided(i_CurrentCollidable2D);
-                        i_CurrentCollidable2D.Collided(i_IteratedCollidable);
-                    });
+                    iteratedCollidable.Collided(i_CurrentCollidable2D);
+                    i_CurrentCollidable2D.Collided(iteratedCollidable);
                 }
             }
         }
