@@ -2,23 +2,26 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Infrastructure.ObjectModel.Animators.ConcreteAnimators;
 using Microsoft.Xna.Framework;
 
 namespace Infrastructure.ObjectModel.Animators
 {
     public abstract class SpriteAnimator
     {
-        private             Sprite m_BoundSprite;
-        private TimeSpan    m_AnimationLength;
-        private TimeSpan    m_TimeLeft;
-        private bool        m_IsFinished = false;
-        private bool        m_Enabled = true;
-        private bool        m_Initialized = false;
-        private string      m_Name;
-        protected bool      m_ResetAfterFinish = true;
-        protected internal  Sprite m_OriginalSpriteInfo;
+        private Sprite m_BoundSprite;
+        private TimeSpan m_AnimationLength;
+        private bool m_IsFinished = false;
+        private bool m_Enabled = true;
+        private bool m_Initialized = false;
+        private string m_Name;
+        protected bool m_ResetAfterFinish = true;
+        protected internal Sprite m_OriginalSpriteInfo;
 
         public event EventHandler Finished;
+
+
+        protected TimeSpan TimeLeft { get; private set; }
 
         protected virtual void OnFinished()
         {
@@ -26,6 +29,12 @@ namespace Infrastructure.ObjectModel.Animators
             {
                 Reset();
                 this.m_IsFinished = true;
+            }
+
+
+            if (this.GetType() == typeof (ShrinkAnimator))
+            {
+                
             }
 
             if (Finished != null)
@@ -75,7 +84,7 @@ namespace Infrastructure.ObjectModel.Animators
                 m_Initialized = true;
 
                 CloneSpriteInfo();
-
+//                TimeLeft = m_AnimationLength;
                 Reset();
             }
         }
@@ -102,7 +111,7 @@ namespace Infrastructure.ObjectModel.Animators
             else
             {
                 m_AnimationLength = i_AnimationLength;
-                m_TimeLeft = m_AnimationLength;
+                TimeLeft = m_AnimationLength;
                 this.IsFinished = false;
             }
 
@@ -160,14 +169,19 @@ namespace Infrastructure.ObjectModel.Animators
                 Initialize();
             }
 
+            if (this.GetType() == typeof(ShrinkAnimator))
+            {
+
+            }
+
             if (this.Enabled && !this.IsFinished)
             {
                 if (this.IsFinite)
                 {
                     // check if we should stop animating:
-                    m_TimeLeft -= i_GameTime.ElapsedGameTime;
+                    TimeLeft -= i_GameTime.ElapsedGameTime;
 
-                    if (m_TimeLeft.TotalSeconds < 0)
+                    if (TimeLeft.TotalSeconds < 0)
                     {
                         this.IsFinished = true;
                     }
@@ -176,6 +190,7 @@ namespace Infrastructure.ObjectModel.Animators
                 if (!this.IsFinished)
                 {
                     // we are still required to animate:
+
                     DoFrame(i_GameTime);
                 }
             }

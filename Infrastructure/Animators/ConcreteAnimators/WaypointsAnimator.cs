@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace Infrastructure.ObjectModel.Animators.ConcreteAnimators
 {
-    public class WaypointsAnymator : SpriteAnimator
+    public class WaypointsAnimator : SpriteAnimator
     {
         private float m_VelocityPerSecond;
         private Vector2[] m_Waypoints;
@@ -12,21 +12,11 @@ namespace Infrastructure.ObjectModel.Animators.ConcreteAnimators
         private bool m_Loop = false;
 
         // CTORs
-        public WaypointsAnymator(
-            float i_VelocityPerSecond,
-            TimeSpan i_AnimationLength,
-            bool i_Loop,
-            params Vector2[] i_Waypoints)
-
+        public WaypointsAnimator(float i_VelocityPerSecond,TimeSpan i_AnimationLength,bool i_Loop,params Vector2[] i_Waypoints)
             : this("Waypoints", i_VelocityPerSecond, i_AnimationLength, i_Loop, i_Waypoints)
         {}
 
-        public WaypointsAnymator(
-            string i_Name,
-            float i_VelocityPerSecond,
-            TimeSpan i_AnimationLength,
-            bool i_Loop,
-            params Vector2[] i_Waypoints)
+        public WaypointsAnimator(string i_Name,float i_VelocityPerSecond,TimeSpan i_AnimationLength,bool i_Loop,params Vector2[] i_Waypoints)
 
             : base(i_Name, i_AnimationLength)
         {

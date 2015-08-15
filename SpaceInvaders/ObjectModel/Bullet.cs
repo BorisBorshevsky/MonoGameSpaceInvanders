@@ -20,7 +20,6 @@ namespace SpaceInvaders.ObjectModel
             {
                 if (Velocity.Y > 0)
                 {
-                    //Remove();
                     Dispose();
                 }
             }
@@ -30,7 +29,6 @@ namespace SpaceInvaders.ObjectModel
             {
                 if (Velocity.Y < 0)
                 {
-                    //Remove();
                     Dispose();
                 }
             }
@@ -40,7 +38,6 @@ namespace SpaceInvaders.ObjectModel
             {
                 if (Velocity.Y < 0)
                 {
-                    //Remove();
                     Dispose();
                 }
             }

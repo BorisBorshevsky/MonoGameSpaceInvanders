@@ -56,7 +56,6 @@ namespace SpaceInvaders.ObjectModel
 
         public void Stop()
         {
-            InitBounds();
             Enabled = false;
         }
 

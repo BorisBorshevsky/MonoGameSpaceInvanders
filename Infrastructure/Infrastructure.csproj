@@ -42,10 +42,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Animators\CompositeAnimator.cs" />
+    <Compile Include="Animators\ConcreteAnimators\ShrinkAnimator.cs" />
+    <Compile Include="Animators\ConcreteAnimators\RotateAnimator.cs" />
     <Compile Include="Animators\ConcreteAnimators\BlinkAnimator.cs" />
     <Compile Include="Animators\ConcreteAnimators\CellAnimator.cs" />
     <Compile Include="Animators\ConcreteAnimators\SequencialAnimator.cs" />
-    <Compile Include="Animators\ConcreteAnimators\WaypointsAnymator.cs" />
+    <Compile Include="Animators\ConcreteAnimators\WaypointsAnimator.cs" />
     <Compile Include="Animators\SpriteAnimator.cs" />
     <Content Include="Common\ICollidable2D.txt" />
     <Compile Include="ExtensionMethods.cs" />

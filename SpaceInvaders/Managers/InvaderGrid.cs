@@ -9,10 +9,10 @@ namespace SpaceInvaders.Managers
 {
     internal class InvaderGrid : RegisteredComponent
     {
-        private const int k_InvadersInRow = 9;
+        private const int k_InvadersInRow = 9; //9
         private const int k_PinkInvadersInColumn = 1;
-        private const int k_LightBlueInvadersInColumn = 2;
-        private const int k_YellowInvadersInColumn = 2;
+        private const int k_LightBlueInvadersInColumn = 2; // 2
+        private const int k_YellowInvadersInColumn = 2; // 2
 
         private const int k_InvadersInColumn =
             k_PinkInvadersInColumn + k_LightBlueInvadersInColumn + k_YellowInvadersInColumn;
@@ -128,8 +128,8 @@ namespace SpaceInvaders.Managers
             }
 
             Invader enemyForInitialization = Invaders[0, 0];
-            m_EnemyWidth = enemyForInitialization.Width;
-            m_EnemyHeight = enemyForInitialization.Height;
+            m_EnemyWidth = enemyForInitialization.Bounds.Width;
+            m_EnemyHeight = enemyForInitialization.Bounds.Height;
             m_HorizontalDistanceBetweenEnemies = 0.6f * m_EnemyWidth;
             m_VerticalDistanceBetweenEnemies = 0.6f * m_EnemyHeight;
             m_TopPadding = k_InitialTopPadding * m_EnemyHeight;
@@ -210,9 +210,12 @@ namespace SpaceInvaders.Managers
                 for (int row = 0; row < k_InvadersInColumn; row++)
                 {
                     Invader enemy = Invaders[col, row];
-                    float enemyXPosition = m_LeftPadding + col * (m_HorizontalDistanceBetweenEnemies + enemy.Width);
-                    float enemyYPosition = m_TopPadding + row * (m_VerticalDistanceBetweenEnemies + enemy.Height);
-                    enemy.Position = new Vector2(enemyXPosition, enemyYPosition);
+                    if (enemy.IsAlive)
+                    {
+                        float enemyXPosition = m_LeftPadding + col*(m_HorizontalDistanceBetweenEnemies + enemy.Width);
+                        float enemyYPosition = m_TopPadding + row*(m_VerticalDistanceBetweenEnemies + enemy.Height);
+                        enemy.Position = new Vector2(enemyXPosition, enemyYPosition);
+                    }
                 }
             }
         }

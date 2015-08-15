@@ -1,36 +1,29 @@
 //*** Guy Ronen © 2008-2011 ***//
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 
 namespace Infrastructure.ObjectModel.Animators
 {
     public class CompositeAnimator : SpriteAnimator
     {
-        private readonly Dictionary<string, SpriteAnimator> m_AnimationsDictionary = 
-            new Dictionary<string, SpriteAnimator>();
+        private readonly Dictionary<string, SpriteAnimator> m_AnimationsDictionary = new Dictionary<string, SpriteAnimator>();
 
         protected readonly List<SpriteAnimator> m_AnimationsList = new List<SpriteAnimator>();
 
-        // CTORs
-
-        // CTOR: Me as an AnimationsMamager
         public CompositeAnimator(Sprite i_BoundSprite)
-            : this("AnimationsMamager", TimeSpan.Zero, i_BoundSprite, new SpriteAnimator[]{})
+            : this("AnimationsMamager", TimeSpan.Zero, i_BoundSprite)
         {
             this.Enabled = false;
+            this.Initialize();
         }
-        
-        // CTOR: me as a ParallelAnimations animation:
-        public CompositeAnimator(
-            string i_Name,
-            TimeSpan i_AnimationLength,
-            Sprite i_BoundSprite,
-            params SpriteAnimator[] i_Animations)
-            : base (i_Name, i_AnimationLength)
+
+        public CompositeAnimator(string i_Name, TimeSpan i_AnimationLength, Sprite i_BoundSprite, params SpriteAnimator[] i_Animations)
+            : base(i_Name, i_AnimationLength)
         {
             this.BoundSprite = i_BoundSprite;
-
+            this.Initialize();
             foreach (SpriteAnimator animation in i_Animations)
             {
                 this.Add(animation);
@@ -63,7 +56,7 @@ namespace Infrastructure.ObjectModel.Animators
                 SpriteAnimator retVal = null;
                 m_AnimationsDictionary.TryGetValue(i_Name, out retVal);
                 return retVal;
-            }            
+            }
         }
 
         public override void Restart()
@@ -110,6 +103,14 @@ namespace Infrastructure.ObjectModel.Animators
             {
                 animation.Update(i_GameTime);
             }
+
+            if (m_AnimationsList.All(i_Animation => i_Animation.IsFinished))
+            {
+                
+            }
+
+
         }
+
     }
 }

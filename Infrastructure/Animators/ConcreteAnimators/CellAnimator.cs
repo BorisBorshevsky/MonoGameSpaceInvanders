@@ -12,7 +12,6 @@ namespace Infrastructure.ObjectModel.Animators.ConcreteAnimators
         private int m_CurrCellIdx = 0;
         private readonly int r_NumOfCells = 1;
 
-        // CTORs
         public CellAnimator(TimeSpan i_CellTime, int i_NumOfCells, TimeSpan i_AnimationLength)
             : base("CelAnimation", i_AnimationLength)
         {

@@ -120,7 +120,12 @@ namespace Infrastructure.ObjectModel
         public Rectangle SourceRectangle
         {
             get { return m_SourceRectangle; }
-            set { m_SourceRectangle = value; }
+            set
+            {
+                m_SourceRectangle = value;
+                m_WidthBeforeScale = value.Width;
+                m_HeightBeforeScale = value.Height;
+            }
         }
 
         public Vector2 TextureCenter
@@ -228,7 +233,7 @@ namespace Infrastructure.ObjectModel
         {
             m_WidthBeforeScale = m_Texture.Width;
             m_HeightBeforeScale = m_Texture.Height;
-            
+
             InitSourceRectangle();
 
             InitOrigins();
@@ -304,25 +309,22 @@ namespace Infrastructure.ObjectModel
         /// <summary>
         /// Basic texture draw behavior, using a shared/own sprite batch
         /// </summary>
-        /// <param name="gameTime"></param>
-        public override void Draw(GameTime gameTime)
+        /// <param name="i_GameTime"></param>
+        public override void Draw(GameTime i_GameTime)
         {
             if (!m_UseSharedBatch)
             {
                 m_SpriteBatch.Begin();
             }
 
-            m_SpriteBatch.Draw(m_Texture, this.PositionForDraw,
-                 this.SourceRectangle, this.TintColor,
-                this.Rotation, this.RotationOrigin, this.Scales,
-                SpriteEffects.None, this.LayerDepth);
+            m_SpriteBatch.Draw(m_Texture, this.PositionForDraw, this.SourceRectangle, this.TintColor, this.Rotation, this.RotationOrigin, this.Scales, SpriteEffects.None, this.LayerDepth);
 
             if (!m_UseSharedBatch)
             {
                 m_SpriteBatch.End();
             }
 
-            base.Draw(gameTime);
+            base.Draw(i_GameTime);
         }
 
         #region Collision Handlers
@@ -354,20 +356,21 @@ namespace Infrastructure.ObjectModel
             return this.MemberwiseClone() as Sprite;
         }
 
-         public virtual bool IsOutOfBounts()
-         {
-             return !Bounds.Intersects(Game.GraphicsDevice.Viewport.Bounds);
-         }
+        public virtual bool IsOutOfBounts()
+        {
+            return !Bounds.Intersects(Game.GraphicsDevice.Viewport.Bounds);
+        }
 
         private bool m_IsAlive = true;
         public bool IsAlive
         {
-            get { return m_IsAlive;}
+            get { return m_IsAlive; }
             set { m_IsAlive = value; }
         }
 
         protected override void Dispose(bool i_Disposing)
         {
+            Enabled = false;
             IsAlive = false;
             Visible = false;
             base.Dispose(i_Disposing);
