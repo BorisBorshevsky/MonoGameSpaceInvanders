@@ -12,10 +12,11 @@ namespace SpaceInvaders.ObjectModel
         public const int k_ScoreOnHit = 750;
         private IGameStateManager m_GameStateManagerService;
 
-        public MotherShip(Game i_Game)
+        public MotherShip(Game i_Game, bool i_Enable = true)
             : base(k_AssteName, i_Game)
         {
             m_TintColor = Color.Red;
+            Enabled = i_Enable;
         }
 
         public override void Collided(ICollidable i_Collidable)
@@ -25,8 +26,8 @@ namespace SpaceInvaders.ObjectModel
             {
                 if (bullet.Velocity.Y < 0)
                 {
-                    Dispose();
                     m_GameStateManagerService.AddToScore(k_ScoreOnHit);
+                    Stop();
                 }
             }
         }
@@ -49,8 +50,19 @@ namespace SpaceInvaders.ObjectModel
             base.Update(i_GameTime);
             if (IsOutOfBounts())
             {
-                Dispose();
+                Stop();
             }
+        }
+
+        public void Stop()
+        {
+            InitBounds();
+            Enabled = false;
+        }
+
+        public void Start()
+        {
+            Enabled = true;
         }
     }
 }

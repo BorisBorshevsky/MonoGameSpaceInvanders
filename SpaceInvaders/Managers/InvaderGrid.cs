@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Infrastructure.ObjectModel;
 using Microsoft.Xna.Framework;
 using SpaceInvaders.ObjectModel;
@@ -31,6 +32,8 @@ namespace SpaceInvaders.Managers
         private float m_TimeBetweenJumpsInSeconds = k_InitialTimeBetweenJumpsInSeconds;
         private float m_TopPadding;
         private float m_VerticalDistanceBetweenEnemies;
+        private Rectangle m_GridBounds;
+
 
         public InvaderGrid(Game i_Game)
             : base(i_Game)
@@ -41,44 +44,42 @@ namespace SpaceInvaders.Managers
         public double CurrentElapsedTime { get; set; }
         public Invader[,] Invaders { get; set; }
 
-        private Rectangle Bounds
+
+        private Rectangle calculateBounds()
         {
-            get
+            int minX = int.MaxValue;
+            int maxX = int.MinValue;
+
+            int minY = int.MaxValue;
+            int maxY = int.MinValue;
+
+            foreach (Invader invader in Invaders)
             {
-                int minX = int.MaxValue;
-                int maxX = int.MinValue;
-
-                int minY = int.MaxValue;
-                int maxY = int.MinValue;
-
-                foreach (Invader invader in Invaders)
+                if (invader.IsAlive)
                 {
-                    if (invader.IsAlive)
+                    if (invader.Position.X < minX)
                     {
-                        if (invader.Position.X < minX)
-                        {
-                            minX = invader.Bounds.X;
-                        }
+                        minX = invader.Bounds.X;
+                    }
 
-                        if (invader.Position.X + invader.Width > maxX)
-                        {
-                            maxX = invader.Bounds.X + invader.Bounds.Width;
-                        }
+                    if (invader.Position.X + invader.Width > maxX)
+                    {
+                        maxX = invader.Bounds.X + invader.Bounds.Width;
+                    }
 
-                        if (invader.Position.Y < minY)
-                        {
-                            minY = invader.Bounds.Y;
-                        }
+                    if (invader.Position.Y < minY)
+                    {
+                        minY = invader.Bounds.Y;
+                    }
 
-                        if (invader.Position.Y + invader.Height > maxY)
-                        {
-                            maxY = invader.Bounds.Y + invader.Bounds.Height;
-                        }
+                    if (invader.Position.Y + invader.Height > maxY)
+                    {
+                        maxY = invader.Bounds.Y + invader.Bounds.Height;
                     }
                 }
-
-                return new Rectangle(minX, minY, maxX - minX, maxY - minY);
             }
+
+            return new Rectangle(minX, minY, maxX - minX, maxY - minY);
         }
 
         private void constructInvaders()
@@ -95,7 +96,7 @@ namespace SpaceInvaders.Managers
 
             for (int col = 0; col < k_InvadersInRow; col++)
             {
-                for (int row = k_PinkInvadersInColumn;row < k_PinkInvadersInColumn + k_LightBlueInvadersInColumn; row++)
+                for (int row = k_PinkInvadersInColumn; row < k_PinkInvadersInColumn + k_LightBlueInvadersInColumn; row++)
                 {
                     Invaders[col, row] = new LightBlueInvader(Game);
                 }
@@ -113,9 +114,10 @@ namespace SpaceInvaders.Managers
         public override void Initialize()
         {
             base.Initialize();
-            m_GameStateManager = Game.Services.GetService(typeof (IGameStateManager)) as IGameStateManager;
+            m_GameStateManager = Game.Services.GetService(typeof(IGameStateManager)) as IGameStateManager;
 
             initializeInvaders();
+            m_GridBounds = calculateBounds();
         }
 
         private void initializeInvaders()
@@ -138,11 +140,11 @@ namespace SpaceInvaders.Managers
                 {
                     Invader invader = Invaders[col, row];
 
-                    float enemyXPosition = m_LeftPadding + col*(m_HorizontalDistanceBetweenEnemies + invader.Width);
-                    float enemyYPosition = m_TopPadding + row*(m_VerticalDistanceBetweenEnemies + invader.Height);
+                    float enemyXPosition = m_LeftPadding + col * (m_HorizontalDistanceBetweenEnemies + invader.Width);
+                    float enemyYPosition = m_TopPadding + row * (m_VerticalDistanceBetweenEnemies + invader.Height);
 
                     invader.Position = new Vector2(enemyXPosition, enemyYPosition);
-                    invader.InvaderDied += OnDeadInvader;
+                    invader.OnInvaderDied += OnDeadInvader;
                 }
             }
         }
@@ -152,6 +154,7 @@ namespace SpaceInvaders.Managers
             CurrentElapsedTime += i_GameTime.ElapsedGameTime.TotalSeconds;
             if (CurrentElapsedTime >= m_TimeBetweenJumpsInSeconds)
             {
+                m_GridBounds = calculateBounds();
                 if (m_JumpDownOnNextJump)
                 {
                     moveDown();
@@ -159,7 +162,7 @@ namespace SpaceInvaders.Managers
                 }
                 else
                 {
-                    moveHorizontally(Bounds);
+                    moveHorizontally(m_GridBounds);
                 }
 
                 updateInvadersPositions();
@@ -171,26 +174,26 @@ namespace SpaceInvaders.Managers
 
         private void moveDown()
         {
-            m_TopPadding += m_EnemyHeight/2;
+            m_TopPadding += m_EnemyHeight / 2;
             m_TimeBetweenJumpsInSeconds *= k_SpeedAfterNewLine;
         }
 
-        private void moveHorizontally(Rectangle i_Boundsangle)
+        private void moveHorizontally(Rectangle i_GridBounds)
         {
-            bool willMissRight = i_Boundsangle.Right + (m_EnemyWidth/2)*m_Direction >=                                  Game.GraphicsDevice.Viewport.Bounds.Right;
-            bool willMissLeft = i_Boundsangle.Left + (m_EnemyWidth/2)*m_Direction <=                                 Game.GraphicsDevice.Viewport.Bounds.Left;
+            bool willMissRight = i_GridBounds.Right + (m_EnemyWidth / 2) * m_Direction >= Game.GraphicsDevice.Viewport.Bounds.Right;
+            bool willMissLeft = i_GridBounds.Left + (m_EnemyWidth / 2) * m_Direction <= Game.GraphicsDevice.Viewport.Bounds.Left;
 
             if (willMissLeft)
             {
-                m_LeftPadding -= i_Boundsangle.Left;
+                m_LeftPadding -= i_GridBounds.Left;
             }
             else if (willMissRight)
             {
-                m_LeftPadding += Game.GraphicsDevice.Viewport.Width - i_Boundsangle.Right;
+                m_LeftPadding += Game.GraphicsDevice.Viewport.Width - i_GridBounds.Right;
             }
             else
             {
-                m_LeftPadding += (m_EnemyWidth/2)*m_Direction;
+                m_LeftPadding += (m_EnemyWidth / 2) * m_Direction;
             }
 
             if (willMissLeft || willMissRight)
@@ -207,8 +210,8 @@ namespace SpaceInvaders.Managers
                 for (int row = 0; row < k_InvadersInColumn; row++)
                 {
                     Invader enemy = Invaders[col, row];
-                    float enemyXPosition = m_LeftPadding + col*(m_HorizontalDistanceBetweenEnemies + enemy.Width);
-                    float enemyYPosition = m_TopPadding + row*(m_VerticalDistanceBetweenEnemies + enemy.Height);
+                    float enemyXPosition = m_LeftPadding + col * (m_HorizontalDistanceBetweenEnemies + enemy.Width);
+                    float enemyYPosition = m_TopPadding + row * (m_VerticalDistanceBetweenEnemies + enemy.Height);
                     enemy.Position = new Vector2(enemyXPosition, enemyYPosition);
                 }
             }
@@ -217,7 +220,7 @@ namespace SpaceInvaders.Managers
         public void OnDeadInvader(Object i_Sender, EventArgs i_Args)
         {
             m_TimeBetweenJumpsInSeconds *= k_SpeedAfterInvaderDead;
-            if (++m_AmountOfEnemiesDead >= k_InvadersInColumn*k_InvadersInRow)
+            if (++m_AmountOfEnemiesDead >= k_InvadersInColumn * k_InvadersInRow)
             {
                 m_GameStateManager.GameOver("You Won!");
             }

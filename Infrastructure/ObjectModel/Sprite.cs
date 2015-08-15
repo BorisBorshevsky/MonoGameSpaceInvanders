@@ -228,8 +228,7 @@ namespace Infrastructure.ObjectModel
         {
             m_WidthBeforeScale = m_Texture.Width;
             m_HeightBeforeScale = m_Texture.Height;
-            m_Position = Vector2.Zero;
-
+            
             InitSourceRectangle();
 
             InitOrigins();

@@ -36,19 +36,18 @@ namespace SpaceInvaders.ObjectModel
             {
                 if (bullet.Velocity.Y < 0)
                 {
-                    //Remove();
                     IsAlive = false;
                     Dispose();
                     m_GameStateManagerService.AddToScore(Score);
-                    if (InvaderDied != null)
+                    if (OnInvaderDied != null)
                     {
-                        InvaderDied(this, EventArgs.Empty);
+                        OnInvaderDied(this, EventArgs.Empty);
                     }
                 }
             }
         }
 
-        public event EventHandler<EventArgs> InvaderDied;
+        public event EventHandler<EventArgs> OnInvaderDied;
 
         public override void Initialize()
         {

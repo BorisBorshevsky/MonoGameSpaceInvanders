@@ -19,6 +19,14 @@ namespace SpaceInvaders.Managers
             m_TimeToNextMotherShip = r_Random.Next(k_MinTimeBetweenMotheships, k_MaxTimeBetweenMotheships);
         }
 
+        public override void Initialize()
+        {
+            base.Initialize();
+            const bool v_Enable = true;
+            m_MotherShip = new MotherShip(Game, !v_Enable);
+            m_MotherShip.Initialize();
+        }
+
         public double CurrentElapsedTime { get; set; }
 
         public override void Update(GameTime i_GameTime)
@@ -26,22 +34,13 @@ namespace SpaceInvaders.Managers
             CurrentElapsedTime += i_GameTime.ElapsedGameTime.TotalMilliseconds;
             if (CurrentElapsedTime >= m_TimeToNextMotherShip)
             {
-                if (m_MotherShip == null)
+                if (m_MotherShip.Enabled == false)
                 {
-                    m_MotherShip = new MotherShip(Game);
+                    m_MotherShip.Start();
                 }
+
                 CurrentElapsedTime = 0;
                 m_TimeToNextMotherShip = r_Random.Next(k_MinTimeBetweenMotheships, k_MaxTimeBetweenMotheships);
-            }
-
-
-            if (m_MotherShip != null)
-            {
-                if (m_MotherShip.IsOutOfBounts())
-                {
-                    m_MotherShip.Dispose();
-                    m_MotherShip = null;
-                }
             }
 
             base.Update(i_GameTime);
