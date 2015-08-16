@@ -9,8 +9,14 @@ namespace SpaceInvaders.ObjectModel
     public class MotherShip : Sprite, ICollidable2D
     {
         private const string k_AssteName = @"Sprites\MotherShip_32x120";
-        public const int k_ScoreOnHit = 750;
         private IGameStateManager m_GameStateManagerService;
+        private readonly int m_Score = 750;
+        
+        public int Score
+        {
+            get { return m_Score; }
+        }
+
 
         public MotherShip(Game i_Game, bool i_Enable = true)
             : base(k_AssteName, i_Game)
@@ -26,7 +32,7 @@ namespace SpaceInvaders.ObjectModel
             {
                 if (bullet.Velocity.Y < 0)
                 {
-                    m_GameStateManagerService.AddToScore(k_ScoreOnHit);
+                    m_GameStateManagerService.AddToScore(Score);
                     Stop();
                 }
             }

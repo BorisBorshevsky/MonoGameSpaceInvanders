@@ -2,10 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Infrastructure.ObjectModel;
 using Infrastructure.ObjectModel.Animators.ConcreteAnimators;
 using Microsoft.Xna.Framework;
 
-namespace Infrastructure.ObjectModel.Animators
+namespace Infrastructure.Animators
 {
     public abstract class SpriteAnimator
     {

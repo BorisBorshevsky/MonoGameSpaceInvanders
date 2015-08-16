@@ -38,6 +38,11 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Configurations\SpaceShipConfiguration.cs" />
+    <Compile Include="Configurations\SpaceShipKeyboardConfiguration.cs" />
+    <Compile Include="Configurations\SpaceShipMouseConfiguration.cs" />
+    <Compile Include="Managers\PlayerManager.cs" />
+    <Compile Include="ObjectModel\Player.cs" />
     <Compile Include="Services\GameStateService.cs" />
     <Compile Include="Managers\MotherShipDeployer.cs" />
     <Compile Include="ObjectModel\Background.cs" />

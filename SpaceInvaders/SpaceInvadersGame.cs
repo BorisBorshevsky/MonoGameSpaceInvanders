@@ -28,7 +28,9 @@ namespace SpaceInvaders
 
             //sprites
             new Background(this, @"Sprites\BG_Space01_1024x768", 0.3f);
-            new SpaceShip(this);
+
+            //new SpaceShip(this);
+            PlayersDeployer.CreatePlayers(this);
             new MotherShipDeployer(this);
             new InvaderGrid(this);
 

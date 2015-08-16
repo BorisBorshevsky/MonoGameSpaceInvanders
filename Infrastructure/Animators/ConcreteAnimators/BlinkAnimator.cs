@@ -1,8 +1,9 @@
 //*** Guy Ronen © 2008-2011 ***//
 using System;
+using Infrastructure.ObjectModel.Animators;
 using Microsoft.Xna.Framework;
 
-namespace Infrastructure.ObjectModel.Animators.ConcreteAnimators
+namespace Infrastructure.Animators.ConcreteAnimators
 {
     public class BlinkAnimator : SpriteAnimator
     {

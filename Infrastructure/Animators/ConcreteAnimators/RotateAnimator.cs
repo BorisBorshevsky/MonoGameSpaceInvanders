@@ -1,5 +1,6 @@
 //*** Guy Ronen © 2008-2011 ***//
 using System;
+using Infrastructure.Animators;
 using Microsoft.Xna.Framework;
 
 namespace Infrastructure.ObjectModel.Animators.ConcreteAnimators

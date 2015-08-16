@@ -18,7 +18,6 @@ namespace SpaceInvaders.ObjectModel
         private const int k_MinTimeBetweenShoots = 3000;
         private const int k_MaxTimeBetweenShoots = 10000;
         private static readonly Random sr_Random = new Random();
-        private IGameStateManager m_GameStateManagerService;
         private int m_TimeToNextShooting;
         private const int k_NumOfFrames = 2;
 
@@ -81,7 +80,6 @@ namespace SpaceInvaders.ObjectModel
                         deadAnimation.Finished += onAnimationFinished;
                         
                         this.Animations.Add(deadAnimation);
-                        m_GameStateManagerService.AddToScore(Score);
                         
                         if (OnInvaderDied != null)
                         {
@@ -92,15 +90,20 @@ namespace SpaceInvaders.ObjectModel
             }
         }
 
-
+        public override bool CheckCollision(ICollidable i_Source)
+        {
+            // todo: maybe bug -- bullet hit dyng invader
+            ///*!IsDying &&*/ 
+            return IsAlive && base.CheckCollision(i_Source);
+        }
 
 
         public event EventHandler<EventArgs> OnInvaderDied;
+        public event EventHandler<EventArgs> OnReachedBottom;
 
         public override void Initialize()
         {
 
-            m_GameStateManagerService = Game.Services.GetService(typeof(IGameStateManager)) as IGameStateManager;
             base.Initialize();
             initAnimations();
 
@@ -110,7 +113,10 @@ namespace SpaceInvaders.ObjectModel
         {
             if (Bounds.Bottom > Game.GraphicsDevice.Viewport.Bounds.Bottom)
             {
-                m_GameStateManagerService.GameOver();
+                if (OnReachedBottom != null)
+                {
+                    OnReachedBottom.Invoke(this, EventArgs.Empty);
+                }
             }
 
             CurrentElapsedTime += i_GameTime.ElapsedGameTime.TotalMilliseconds;

@@ -1,4 +1,5 @@
 
+using System;
 using Infrastructure.ObjectModel;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
@@ -13,6 +14,8 @@ namespace SpaceInvaders.ObjectModel
             : base(k_AssteName, i_Game)
         {}
 
+        public event EventHandler<EventArgs> OnCollision; 
+
         public override void Collided(ICollidable i_Collidable)
         {
             SpaceShip spaceShip = i_Collidable as SpaceShip;
@@ -20,7 +23,7 @@ namespace SpaceInvaders.ObjectModel
             {
                 if (Velocity.Y > 0)
                 {
-                    Dispose();
+                    collisionDetected(i_Collidable);
                 }
             }
 
@@ -29,7 +32,7 @@ namespace SpaceInvaders.ObjectModel
             {
                 if (Velocity.Y < 0)
                 {
-                    Dispose();
+                    collisionDetected(i_Collidable);
                 }
             }
 
@@ -38,9 +41,18 @@ namespace SpaceInvaders.ObjectModel
             {
                 if (Velocity.Y < 0)
                 {
-                    Dispose();
+                    collisionDetected(i_Collidable);
                 }
             }
+        }
+
+        private void collisionDetected(ICollidable i_Collidable)
+        {
+            if (OnCollision != null)
+            {
+                OnCollision.Invoke(i_Collidable, EventArgs.Empty);
+            }
+            Dispose();
         }
 
         public override void Update(GameTime i_GameTime)

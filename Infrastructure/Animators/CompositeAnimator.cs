@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Infrastructure.Animators;
 using Microsoft.Xna.Framework;
 
 namespace Infrastructure.ObjectModel.Animators

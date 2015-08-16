@@ -1,4 +1,5 @@
 using System;
+using Infrastructure.Animators;
 using Infrastructure.ObjectModel.Animators;
 using Microsoft.Xna.Framework;
 
