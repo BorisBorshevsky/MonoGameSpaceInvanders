@@ -1,6 +1,6 @@
 ﻿namespace SpaceInvaders.Services
 {
-    public interface IGameStateManager
+    public interface IGameStateService
     {
         void GameOver(string i_Msg = "Game Over");
         void LoseLife();

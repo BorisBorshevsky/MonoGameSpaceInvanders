@@ -9,7 +9,6 @@ namespace SpaceInvaders.ObjectModel
     public class MotherShip : Sprite, ICollidable2D
     {
         private const string k_AssteName = @"Sprites\MotherShip_32x120";
-        private IGameStateManager m_GameStateManagerService;
         private readonly int m_Score = 750;
         
         public int Score
@@ -32,7 +31,6 @@ namespace SpaceInvaders.ObjectModel
             {
                 if (bullet.Velocity.Y < 0)
                 {
-                    m_GameStateManagerService.AddToScore(Score);
                     Stop();
                 }
             }
@@ -43,12 +41,6 @@ namespace SpaceInvaders.ObjectModel
             base.InitBounds();
             m_Position = new Vector2(Width * -1f + 1, Height * 1f);
             Velocity = new Vector2(110, 0);
-        }
-
-        public override void Initialize()
-        {
-            m_GameStateManagerService = Game.Services.GetService(typeof (IGameStateManager)) as IGameStateManager;
-            base.Initialize();
         }
 
         public override void Update(GameTime i_GameTime)
@@ -62,11 +54,14 @@ namespace SpaceInvaders.ObjectModel
 
         public void Stop()
         {
+            Visible = false;
             Enabled = false;
         }
 
         public void Start()
         {
+            InitBounds();
+            Visible = true;
             Enabled = true;
         }
     }

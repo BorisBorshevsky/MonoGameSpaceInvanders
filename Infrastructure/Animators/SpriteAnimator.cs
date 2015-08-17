@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Infrastructure.Animators.ConcreteAnimators;
 using Infrastructure.ObjectModel;
+using Infrastructure.ObjectModel.Animators;
 using Infrastructure.ObjectModel.Animators.ConcreteAnimators;
 using Microsoft.Xna.Framework;
 
@@ -170,7 +172,7 @@ namespace Infrastructure.Animators
                 Initialize();
             }
 
-            if (this.GetType() == typeof(ShrinkAnimator))
+            if (this.GetType() != typeof(CompositeAnimator))
             {
 
             }

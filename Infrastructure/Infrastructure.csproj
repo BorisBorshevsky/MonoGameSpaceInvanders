@@ -48,12 +48,14 @@
     <Compile Include="Animators\ConcreteAnimators\CellAnimator.cs" />
     <Compile Include="Animators\ConcreteAnimators\SequencialAnimator.cs" />
     <Compile Include="Animators\ConcreteAnimators\WaypointsAnimator.cs" />
+    <Compile Include="Animators\ConcreteAnimators\FadeAnimator.cs" />
     <Compile Include="Animators\SpriteAnimator.cs" />
     <Content Include="Common\ICollidable2D.txt" />
     <Compile Include="ExtensionMethods.cs" />
     <Content Include="Managers\CollisionManagerOld.txt" />
     <Compile Include="Managers\CollisionsManager.cs" />
     <Content Include="ServiceInterfaces\ICollisionManager.txt" />
+    <Compile Include="Managers\DummyInputManager.cs" />
     <Compile Include="Managers\InputManager.cs" />
     <Compile Include="ObjectModel\GameService.cs" />
     <Compile Include="ObjectModel\LoadableDrawbleComponent.cs" />

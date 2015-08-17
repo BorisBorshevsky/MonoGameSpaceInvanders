@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace SpaceInvaders.Services
 {
-    public class GameStateManager : GameService, IGameStateManager
+    public class GameStateManager : GameService, IGameStateService
     {
         private const int k_InitialAmountOfLives = 3;
         private const int k_LoosingLifeScorePanalty = -1000;
@@ -44,7 +44,7 @@ namespace SpaceInvaders.Services
 
         protected override void RegisterAsService()
         {
-            Game.Services.AddService(typeof (IGameStateManager), this);
+            Game.Services.AddService(typeof(IGameStateService), this);
         }
     }
 }

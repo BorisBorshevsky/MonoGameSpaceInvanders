@@ -25,7 +25,6 @@ namespace SpaceInvaders.Managers
         private int m_Direction = 1; // 1 = right   // -1 = left
         private float m_EnemyHeight;
         private float m_EnemyWidth;
-        private IGameStateManager m_GameStateManager;
         private float m_HorizontalDistanceBetweenEnemies;
         private bool m_JumpDownOnNextJump;
         private float m_LeftPadding;
@@ -33,6 +32,7 @@ namespace SpaceInvaders.Managers
         private float m_TopPadding;
         private float m_VerticalDistanceBetweenEnemies;
         private Rectangle m_GridBounds;
+        private IGameStateService m_GameStateService;
 
 
         public InvaderGrid(Game i_Game)
@@ -114,7 +114,7 @@ namespace SpaceInvaders.Managers
         public override void Initialize()
         {
             base.Initialize();
-            m_GameStateManager = Game.Services.GetService(typeof(IGameStateManager)) as IGameStateManager;
+            m_GameStateService = Game.Services.GetService(typeof(IGameStateService)) as IGameStateService;
 
             initializeInvaders();
             m_GridBounds = calculateBounds();
@@ -162,7 +162,7 @@ namespace SpaceInvaders.Managers
                 }
                 else
                 {
-                    moveHorizontally(m_GridBounds);
+                //    moveHorizontally(m_GridBounds);
                 }
 
                 updateInvadersPositions();
@@ -225,7 +225,7 @@ namespace SpaceInvaders.Managers
             m_TimeBetweenJumpsInSeconds *= k_SpeedAfterInvaderDead;
             if (++m_AmountOfEnemiesDead >= k_InvadersInColumn * k_InvadersInRow)
             {
-                m_GameStateManager.GameOver("You Won!");
+                m_GameStateService.GameOver("You Won!");
             }
         }
     }

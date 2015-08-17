@@ -100,6 +100,10 @@ namespace Infrastructure.ObjectModel.Animators
 
         protected override void DoFrame(GameTime i_GameTime)
         {
+            if (m_AnimationsList.Count() != 0)
+            {
+                //TODO: remove this shit   
+            }
             foreach (SpriteAnimator animation in m_AnimationsList)
             {
                 animation.Update(i_GameTime);

@@ -9,7 +9,8 @@ namespace SpaceInvaders.ObjectModel
     public class Bullet : Sprite, ICollidable2D
     {
         private const string k_AssteName = @"Sprites\Bullet";
-
+        private readonly Random r_Random = new Random();
+        private const int k_ChanceForSpaceShipBulletToBeDisposedAfterBulletsCollision = 33;
         public Bullet(Game i_Game)
             : base(k_AssteName, i_Game)
         {}
@@ -44,6 +45,27 @@ namespace SpaceInvaders.ObjectModel
                     collisionDetected(i_Collidable);
                 }
             }
+            Bullet bullet = i_Collidable as Bullet;
+            if (bullet != null)
+            {
+                // im spaceship bullet
+                if (Velocity.Y < 0 && bullet.Velocity.Y > 0)
+                {
+                    collisionDetected(i_Collidable);
+                }
+
+                //im invader bullet
+                if (Velocity.Y > 0 && bullet.Velocity.Y < 0)
+                {
+                    if (r_Random.Next(0, 100) < k_ChanceForSpaceShipBulletToBeDisposedAfterBulletsCollision)
+                    {
+                        collisionDetected(i_Collidable);
+                    }
+                }
+
+            }
+
+
         }
 
         private void collisionDetected(ICollidable i_Collidable)

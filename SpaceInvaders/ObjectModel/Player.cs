@@ -5,6 +5,7 @@ using System.Text;
 using Infrastructure.ObjectModel;
 using Microsoft.Xna.Framework;
 using SpaceInvaders.Configurations;
+using Infrastructure.Managers;
 
 namespace SpaceInvaders.ObjectModel
 {
@@ -17,10 +18,15 @@ namespace SpaceInvaders.ObjectModel
         private const int k_InitialLives = 3;
         private int m_Lives = k_InitialLives;
         private ScoresBoard m_ScoresBoard;
+        private SoulsBoard m_SoulsBoard;
+
+        public event EventHandler<EventArgs> PlayerLost;
+
         public Player(Game i_Game, SpaceShipConfiguration i_SpaceShipConfiguration, int i_PlayerId)
         {
             m_SpaceShip = new SpaceShip(i_Game, i_SpaceShipConfiguration, i_PlayerId);
-            m_ScoresBoard = new ScoresBoard(i_Game, i_PlayerId);
+            m_ScoresBoard = new ScoresBoard(i_Game, i_PlayerId, i_SpaceShipConfiguration.TextColor);
+            m_SoulsBoard = new SoulsBoard(i_Game, k_InitialLives, i_SpaceShipConfiguration.AssteName, i_PlayerId);
             m_SpaceShip.OnSpaceShipHit += spaceShipOnHit;
             m_SpaceShip.OnDie += spaceShipOnDie;
             m_SpaceShip.OnBulletCollision += bulletCollision;
@@ -42,9 +48,18 @@ namespace SpaceInvaders.ObjectModel
 
         private void spaceShipOnDie(object i_Sender, EventArgs i_EventArgs)
         {
-            // udpate game state service
-            // call spaceship dead animation
-            // game Over?
+            m_SpaceShip.InputManager = new DummyInputManager();
+            m_SpaceShip.DieAnimationFinished += onPlayerLost; 
+            m_SpaceShip.StartDieAnimation();
+        }
+
+        private void onPlayerLost(object i_Sender, EventArgs i_EventArgs)
+        {
+            if (PlayerLost != null)
+            {
+                PlayerLost.Invoke(i_Sender, i_EventArgs);
+            }
+
         }
 
         private void spaceShipOnHit(object i_Sender, EventArgs i_EventArgs)
@@ -56,11 +71,9 @@ namespace SpaceInvaders.ObjectModel
             }
             else
             {
-                //lose life animation
+                m_SpaceShip.StartHitAnimation();
+                m_SpaceShip.ResetPosition();
             }
         }
-
-
-
     }
 }
