@@ -16,11 +16,11 @@ namespace SpaceInvaders.ObjectModel
         private const int k_LoosingLifeScorePanalty = -1000;
         private const int k_InitialLives = 3;
         private int m_Lives = k_InitialLives;
-        private int m_Score;
-
+        private ScoresBoard m_ScoresBoard;
         public Player(Game i_Game, SpaceShipConfiguration i_SpaceShipConfiguration, int i_PlayerId)
         {
             m_SpaceShip = new SpaceShip(i_Game, i_SpaceShipConfiguration, i_PlayerId);
+            m_ScoresBoard = new ScoresBoard(i_Game, i_PlayerId);
             m_SpaceShip.OnSpaceShipHit += spaceShipOnHit;
             m_SpaceShip.OnDie += spaceShipOnDie;
             m_SpaceShip.OnBulletCollision += bulletCollision;
@@ -31,12 +31,12 @@ namespace SpaceInvaders.ObjectModel
             Invader invader = i_Sender as Invader;
             if (invader != null)
             {
-                m_Score += invader.Score;
+                m_ScoresBoard.AddScore(invader.Score);
             }
             MotherShip motherShip = i_Sender as MotherShip;
             if (motherShip != null)
             {
-                m_Score += motherShip.Score;
+                m_ScoresBoard.AddScore(motherShip.Score);
             }
         }
 
@@ -49,7 +49,7 @@ namespace SpaceInvaders.ObjectModel
 
         private void spaceShipOnHit(object i_Sender, EventArgs i_EventArgs)
         {
-            m_Score += k_LoosingLifeScorePanalty;
+            m_ScoresBoard.AddScore(k_LoosingLifeScorePanalty);
             if (--m_Lives == 0)
             {
                 spaceShipOnDie(i_Sender, i_EventArgs);
