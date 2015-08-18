@@ -41,22 +41,24 @@
     <Compile Include="Configurations\SpaceShipConfiguration.cs" />
     <Compile Include="Configurations\SpaceShipKeyboardConfiguration.cs" />
     <Compile Include="Configurations\SpaceShipMouseConfiguration.cs" />
+    <Compile Include="ObjectModel\BarrierComposer.cs" />
     <Compile Include="ObjectModel\Managers\PlayerManager.cs" />
     <Compile Include="ObjectModel\Player.cs" />
-    <Compile Include="ObjectModel\ScoresBoard.cs" />
-    <Compile Include="ObjectModel\SoulIcon.cs" />
+    <Compile Include="ObjectModel\Sprites\Barrier.cs" />
+    <Compile Include="ObjectModel\Sprites\ScoresBoard.cs" />
+    <Compile Include="ObjectModel\Sprites\SoulIcon.cs" />
     <Compile Include="ObjectModel\SoulsBoard.cs" />
     <Compile Include="Services\GameStateService.cs" />
     <Compile Include="ObjectModel\Managers\MotherShipDeployer.cs" />
-    <Compile Include="ObjectModel\Background.cs" />
-    <Compile Include="ObjectModel\MotherShip.cs" />
-    <Compile Include="ObjectModel\Bullet.cs" />
-    <Compile Include="ObjectModel\Invader.cs" />
+    <Compile Include="ObjectModel\Sprites\Background.cs" />
+    <Compile Include="ObjectModel\Sprites\MotherShip.cs" />
+    <Compile Include="ObjectModel\Sprites\Bullet.cs" />
+    <Compile Include="ObjectModel\Sprites\Invader.cs" />
     <Compile Include="ObjectModel\Managers\InvaderGrid.cs" />
-    <Compile Include="ObjectModel\SpaceShip.cs" />
-    <Compile Include="ObjectModel\LightBlueInvader.cs" />
-    <Compile Include="ObjectModel\PinkInvader.cs" />
-    <Compile Include="ObjectModel\YellowInvader.cs" />
+    <Compile Include="ObjectModel\Sprites\SpaceShip.cs" />
+    <Compile Include="ObjectModel\Sprites\LightBlueInvader.cs" />
+    <Compile Include="ObjectModel\Sprites\PinkInvader.cs" />
+    <Compile Include="ObjectModel\Sprites\YellowInvader.cs" />
     <Compile Include="Services\IGameStateService.cs" />
     <Compile Include="SpaceInvadersGame.cs" />
     <Compile Include="Program.cs" />
@@ -82,6 +84,7 @@
       <Name>Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

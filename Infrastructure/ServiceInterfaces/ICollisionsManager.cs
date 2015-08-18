@@ -23,6 +23,14 @@ namespace Infrastructure.ServiceInterfaces
         Rectangle Bounds { get; }
         Vector2 Velocity { get; }
     }
+
+    public interface ICollidablePixelBased : ICollidable2D
+    {
+        Color[] Pixels { get; }
+    }
+
+
+
     // -- end of TODO 07
 
     // TODO 08: Define the 3D specific interface for 3D collidable objects:

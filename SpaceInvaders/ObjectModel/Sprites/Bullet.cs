@@ -1,12 +1,13 @@
 
 using System;
+using System.Threading;
 using Infrastructure.ObjectModel;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 
 namespace SpaceInvaders.ObjectModel
 {
-    public class Bullet : Sprite, ICollidable2D
+    public class Bullet : PixelSensetiveSprite, ICollidablePixelBased
     {
         private const string k_AssteName = @"Sprites\Bullet";
         private readonly Random r_Random = new Random();
@@ -45,6 +46,16 @@ namespace SpaceInvaders.ObjectModel
                     collisionDetected(i_Collidable);
                 }
             }
+            Sprites.Barrier barrier = i_Collidable as Sprites.Barrier;
+            if (barrier != null)
+            {
+                if (Velocity.Y < 0)
+                {
+                    collisionDetected(i_Collidable);
+                }
+            }
+
+
             Bullet bullet = i_Collidable as Bullet;
             if (bullet != null)
             {
@@ -64,6 +75,8 @@ namespace SpaceInvaders.ObjectModel
                 }
 
             }
+
+
 
 
         }
