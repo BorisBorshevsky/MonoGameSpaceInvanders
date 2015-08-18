@@ -18,7 +18,8 @@ namespace SpaceInvaders.ObjectModel
         protected override void LoadContent()
         {
             m_SpriteBatch = new SpriteBatch(GraphicsDevice);
-            Texture = Game.Content.Load<Texture2D>(AssetName);
+//            Texture = Game.Content.Load<Texture2D>(AssetName);
+            base.LoadContent();
         }
 
         public override void Initialize()

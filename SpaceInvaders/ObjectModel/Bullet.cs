@@ -40,7 +40,7 @@ namespace SpaceInvaders.ObjectModel
             MotherShip motherShip = i_Collidable as MotherShip;
             if (motherShip != null)
             {
-                if (Velocity.Y < 0)
+                if (Velocity.Y < 0 && !motherShip.IsDying)
                 {
                     collisionDetected(i_Collidable);
                 }
