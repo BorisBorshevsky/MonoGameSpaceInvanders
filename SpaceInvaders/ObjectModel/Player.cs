@@ -16,7 +16,6 @@ namespace SpaceInvaders.ObjectModel
         private readonly SpaceShip m_SpaceShip;
         private const int k_LoosingLifeScorePanalty = -1000;
         private const int k_InitialLives = 3;
-        private int m_Lives = k_InitialLives;
         private ScoresBoard m_ScoresBoard;
         private SoulsBoard m_SoulsBoard;
 
@@ -65,7 +64,8 @@ namespace SpaceInvaders.ObjectModel
         private void spaceShipOnHit(object i_Sender, EventArgs i_EventArgs)
         {
             m_ScoresBoard.AddScore(k_LoosingLifeScorePanalty);
-            if (--m_Lives == 0)
+            m_SoulsBoard.RemoveSoul();
+            if (m_SoulsBoard.SoulsCount == 0)
             {
                 spaceShipOnDie(i_Sender, i_EventArgs);
             }

@@ -20,6 +20,8 @@ namespace SpaceInvaders.ObjectModel
         private static readonly Random sr_Random = new Random();
         private int m_TimeToNextShooting;
         private const int k_NumOfFrames = 2;
+        private bool m_startDieAnimationOnNextFrame = false;
+
 
         protected const string k_AssteName = @"Sprites\AllInvaders";
         protected bool isDying = false;
@@ -71,16 +73,9 @@ namespace SpaceInvaders.ObjectModel
                     if (bullet.Velocity.Y < 0)
                     {
                         IsAlive = false;
-                        isDying = true;
-                        
-                        RotateAnimator rotateAnimator = new RotateAnimator(MathHelper.TwoPi * 5, k_dyingAnimationTime);
-                        ShrinkAnimator shrinkAnimator = new ShrinkAnimator(k_dyingAnimationTime);
-                        
-                        CompositeAnimator deadAnimation = new CompositeAnimator("deadAnimation", k_dyingAnimationTime, this, shrinkAnimator, rotateAnimator);
-                        deadAnimation.Finished += onAnimationFinished;
-                        
-                        this.Animations.Add(deadAnimation);
-                        
+
+                        m_startDieAnimationOnNextFrame = true;
+
                         if (OnInvaderDied != null)
                         {
                             OnInvaderDied(this, EventArgs.Empty);
@@ -90,14 +85,20 @@ namespace SpaceInvaders.ObjectModel
             }
         }
 
-        public override bool CheckCollision(ICollidable i_Source)
+        private void startDyingAnimation()
         {
-            // todo: maybe bug -- bullet hit dyng invader
-            ///*!IsDying &&*/ 
-            return IsAlive && base.CheckCollision(i_Source);
+            isDying = true;
+            RotateAnimator rotateAnimator = new RotateAnimator(MathHelper.TwoPi*5, k_dyingAnimationTime);
+            ShrinkAnimator shrinkAnimator = new ShrinkAnimator(k_dyingAnimationTime);
+
+            CompositeAnimator deadAnimation = new CompositeAnimator("deadAnimation", k_dyingAnimationTime, this, shrinkAnimator,
+                rotateAnimator);
+            deadAnimation.Finished += onAnimationFinished;
+
+            this.Animations.Add(deadAnimation);
         }
 
-
+    
         public event EventHandler<EventArgs> OnInvaderDied;
         public event EventHandler<EventArgs> OnReachedBottom;
 
@@ -111,6 +112,12 @@ namespace SpaceInvaders.ObjectModel
 
         public override void Update(GameTime i_GameTime)
         {
+            if (m_startDieAnimationOnNextFrame)
+            {
+                startDyingAnimation();
+                m_startDieAnimationOnNextFrame = false;
+            }
+            
             if (Bounds.Bottom > Game.GraphicsDevice.Viewport.Bounds.Bottom)
             {
                 if (OnReachedBottom != null)

@@ -17,7 +17,7 @@ namespace Infrastructure.ObjectModel
             set { m_Animations = value; }
         }
 
-        private Texture2D m_Texture;
+        protected Texture2D m_Texture;
         public Texture2D Texture
         {
             get { return m_Texture; }
@@ -81,7 +81,7 @@ namespace Infrastructure.ObjectModel
             set { m_RotationOrigin = value; }
         }
 
-        private Vector2 PositionForDraw
+        protected Vector2 PositionForDraw
         {
             get { return this.Position - this.PositionOrigin + this.RotationOrigin; }
         }

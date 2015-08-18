@@ -57,7 +57,6 @@ namespace SpaceInvaders.ObjectModel
                 Invader invader = i_Collidable as Invader;
                 if (invader != null)
                 {
-                    //m_GameStateManager.GameOver();
                     if (OnDie != null)
                     {
                         OnDie(this, EventArgs.Empty);

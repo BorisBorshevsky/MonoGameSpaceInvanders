@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Infrastructure.ObjectModel;
 
@@ -10,21 +11,24 @@ namespace SpaceInvaders.ObjectModel
 {
     public class SoulsBoard : RegisteredComponent
     {
-        private int m_SoulsCount;
+        public int SoulsCount { get; private set; }
 
         private readonly string r_AssetName;
         private readonly List<Sprite> r_Sprites = new List<Sprite>();
         private readonly int r_PlayerId;
+        private const int k_RightOffset = 32;
+        private const int k_TopOffset = 16;
+        private const int k_DistanceBetweenSouls = 8;
 
-
+        
         public SoulsBoard(Game i_Game, int i_InitialSoulsCount, string i_AssetName, int i_PlayerId) : base(i_Game)
         {
-            m_SoulsCount = i_InitialSoulsCount;
+            SoulsCount = i_InitialSoulsCount;
             r_PlayerId = i_PlayerId;
 
-            for (int i = 0; i < m_SoulsCount; i++)
+            for (int i = 0; i < SoulsCount; i++)
             {
-                r_Sprites.Add(new Sprite(i_AssetName, i_Game));    
+                r_Sprites.Add(new SoulIcon(i_AssetName, i_Game));    
             }
         }
 
@@ -32,18 +36,21 @@ namespace SpaceInvaders.ObjectModel
         {
             base.Initialize();
 
-            for (int i = 0; i < m_SoulsCount; i++)
+            for (int i = 0; i < SoulsCount; i++)
             {
                 r_Sprites[i].Initialize();
-                r_Sprites[i].Opacity = 0.5f;
-                r_Sprites[i].Scales = Vector2.One/2;
-                r_Sprites[i].Position = new Vector2(Game.GraphicsDevice.Viewport.Bounds.Width - 100 - ((i + 1) * r_Sprites[i].Bounds.Width) , (r_PlayerId + 1) * r_Sprites[i].Bounds.Height + 20);
+                int rightBound = Game.GraphicsDevice.Viewport.Bounds.Width;
+                float xPosition = rightBound - k_RightOffset - (i*(r_Sprites[i].Bounds.Width + k_DistanceBetweenSouls));
+                float yPosition = k_TopOffset + (r_PlayerId*(r_Sprites[i].Bounds.Height + k_DistanceBetweenSouls));
+                r_Sprites[i].Position = new Vector2(xPosition, yPosition);
             }
         }
 
+
         public void RemoveSoul()
         {
-            r_Sprites[--m_SoulsCount].Visible = false;
+            r_Sprites[--SoulsCount].Visible = false;
         }
+        
     }
 }

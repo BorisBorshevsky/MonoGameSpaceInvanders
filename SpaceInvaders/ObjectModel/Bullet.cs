@@ -31,7 +31,7 @@ namespace SpaceInvaders.ObjectModel
             Invader invader = i_Collidable as Invader;
             if (invader != null)
             {
-                if (Velocity.Y < 0)
+                if (Velocity.Y < 0 && !invader.IsDying)
                 {
                     collisionDetected(i_Collidable);
                 }
