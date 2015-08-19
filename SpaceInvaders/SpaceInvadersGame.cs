@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SpaceInvaders.Managers;
 using SpaceInvaders.ObjectModel;
+using SpaceInvaders.ObjectModel.Managers;
 using SpaceInvaders.Services;
 
 namespace SpaceInvaders
@@ -25,7 +26,6 @@ namespace SpaceInvaders
             new GameStateManager(this);
             new CollisionsManager(this);
 
-
             //sprites
             new Background(this, @"Sprites\BG_Space01_1024x768", 0.3f);
 
@@ -33,20 +33,6 @@ namespace SpaceInvaders
             new PlayersManager(this);
             new MotherShipDeployer(this);
             new InvaderGrid(this);
-
-            /*
-             * Color[] allpixels = new Color[texture height * texture width]
-             * texture.getDate(allpixels)
-             * if (allpixel[i + j * width].A != 0)
-             * {
-             * 
-             * }
-             *
-             * texture.SetDate(allpixels) 
-             *
-             */
-
-
         }
 
         protected override void LoadContent()
@@ -55,13 +41,6 @@ namespace SpaceInvaders
             Services.AddService(typeof(SpriteBatch), m_SpriteBatch);
 
             base.LoadContent();
-        }
-
-        protected override void Initialize()
-        {
-
-
-            base.Initialize();
         }
 
         protected override void Draw(GameTime i_GameTime)

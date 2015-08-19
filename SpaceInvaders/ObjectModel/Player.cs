@@ -16,15 +16,15 @@ namespace SpaceInvaders.ObjectModel
         private readonly SpaceShip m_SpaceShip;
         private const int k_LoosingLifeScorePanalty = -1000;
         private const int k_InitialLives = 3;
-        private ScoresBoard m_ScoresBoard;
         private SoulsBoard m_SoulsBoard;
 
+        public ScoresBoard ScoresBoard { get; private set; }
         public event EventHandler<EventArgs> PlayerLost;
 
         public Player(Game i_Game, SpaceShipConfiguration i_SpaceShipConfiguration, int i_PlayerId)
         {
             m_SpaceShip = new SpaceShip(i_Game, i_SpaceShipConfiguration, i_PlayerId);
-            m_ScoresBoard = new ScoresBoard(i_Game, i_PlayerId, i_SpaceShipConfiguration.TextColor);
+            ScoresBoard = new ScoresBoard(i_Game, i_PlayerId, i_SpaceShipConfiguration.TextColor);
             m_SoulsBoard = new SoulsBoard(i_Game, k_InitialLives, i_SpaceShipConfiguration.AssteName, i_PlayerId);
             m_SpaceShip.OnSpaceShipHit += spaceShipOnHit;
             m_SpaceShip.OnDie += spaceShipOnDie;
@@ -36,12 +36,12 @@ namespace SpaceInvaders.ObjectModel
             Invader invader = i_Sender as Invader;
             if (invader != null)
             {
-                m_ScoresBoard.AddScore(invader.Score);
+                ScoresBoard.AddScore(invader.Score);
             }
             MotherShip motherShip = i_Sender as MotherShip;
             if (motherShip != null)
             {
-                m_ScoresBoard.AddScore(motherShip.Score);
+                ScoresBoard.AddScore(motherShip.Score);
             }
         }
 
@@ -63,7 +63,7 @@ namespace SpaceInvaders.ObjectModel
 
         private void spaceShipOnHit(object i_Sender, EventArgs i_EventArgs)
         {
-            m_ScoresBoard.AddScore(k_LoosingLifeScorePanalty);
+            ScoresBoard.AddScore(k_LoosingLifeScorePanalty);
             m_SoulsBoard.RemoveSoul();
             if (m_SoulsBoard.SoulsCount == 0)
             {

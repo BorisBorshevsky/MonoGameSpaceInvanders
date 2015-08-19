@@ -1,8 +1,10 @@
-﻿namespace SpaceInvaders.Services
+﻿using System.Collections.Generic;
+using SpaceInvaders.ObjectModel;
+
+namespace SpaceInvaders.Services
 {
     public interface IGameStateService
     {
-        void GameOver(string i_Msg = "Game Over");
-        void AddToScore(int i_Score);
+        void GameOver(List<Player> players, string i_Msg = "Game Over");
     }
 }

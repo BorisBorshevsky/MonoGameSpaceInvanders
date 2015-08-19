@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Infrastructure.ObjectModel
 {
@@ -33,6 +34,15 @@ namespace Infrastructure.ObjectModel
             base.LoadContent();
             Pixels = new Color[Texture.Width * Texture.Height];
             Texture.GetData(Pixels);
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            Texture2D textureClone = new Texture2D(Game.GraphicsDevice, Texture.Width, Texture.Height);
+            textureClone.SetData(Pixels);
+            Texture = textureClone;
         }
 
         public override bool CheckCollision(ICollidable i_Source)

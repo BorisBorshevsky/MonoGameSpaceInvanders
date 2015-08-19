@@ -73,9 +73,7 @@ namespace SpaceInvaders.ObjectModel
                     if (bullet.Velocity.Y < 0)
                     {
                         IsAlive = false;
-
                         m_startDieAnimationOnNextFrame = true;
-
                         if (OnInvaderDied != null)
                         {
                             OnInvaderDied(this, EventArgs.Empty);
@@ -91,23 +89,19 @@ namespace SpaceInvaders.ObjectModel
             RotateAnimator rotateAnimator = new RotateAnimator(MathHelper.TwoPi*5, k_dyingAnimationTime);
             ShrinkAnimator shrinkAnimator = new ShrinkAnimator(k_dyingAnimationTime);
 
-            CompositeAnimator deadAnimation = new CompositeAnimator("deadAnimation", k_dyingAnimationTime, this, shrinkAnimator,
-                rotateAnimator);
+            CompositeAnimator deadAnimation = new CompositeAnimator("deadAnimation", k_dyingAnimationTime, this, shrinkAnimator, rotateAnimator);
             deadAnimation.Finished += onAnimationFinished;
 
-            this.Animations.Add(deadAnimation);
+            Animations.Add(deadAnimation);
         }
 
-    
         public event EventHandler<EventArgs> OnInvaderDied;
         public event EventHandler<EventArgs> OnReachedBottom;
 
         public override void Initialize()
         {
-
             base.Initialize();
             initAnimations();
-
         }
 
         public override void Update(GameTime i_GameTime)

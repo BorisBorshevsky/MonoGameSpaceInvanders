@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Text;
 using System.Windows.Forms;
 using Infrastructure.ObjectModel;
 using Microsoft.Xna.Framework;
+using SpaceInvaders.ObjectModel;
+using System.Collections.Generic;
 
 namespace SpaceInvaders.Services
 {
@@ -19,27 +22,26 @@ namespace SpaceInvaders.Services
 
         private int Score { get; set; }
 
-        public void LoseLife()
-        {
-            AddToScore(k_LoosingLifeScorePanalty);
-            if (--m_Lives == 0)
-            {
-                GameOver();
-            }
-        }
-
-        public void AddToScore(int i_Score)
-        {
-            Score = MathHelper.Clamp(Score + i_Score, 0, int.MaxValue);
-        }
-
-        public void GameOver(string i_Msg = "Game Over")
+        public void GameOver(List<Player> players, string i_Msg = "Game Over")
         {
             if (Game.IsActive)
             {
-                MessageBox.Show(String.Format("Score: {0}", Score), i_Msg, MessageBoxButtons.OK);
+                var message = createMessageContent(players);
+                MessageBox.Show(message, i_Msg, MessageBoxButtons.OK);
                 Game.Exit();
             }
+        }
+
+        private static string createMessageContent(List<Player> players)
+        {
+            StringBuilder message = new StringBuilder();
+            foreach (var player in players)
+            {
+                message.AppendLine(String.Format("Player: {0}, Score: {1}", player.ScoresBoard.PlayerNumber,
+                    player.ScoresBoard.Score));
+            }
+
+            return message.ToString().TrimEnd(Environment.NewLine.ToCharArray());
         }
 
         protected override void RegisterAsService()

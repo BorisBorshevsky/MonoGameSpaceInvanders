@@ -10,13 +10,12 @@ namespace SpaceInvaders.ObjectModel.Sprites
 {
     class Barrier : PixelSensetiveSprite, ICollidablePixelBased
     {
-        private const float k_BulletHitPrasentage = 0.55f;
+        private const float k_BulletHitPercentage = 0.55f;
         private const int k_Velocity = 55;
         public Rectangle MovementBounds { get; set; }
         private float m_RangeToMove;
         private int leftBarrier { get; set; }
         private int rightBarrier { get; set; }
-
 
         private const String k_AssetName = @"Sprites\Barrier_44x32";
         public Barrier(Game i_Game)
@@ -38,28 +37,33 @@ namespace SpaceInvaders.ObjectModel.Sprites
             Bullet bullet = i_Collidable as Bullet;
             if (bullet != null)
             {
+                Rectangle bulletHitRectangle;
                 if (bullet.Velocity.Y < 0)
                 {
-                    Color[] bulletPixels = bullet.Pixels;
-                    Rectangle bulletHitRectangle = new Rectangle(bullet.Bounds.Left, (int)(bullet.Bounds.Top - k_BulletHitPrasentage * bullet.Bounds.Height), bullet.Bounds.Height, bullet.Bounds.Width);
-
-                    Rectangle collisionRectange = Rectangle.Intersect(Bounds, bulletHitRectangle);
-                    for (int yPixel = collisionRectange.Top; yPixel < collisionRectange.Bottom; yPixel++)
+                    bulletHitRectangle = new Rectangle(bullet.Bounds.Left, (int)(bullet.Bounds.Top - k_BulletHitPercentage * bullet.Bounds.Height), bullet.Bounds.Width, (int)(bullet.Bounds.Height));
+                }
+                else
+                {
+                    bulletHitRectangle = new Rectangle(bullet.Bounds.Left, (int)(bullet.Bounds.Top + k_BulletHitPercentage * bullet.Bounds.Height), bullet.Bounds.Width, (int)(bullet.Bounds.Height));
+                }
+                
+                Rectangle collisionRectangle = Rectangle.Intersect(Bounds, bulletHitRectangle);
+                for (int yPixel = collisionRectangle.Top; yPixel < collisionRectangle.Bottom; yPixel++)
+                {
+                    for (int xPixel = collisionRectangle.Left; xPixel < collisionRectangle.Right; xPixel++)
                     {
-                        for (int xPixel = collisionRectange.Left; xPixel < collisionRectange.Right; xPixel++)
-                        {
-                            Color myPixl = Pixels[(xPixel - Bounds.X) + ((yPixel - Bounds.Y) * Texture.Width)];
-                            Color otherPixel = bullet.Pixels[(xPixel - bulletHitRectangle.X) + ((yPixel - bulletHitRectangle.Y) * bulletHitRectangle.Width)];
+                        Color myPixel = Pixels[(xPixel - Bounds.X) + ((yPixel - Bounds.Y) * Texture.Width)];
+                        Color otherPixel = bullet.Pixels[(xPixel - bulletHitRectangle.X) + ((yPixel - bulletHitRectangle.Y) * bulletHitRectangle.Width)];
 
-                            if (myPixl.A != 0 && otherPixel.A != 0)
-                            {
-                                myPixl.A = 0;
-                            }
+                        if (myPixel.A != 0 && otherPixel.A != 0)
+                        {
+                            Pixels[(xPixel - Bounds.Left) + ((yPixel - Bounds.Top) * Bounds.Width)] = new Color(0, 0, 0, 0);
                         }
                     }
-                    
                 }
             }
+
+            Texture.SetData(Pixels);
             onBarrierHit();
         }
 
@@ -69,8 +73,6 @@ namespace SpaceInvaders.ObjectModel.Sprites
             {
                 BarrierHit(this, EventArgs.Empty);
             }
-
-            Texture.SetData(Pixels);
         }
 
 
@@ -96,8 +98,6 @@ namespace SpaceInvaders.ObjectModel.Sprites
                 Velocity *= -1;
                 Position = new Vector2(leftBarrier + 1, Position.Y);
             }
-            
-            
         }
     }
 }

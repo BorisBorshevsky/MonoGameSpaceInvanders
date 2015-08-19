@@ -49,7 +49,7 @@ namespace SpaceInvaders.ObjectModel
             Sprites.Barrier barrier = i_Collidable as Sprites.Barrier;
             if (barrier != null)
             {
-                if (Velocity.Y < 0)
+                //if (Velocity.Y < 0)
                 {
                     collisionDetected(i_Collidable);
                 }

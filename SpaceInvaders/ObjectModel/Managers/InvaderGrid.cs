@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
+using System.Collections.Generic;
 using Infrastructure.ObjectModel;
 using Microsoft.Xna.Framework;
-using SpaceInvaders.ObjectModel;
 using SpaceInvaders.Services;
 
-namespace SpaceInvaders.Managers
+namespace SpaceInvaders.ObjectModel.Managers
 {
     internal class InvaderGrid : RegisteredComponent
     {
@@ -225,7 +224,7 @@ namespace SpaceInvaders.Managers
             m_TimeBetweenJumpsInSeconds *= k_SpeedAfterInvaderDead;
             if (++m_AmountOfEnemiesDead >= k_InvadersInColumn * k_InvadersInRow)
             {
-                m_GameStateService.GameOver("You Won!");
+                m_GameStateService.GameOver(new List<Player>(), "You Won!"); // TODO: fix this that will send the real players list
             }
         }
     }
