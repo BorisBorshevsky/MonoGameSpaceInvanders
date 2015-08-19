@@ -9,7 +9,7 @@ namespace SpaceInvaders.ObjectModel
 
 
         public YellowInvader(Game i_Game)
-            : base(i_Game, k_AssteName, Color.LightYellow)
+            : base(i_Game, k_AssetName, Color.LightYellow)
         {
         }
 

@@ -23,13 +23,11 @@ namespace SpaceInvaders.ObjectModel
         private bool m_startDieAnimationOnNextFrame = false;
 
 
-        protected const string k_AssteName = @"Sprites\AllInvaders";
+        protected const string k_AssetName = @"Sprites\AllInvaders";
         protected bool isDying = false;
 
-
-
-        protected Invader(Game i_Game, String i_AssteName, Color i_EnemyColor)
-            : base(i_AssteName, i_Game)
+        protected Invader(Game i_Game, String i_AssetName, Color i_EnemyColor)
+            : base(i_AssetName, i_Game)
         {
             m_TintColor = i_EnemyColor;
             m_TimeToNextShooting = sr_Random.Next(k_MinTimeBetweenShoots, k_MaxTimeBetweenShoots);
