@@ -8,22 +8,22 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Infrastructure.ObjectModel
 {
-    public class PixelSensetiveSprite : Sprite
+    public class PixelSensitiveSprite : Sprite
     {
         public Color[] Pixels { get; protected set; }
 
 
-        public PixelSensetiveSprite(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder)
+        public PixelSensitiveSprite(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder)
             : base(i_AssetName, i_Game, i_UpdateOrder, i_DrawOrder)
         {
         }
 
-        public PixelSensetiveSprite(string i_AssetName, Game i_Game, int i_CallsOrder)
+        public PixelSensitiveSprite(string i_AssetName, Game i_Game, int i_CallsOrder)
             : base(i_AssetName, i_Game, i_CallsOrder)
         {
         }
 
-        public PixelSensetiveSprite(string i_AssetName, Game i_Game)
+        public PixelSensitiveSprite(string i_AssetName, Game i_Game)
             : base(i_AssetName, i_Game)
         {
         }

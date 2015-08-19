@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework;
 
 namespace SpaceInvaders.ObjectModel.Sprites
 {
-    class Barrier : PixelSensetiveSprite, ICollidablePixelBased
+    class Barrier : PixelSensitiveSprite, ICollidablePixelBased
     {
         private const float k_BulletHitPercentage = 0.55f;
         private const int k_Velocity = 55;
@@ -34,37 +34,54 @@ namespace SpaceInvaders.ObjectModel.Sprites
 
         public override void Collided(ICollidable i_Collidable)
         {
-            Bullet bullet = i_Collidable as Bullet;
-            if (bullet != null)
+            PixelSensitiveSprite pixelSensitiveSpriteHitRectangle = i_Collidable as PixelSensitiveSprite;
+            if (pixelSensitiveSpriteHitRectangle != null && pixelSensitiveSpriteHitRectangle as Bullet != null)
             {
                 Rectangle bulletHitRectangle;
-                if (bullet.Velocity.Y < 0)
+                if (pixelSensitiveSpriteHitRectangle.Velocity.Y < 0)
                 {
-                    bulletHitRectangle = new Rectangle(bullet.Bounds.Left, (int)(bullet.Bounds.Top - k_BulletHitPercentage * bullet.Bounds.Height), bullet.Bounds.Width, (int)(bullet.Bounds.Height));
+                    bulletHitRectangle = new Rectangle(pixelSensitiveSpriteHitRectangle.Bounds.Left,
+                        (int)(pixelSensitiveSpriteHitRectangle.Bounds.Top - k_BulletHitPercentage * pixelSensitiveSpriteHitRectangle.Bounds.Height), pixelSensitiveSpriteHitRectangle.Bounds.Width,
+                        (int)(pixelSensitiveSpriteHitRectangle.Bounds.Height));
                 }
                 else
                 {
-                    bulletHitRectangle = new Rectangle(bullet.Bounds.Left, (int)(bullet.Bounds.Top + k_BulletHitPercentage * bullet.Bounds.Height), bullet.Bounds.Width, (int)(bullet.Bounds.Height));
+                    bulletHitRectangle = new Rectangle(pixelSensitiveSpriteHitRectangle.Bounds.Left,
+                        (int)(pixelSensitiveSpriteHitRectangle.Bounds.Top + k_BulletHitPercentage * pixelSensitiveSpriteHitRectangle.Bounds.Height), pixelSensitiveSpriteHitRectangle.Bounds.Width,
+                        (int)(pixelSensitiveSpriteHitRectangle.Bounds.Height));
                 }
-                
-                Rectangle collisionRectangle = Rectangle.Intersect(Bounds, bulletHitRectangle);
-                for (int yPixel = collisionRectangle.Top; yPixel < collisionRectangle.Bottom; yPixel++)
-                {
-                    for (int xPixel = collisionRectangle.Left; xPixel < collisionRectangle.Right; xPixel++)
-                    {
-                        Color myPixel = Pixels[(xPixel - Bounds.X) + ((yPixel - Bounds.Y) * Texture.Width)];
-                        Color otherPixel = bullet.Pixels[(xPixel - bulletHitRectangle.X) + ((yPixel - bulletHitRectangle.Y) * bulletHitRectangle.Width)];
 
-                        if (myPixel.A != 0 && otherPixel.A != 0)
-                        {
-                            Pixels[(xPixel - Bounds.Left) + ((yPixel - Bounds.Top) * Bounds.Width)] = new Color(0, 0, 0, 0);
-                        }
-                    }
-                }
+                handleSpriteCollision(pixelSensitiveSpriteHitRectangle, bulletHitRectangle);
+            }
+
+            var invader = pixelSensitiveSpriteHitRectangle as Invader;
+            if (pixelSensitiveSpriteHitRectangle != null && invader != null)
+            {
+                handleSpriteCollision(pixelSensitiveSpriteHitRectangle, pixelSensitiveSpriteHitRectangle.Bounds);
             }
 
             Texture.SetData(Pixels);
             onBarrierHit();
+        }
+
+        private void handleSpriteCollision(PixelSensitiveSprite i_PixelSensitiveSprite, Rectangle i_HitRectangle)
+        {
+            Rectangle collisionRectangle = Rectangle.Intersect(Bounds, i_HitRectangle);
+            for (int yPixel = collisionRectangle.Top; yPixel < collisionRectangle.Bottom; yPixel++)
+            {
+                for (int xPixel = collisionRectangle.Left; xPixel < collisionRectangle.Right; xPixel++)
+                {
+                    Color myPixel = Pixels[(xPixel - Bounds.X) + ((yPixel - Bounds.Y)*Texture.Width)];
+                    Color otherPixel =
+                        i_PixelSensitiveSprite.Pixels[
+                            (xPixel - i_HitRectangle.X) + ((yPixel - i_HitRectangle.Y) * i_HitRectangle.Width)];
+
+                    if (myPixel.A != 0 && otherPixel.A != 0)
+                    {
+                        Pixels[(xPixel - Bounds.Left) + ((yPixel - Bounds.Top)*Bounds.Width)] = new Color(0, 0, 0, 0);
+                    }
+                }
+            }
         }
 
         private void onBarrierHit()

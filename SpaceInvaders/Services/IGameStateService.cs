@@ -5,6 +5,8 @@ namespace SpaceInvaders.Services
 {
     public interface IGameStateService
     {
-        void GameOver(List<Player> players, string i_Msg = "Game Over");
+        void GameOver(string i_Msg = "Game Over");
+
+        void AddPlayer(Player i_Player);
     }
 }

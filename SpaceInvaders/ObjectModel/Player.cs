@@ -6,6 +6,7 @@ using Infrastructure.ObjectModel;
 using Microsoft.Xna.Framework;
 using SpaceInvaders.Configurations;
 using Infrastructure.Managers;
+using SpaceInvaders.Services;
 
 namespace SpaceInvaders.ObjectModel
 {
@@ -29,6 +30,9 @@ namespace SpaceInvaders.ObjectModel
             m_SpaceShip.OnSpaceShipHit += spaceShipOnHit;
             m_SpaceShip.OnDie += spaceShipOnDie;
             m_SpaceShip.OnBulletCollision += bulletCollision;
+
+            var gameStateService = i_Game.Services.GetService(typeof(IGameStateService)) as IGameStateService;
+            gameStateService.AddPlayer(this);
         }
 
         private void bulletCollision(object i_Sender, EventArgs i_E)

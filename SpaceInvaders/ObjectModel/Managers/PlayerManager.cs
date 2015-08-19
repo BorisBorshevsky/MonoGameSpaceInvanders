@@ -71,7 +71,7 @@ namespace SpaceInvaders.Managers
         {
             if (++s_LostPlayerCount == s_PlayerCounter)
             {
-                m_GameStateService.GameOver(Players);
+                m_GameStateService.GameOver();
             }
         }
 

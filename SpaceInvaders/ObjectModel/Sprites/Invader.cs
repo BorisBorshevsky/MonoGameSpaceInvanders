@@ -9,9 +9,9 @@ using SpaceInvaders.Services;
 
 namespace SpaceInvaders.ObjectModel
 {
-    public abstract class Invader : Sprite, ICollidable2D
+    public abstract class Invader : PixelSensitiveSprite, ICollidable2D
     {
-        private const int k_MaxAmountOfBulletsSimultaniously = 2;
+        private const int k_MaxAmountOfBulletsSimultaniously = 0; //TODO: should be 2
         private readonly List<Bullet> r_Bullets = new List<Bullet>();
         private static readonly TimeSpan k_dyingAnimationTime = TimeSpan.FromSeconds(1.5);
         private const float k_BulletVelocity = 115f;
@@ -96,7 +96,6 @@ namespace SpaceInvaders.ObjectModel
         }
 
         public event EventHandler<EventArgs> OnInvaderDied;
-        public event EventHandler<EventArgs> OnReachedBottom;
 
         public override void Initialize()
         {
@@ -114,10 +113,8 @@ namespace SpaceInvaders.ObjectModel
             
             if (Bounds.Bottom > Game.GraphicsDevice.Viewport.Bounds.Bottom)
             {
-                if (OnReachedBottom != null)
-                {
-                    OnReachedBottom.Invoke(this, EventArgs.Empty);
-                }
+                IGameStateService gameStateService = Game.Services.GetService(typeof(IGameStateService)) as IGameStateService;
+                gameStateService.GameOver();
             }
 
             CurrentElapsedTime += i_GameTime.ElapsedGameTime.TotalMilliseconds;

@@ -161,7 +161,7 @@ namespace SpaceInvaders.ObjectModel.Managers
                 }
                 else
                 {
-                //    moveHorizontally(m_GridBounds);
+                    moveHorizontally(m_GridBounds);
                 }
 
                 updateInvadersPositions();
@@ -224,7 +224,7 @@ namespace SpaceInvaders.ObjectModel.Managers
             m_TimeBetweenJumpsInSeconds *= k_SpeedAfterInvaderDead;
             if (++m_AmountOfEnemiesDead >= k_InvadersInColumn * k_InvadersInRow)
             {
-                m_GameStateService.GameOver(new List<Player>(), "You Won!"); // TODO: fix this that will send the real players list
+                m_GameStateService.GameOver("You Won!");
             }
         }
     }

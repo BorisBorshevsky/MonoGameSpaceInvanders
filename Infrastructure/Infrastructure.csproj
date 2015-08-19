@@ -59,7 +59,7 @@
     <Compile Include="Managers\InputManager.cs" />
     <Compile Include="ObjectModel\GameService.cs" />
     <Compile Include="ObjectModel\LoadableDrawbleComponent.cs" />
-    <Compile Include="ObjectModel\PixelSensetiveSprite.cs" />
+    <Compile Include="ObjectModel\PixelSensitiveSprite.cs" />
     <Compile Include="ObjectModel\RegisteredComponent.cs" />
     <Compile Include="ObjectModel\Sprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

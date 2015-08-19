@@ -8,13 +8,14 @@ using System.Collections.Generic;
 
 namespace SpaceInvaders.Services
 {
-    public class GameStateManager : GameService, IGameStateService
+    public class GameStateService : GameService, IGameStateService
     {
         private const int k_InitialAmountOfLives = 3;
         private const int k_LoosingLifeScorePanalty = -1000;
         private int m_Lives = k_InitialAmountOfLives;
+        private readonly List<Player> r_Players = new List<Player>();
 
-        public GameStateManager(Game i_Game)
+        public GameStateService(Game i_Game)
             : base(i_Game)
         {
             Score = 0;
@@ -22,20 +23,25 @@ namespace SpaceInvaders.Services
 
         private int Score { get; set; }
 
-        public void GameOver(List<Player> players, string i_Msg = "Game Over")
+        public void GameOver(string i_Msg = "Game Over")
         {
             if (Game.IsActive)
             {
-                var message = createMessageContent(players);
+                var message = createMessageContent();
                 MessageBox.Show(message, i_Msg, MessageBoxButtons.OK);
                 Game.Exit();
             }
         }
 
-        private static string createMessageContent(List<Player> players)
+        public void AddPlayer(Player i_Player)
+        {
+            r_Players.Add(i_Player);
+        }
+
+        private string createMessageContent()
         {
             StringBuilder message = new StringBuilder();
-            foreach (var player in players)
+            foreach (var player in r_Players)
             {
                 message.AppendLine(String.Format("Player: {0}, Score: {1}", player.ScoresBoard.PlayerNumber,
                     player.ScoresBoard.Score));

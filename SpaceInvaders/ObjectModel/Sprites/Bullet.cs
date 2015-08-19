@@ -7,13 +7,13 @@ using Microsoft.Xna.Framework;
 
 namespace SpaceInvaders.ObjectModel
 {
-    public class Bullet : PixelSensetiveSprite, ICollidablePixelBased
+    public class Bullet : PixelSensitiveSprite, ICollidablePixelBased
     {
-        private const string k_AssteName = @"Sprites\Bullet";
+        private const string k_AssstName = @"Sprites\Bullet";
         private readonly Random r_Random = new Random();
         private const int k_ChanceForSpaceShipBulletToBeDisposedAfterBulletsCollision = 33;
         public Bullet(Game i_Game)
-            : base(k_AssteName, i_Game)
+            : base(k_AssstName, i_Game)
         {}
 
         public event EventHandler<EventArgs> OnCollision; 
@@ -46,15 +46,12 @@ namespace SpaceInvaders.ObjectModel
                     collisionDetected(i_Collidable);
                 }
             }
+            
             Sprites.Barrier barrier = i_Collidable as Sprites.Barrier;
             if (barrier != null)
             {
-                //if (Velocity.Y < 0)
-                {
-                    collisionDetected(i_Collidable);
-                }
+                collisionDetected(i_Collidable);
             }
-
 
             Bullet bullet = i_Collidable as Bullet;
             if (bullet != null)
@@ -75,10 +72,6 @@ namespace SpaceInvaders.ObjectModel
                 }
 
             }
-
-
-
-
         }
 
         private void collisionDetected(ICollidable i_Collidable)

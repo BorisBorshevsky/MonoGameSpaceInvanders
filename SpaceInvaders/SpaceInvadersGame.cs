@@ -23,7 +23,7 @@ namespace SpaceInvaders
 
             //services
             new InputManager(this);
-            new GameStateManager(this);
+            new GameStateService(this);
             new CollisionsManager(this);
 
             //sprites
