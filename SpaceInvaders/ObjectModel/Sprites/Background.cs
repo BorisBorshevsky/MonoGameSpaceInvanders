@@ -1,7 +1,7 @@
 using Infrastructure.ObjectModel;
 using Microsoft.Xna.Framework;
 
-namespace SpaceInvaders.ObjectModel
+namespace SpaceInvaders.ObjectModel.Sprites
 {
     public class Background : Sprite
     {

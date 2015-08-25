@@ -9,11 +9,11 @@ namespace Infrastructure.ObjectModel
     public abstract class LoadableDrawableComponent : DrawableGameComponent
     {
         public event EventHandler<EventArgs> Disposed;
-        protected virtual void OnDisposed(object sender, EventArgs args)
+        protected virtual void OnDisposed(object i_Sender, EventArgs i_Args)
         {
             if (Disposed != null)
             {
-                Disposed.Invoke(sender, args);
+                Disposed.Invoke(i_Sender, i_Args);
             }
         }
         protected override void Dispose(bool i_Disposing)

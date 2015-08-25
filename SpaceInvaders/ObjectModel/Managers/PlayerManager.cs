@@ -1,22 +1,19 @@
-﻿using Infrastructure.ObjectModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Infrastructure.ObjectModel;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SpaceInvaders.Configurations;
-using SpaceInvaders.ObjectModel;
 using SpaceInvaders.Services;
 
-namespace SpaceInvaders.Managers
+namespace SpaceInvaders.ObjectModel.Managers
 {
     public class PlayersManager : RegisteredComponent
     {
-        static readonly List<Player> Players = new List<Player>();
-        private int s_PlayerCounter = 0;
-        private int s_LostPlayerCount = 0;
+        private readonly List<Player> r_Players = new List<Player>();
+        private int m_PlayerCounter = 0;
+        private int m_LostPlayerCount = 0;
         private IGameStateService m_GameStateService;
 
         public PlayersManager(Game i_Game)
@@ -27,8 +24,8 @@ namespace SpaceInvaders.Managers
 
         private void createPlayers()
         {
-            Players.Add(initializePlayer1(s_PlayerCounter++));
-            Players.Add(initializePlayer2(s_PlayerCounter++));
+            r_Players.Add(initializePlayer1(m_PlayerCounter++));
+            r_Players.Add(initializePlayer2(m_PlayerCounter++));
         }
 
         public override void Initialize()
@@ -69,7 +66,7 @@ namespace SpaceInvaders.Managers
 
         private void playerOnPlayerLost(object i_Sender, EventArgs i_EventArgs)
         {
-            if (++s_LostPlayerCount == s_PlayerCounter)
+            if (++m_LostPlayerCount == m_PlayerCounter)
             {
                 m_GameStateService.GameOver();
             }
@@ -88,8 +85,7 @@ namespace SpaceInvaders.Managers
                 TextColor = Color.Green,
                 AssteName = @"Sprites\Ship02_32x32"
             };
-
-
+            
             return createPlayer(i_PlayerId, spaceShipConfiguration);
         }
     }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Infrastructure.ObjectModel;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
@@ -14,14 +11,13 @@ namespace SpaceInvaders.ObjectModel.Sprites
         private const int k_Velocity = 55;
         public Rectangle MovementBounds { get; set; }
         private float m_RangeToMove;
-        private int leftBarrier { get; set; }
-        private int rightBarrier { get; set; }
+        private int LeftBarrier { get; set; }
+        private int RightBarrier { get; set; }
 
         private const String k_AssetName = @"Sprites\Barrier_44x32";
         public Barrier(Game i_Game)
             : base(k_AssetName, i_Game)
-        {
-        }
+        { }
 
         protected override void InitBounds()
         {
@@ -29,13 +25,12 @@ namespace SpaceInvaders.ObjectModel.Sprites
             base.InitBounds();
         }
 
-
         public event EventHandler<EventArgs> BarrierHit;
 
         public override void Collided(ICollidable i_Collidable)
         {
             PixelSensitiveSprite pixelSensitiveSpriteHitRectangle = i_Collidable as PixelSensitiveSprite;
-            if (pixelSensitiveSpriteHitRectangle != null && pixelSensitiveSpriteHitRectangle as Bullet != null)
+            if (pixelSensitiveSpriteHitRectangle != null && pixelSensitiveSpriteHitRectangle is Bullet)
             {
                 Rectangle bulletHitRectangle;
                 if (pixelSensitiveSpriteHitRectangle.Velocity.Y < 0)
@@ -43,25 +38,29 @@ namespace SpaceInvaders.ObjectModel.Sprites
                     bulletHitRectangle = new Rectangle(pixelSensitiveSpriteHitRectangle.Bounds.Left,
                         (int)(pixelSensitiveSpriteHitRectangle.Bounds.Top - k_BulletHitPercentage * pixelSensitiveSpriteHitRectangle.Bounds.Height), pixelSensitiveSpriteHitRectangle.Bounds.Width,
                         (int)(pixelSensitiveSpriteHitRectangle.Bounds.Height));
+
                 }
                 else
                 {
                     bulletHitRectangle = new Rectangle(pixelSensitiveSpriteHitRectangle.Bounds.Left,
                         (int)(pixelSensitiveSpriteHitRectangle.Bounds.Top + k_BulletHitPercentage * pixelSensitiveSpriteHitRectangle.Bounds.Height), pixelSensitiveSpriteHitRectangle.Bounds.Width,
                         (int)(pixelSensitiveSpriteHitRectangle.Bounds.Height));
+
                 }
 
                 handleSpriteCollision(pixelSensitiveSpriteHitRectangle, bulletHitRectangle);
+                onBarrierHit();
             }
 
-            var invader = pixelSensitiveSpriteHitRectangle as Invader;
-            if (pixelSensitiveSpriteHitRectangle != null && invader != null)
+            Invader invader = i_Collidable as Invader;
+            if (invader != null)
             {
-                handleSpriteCollision(pixelSensitiveSpriteHitRectangle, pixelSensitiveSpriteHitRectangle.Bounds);
+                RemoveFromTexture(invader.Bounds);
+                onBarrierHit();
             }
 
             Texture.SetData(Pixels);
-            onBarrierHit();
+
         }
 
         private void handleSpriteCollision(PixelSensitiveSprite i_PixelSensitiveSprite, Rectangle i_HitRectangle)
@@ -71,14 +70,11 @@ namespace SpaceInvaders.ObjectModel.Sprites
             {
                 for (int xPixel = collisionRectangle.Left; xPixel < collisionRectangle.Right; xPixel++)
                 {
-                    Color myPixel = Pixels[(xPixel - Bounds.X) + ((yPixel - Bounds.Y)*Texture.Width)];
-                    Color otherPixel =
-                        i_PixelSensitiveSprite.Pixels[
-                            (xPixel - i_HitRectangle.X) + ((yPixel - i_HitRectangle.Y) * i_HitRectangle.Width)];
-
+                    Color myPixel = Pixels[(xPixel - Bounds.X) + ((yPixel - Bounds.Y) * Texture.Width)];
+                    Color otherPixel = i_PixelSensitiveSprite.Pixels[(xPixel - i_HitRectangle.X) + ((yPixel - i_HitRectangle.Y) * i_HitRectangle.Width)];
                     if (myPixel.A != 0 && otherPixel.A != 0)
                     {
-                        Pixels[(xPixel - Bounds.Left) + ((yPixel - Bounds.Top)*Bounds.Width)] = new Color(0, 0, 0, 0);
+                        Pixels[(xPixel - Bounds.Left) + ((yPixel - Bounds.Top) * Bounds.Width)] = new Color(0, 0, 0, 0);
                     }
                 }
             }
@@ -92,28 +88,27 @@ namespace SpaceInvaders.ObjectModel.Sprites
             }
         }
 
-
         public override void Initialize()
         {
             base.Initialize();
-            m_RangeToMove = Bounds.Width/4;
-            rightBarrier = (int) (Bounds.Right + Bounds.Width + m_RangeToMove);
-            leftBarrier = (int)(Bounds.Left - m_RangeToMove);
+            m_RangeToMove = Bounds.Width / 4;
+            RightBarrier = (int)(Bounds.Right + Bounds.Width + m_RangeToMove);
+            LeftBarrier = (int)(Bounds.Left - m_RangeToMove);
         }
 
         public override void Update(GameTime i_GameTime)
         {
             base.Update(i_GameTime);
-            if (Bounds.Right >= rightBarrier)
+            if (Bounds.Right >= RightBarrier)
             {
                 Velocity *= -1;
-                Position = new Vector2(rightBarrier - 1 - Bounds.Width, Position.Y);
+                Position = new Vector2(RightBarrier - 1 - Bounds.Width, Position.Y);
             }
 
-            if (Bounds.Left <= leftBarrier)
+            if (Bounds.Left <= LeftBarrier)
             {
                 Velocity *= -1;
-                Position = new Vector2(leftBarrier + 1, Position.Y);
+                Position = new Vector2(LeftBarrier + 1, Position.Y);
             }
         }
     }

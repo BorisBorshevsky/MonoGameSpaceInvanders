@@ -1,11 +1,9 @@
-
 using System;
-using System.Threading;
 using Infrastructure.ObjectModel;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 
-namespace SpaceInvaders.ObjectModel
+namespace SpaceInvaders.ObjectModel.Sprites
 {
     public class Bullet : PixelSensitiveSprite, ICollidablePixelBased
     {
@@ -16,7 +14,7 @@ namespace SpaceInvaders.ObjectModel
             : base(k_AssstName, i_Game)
         {}
 
-        public event EventHandler<EventArgs> OnCollision; 
+        public event EventHandler<EventArgs> CollisionDetected; 
 
         public override void Collided(ICollidable i_Collidable)
         {
@@ -25,7 +23,7 @@ namespace SpaceInvaders.ObjectModel
             {
                 if (Velocity.Y > 0)
                 {
-                    collisionDetected(i_Collidable);
+                    onCollisionDetected(i_Collidable);
                 }
             }
 
@@ -34,7 +32,7 @@ namespace SpaceInvaders.ObjectModel
             {
                 if (Velocity.Y < 0 && !invader.IsDying)
                 {
-                    collisionDetected(i_Collidable);
+                    onCollisionDetected(i_Collidable);
                 }
             }
 
@@ -43,14 +41,14 @@ namespace SpaceInvaders.ObjectModel
             {
                 if (Velocity.Y < 0 && !motherShip.IsDying)
                 {
-                    collisionDetected(i_Collidable);
+                    onCollisionDetected(i_Collidable);
                 }
             }
             
-            Sprites.Barrier barrier = i_Collidable as Sprites.Barrier;
+            Barrier barrier = i_Collidable as Barrier;
             if (barrier != null)
             {
-                collisionDetected(i_Collidable);
+                onCollisionDetected(i_Collidable);
             }
 
             Bullet bullet = i_Collidable as Bullet;
@@ -59,7 +57,7 @@ namespace SpaceInvaders.ObjectModel
                 // im spaceship bullet
                 if (Velocity.Y < 0 && bullet.Velocity.Y > 0)
                 {
-                    collisionDetected(i_Collidable);
+                    onCollisionDetected(i_Collidable);
                 }
 
                 //im invader bullet
@@ -67,19 +65,20 @@ namespace SpaceInvaders.ObjectModel
                 {
                     if (r_Random.Next(0, 100) < k_ChanceForSpaceShipBulletToBeDisposedAfterBulletsCollision)
                     {
-                        collisionDetected(i_Collidable);
+                        onCollisionDetected(i_Collidable);
                     }
                 }
 
             }
         }
 
-        private void collisionDetected(ICollidable i_Collidable)
+        private void onCollisionDetected(ICollidable i_Collidable)
         {
-            if (OnCollision != null)
+            if (CollisionDetected != null)
             {
-                OnCollision.Invoke(i_Collidable, EventArgs.Empty);
+                CollisionDetected.Invoke(i_Collidable, EventArgs.Empty);
             }
+            
             Dispose();
         }
 

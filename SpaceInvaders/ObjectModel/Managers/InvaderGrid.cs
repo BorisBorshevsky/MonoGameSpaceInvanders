@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using Infrastructure.ObjectModel;
 using Microsoft.Xna.Framework;
+using SpaceInvaders.ObjectModel.Sprites;
 using SpaceInvaders.Services;
 
 namespace SpaceInvaders.ObjectModel.Managers
@@ -16,7 +16,7 @@ namespace SpaceInvaders.ObjectModel.Managers
         private const int k_InvadersInColumn =
             k_PinkInvadersInColumn + k_LightBlueInvadersInColumn + k_YellowInvadersInColumn;
 
-        private const int k_InitialTopPadding = 3; //enemy units
+        private const int k_InitialTopPadding = 3; //invader units
         private const float k_SpeedAfterInvaderDead = 0.92f;
         private const float k_InitialTimeBetweenJumpsInSeconds = 0.5f;
         private const float k_SpeedAfterNewLine = 0.95f;
@@ -143,7 +143,7 @@ namespace SpaceInvaders.ObjectModel.Managers
                     float enemyYPosition = m_TopPadding + row * (m_VerticalDistanceBetweenEnemies + invader.Height);
 
                     invader.Position = new Vector2(enemyXPosition, enemyYPosition);
-                    invader.OnInvaderDied += OnDeadInvader;
+                    invader.InvaderDied += OnDeadInvader;
                 }
             }
         }
@@ -224,6 +224,7 @@ namespace SpaceInvaders.ObjectModel.Managers
             m_TimeBetweenJumpsInSeconds *= k_SpeedAfterInvaderDead;
             if (++m_AmountOfEnemiesDead >= k_InvadersInColumn * k_InvadersInRow)
             {
+                //all invaders Died
                 m_GameStateService.GameOver("You Won!");
             }
         }

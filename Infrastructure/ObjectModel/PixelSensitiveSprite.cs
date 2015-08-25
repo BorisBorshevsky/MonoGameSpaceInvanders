@@ -28,6 +28,17 @@ namespace Infrastructure.ObjectModel
         {
         }
 
+        protected void RemoveFromTexture(Rectangle i_HitRectangle)
+        {
+            Rectangle collisionRectangle = Rectangle.Intersect(Bounds, i_HitRectangle);
+            for (int yPixel = collisionRectangle.Top; yPixel < collisionRectangle.Bottom; yPixel++)
+            {
+                for (int xPixel = collisionRectangle.Left; xPixel < collisionRectangle.Right; xPixel++)
+                {
+                    Pixels[(xPixel - Bounds.Left) + ((yPixel - Bounds.Top) * Bounds.Width)] = new Color(0, 0, 0, 0);
+                }
+            }
+        }
 
         protected override void LoadContent()
         {

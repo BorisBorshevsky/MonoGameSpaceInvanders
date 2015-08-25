@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using Infrastructure.ObjectModel;
+﻿using Infrastructure.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SpaceInvaders.ObjectModel
+namespace SpaceInvaders.ObjectModel.Sprites
 {
     class SoulIcon : Sprite
     {
@@ -18,7 +13,6 @@ namespace SpaceInvaders.ObjectModel
         protected override void LoadContent()
         {
             m_SpriteBatch = new SpriteBatch(GraphicsDevice);
-//            Texture = Game.Content.Load<Texture2D>(AssetName);
             base.LoadContent();
         }
 

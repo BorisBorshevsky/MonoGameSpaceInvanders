@@ -16,7 +16,6 @@ namespace Infrastructure.Animators.ConcreteAnimators
             set { m_BlinkLength = value; }
         }
 
-        // CTORs
         public BlinkAnimator(string i_Name, TimeSpan i_BlinkLength, TimeSpan i_AnimationLength)
             : base(i_Name, i_AnimationLength)
         {

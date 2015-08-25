@@ -1,28 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Infrastructure.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SpaceInvaders.ObjectModel
+namespace SpaceInvaders.ObjectModel.Sprites
 {
     public class ScoresBoard : DrawableGameComponent
     {
         private SpriteFont m_ArialFont;
-        private SpriteBatch spriteBatch;
+        private SpriteBatch m_SpriteBatch;
 
         private readonly Color r_TextColor;
         private const int k_InitialLeftPadding = 5;
         private const int k_InitialHightPadding = 5;
         private const int k_RecordHight = 20;
 
-        private readonly int m_PlayerNumber;
+        private readonly int r_PlayerNumber;
 
         public int PlayerNumber
         {
-            get { return m_PlayerNumber; }
+            get { return r_PlayerNumber; }
         }
 
         public int Score { get; private set; }
@@ -31,7 +27,7 @@ namespace SpaceInvaders.ObjectModel
             : base(i_Game)
         {
             r_TextColor = i_TextColor;
-            m_PlayerNumber = i_PlayerNumber;
+            r_PlayerNumber = i_PlayerNumber;
             i_Game.Components.Add(this);
         }
 
@@ -43,17 +39,17 @@ namespace SpaceInvaders.ObjectModel
         protected override void LoadContent()
         {
             base.LoadContent();
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            m_SpriteBatch = new SpriteBatch(GraphicsDevice);
             m_ArialFont = Game.Content.Load<SpriteFont>(@"Fonts\Arial"); //Should be Calibri
         }
 
         public override void Draw(GameTime i_GameTime)
         {
-            spriteBatch.Begin();
+            m_SpriteBatch.Begin();
             string stringToDraw = String.Format("P{0} Score: {1}", PlayerNumber, Score);
             Vector2 drawingPosition = getDrawingPosition();
-            spriteBatch.DrawString(m_ArialFont, stringToDraw, drawingPosition, r_TextColor);
-            spriteBatch.End();
+            m_SpriteBatch.DrawString(m_ArialFont, stringToDraw, drawingPosition, r_TextColor);
+            m_SpriteBatch.End();
 
             base.Draw(i_GameTime);
         }

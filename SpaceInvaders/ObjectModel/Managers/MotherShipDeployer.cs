@@ -1,9 +1,9 @@
 ﻿using System;
 using Infrastructure.ObjectModel;
 using Microsoft.Xna.Framework;
-using SpaceInvaders.ObjectModel;
+using SpaceInvaders.ObjectModel.Sprites;
 
-namespace SpaceInvaders.Managers
+namespace SpaceInvaders.ObjectModel.Managers
 {
     internal class MotherShipDeployer : RegisteredComponent
     {
@@ -22,8 +22,7 @@ namespace SpaceInvaders.Managers
         public override void Initialize()
         {
             base.Initialize();
-            const bool v_Enable = true;
-            m_MotherShip = new MotherShip(Game, !v_Enable);
+            m_MotherShip = new MotherShip(Game);
             m_MotherShip.Initialize();
         }
 

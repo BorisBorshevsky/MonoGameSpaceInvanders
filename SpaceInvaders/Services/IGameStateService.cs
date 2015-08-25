@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using SpaceInvaders.ObjectModel;
+﻿using SpaceInvaders.ObjectModel;
 
 namespace SpaceInvaders.Services
 {

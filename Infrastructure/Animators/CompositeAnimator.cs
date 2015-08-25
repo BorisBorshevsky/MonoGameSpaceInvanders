@@ -9,7 +9,7 @@ namespace Infrastructure.ObjectModel.Animators
 {
     public class CompositeAnimator : SpriteAnimator
     {
-        private readonly Dictionary<string, SpriteAnimator> m_AnimationsDictionary = new Dictionary<string, SpriteAnimator>();
+        private readonly Dictionary<string, SpriteAnimator> r_AnimationsDictionary = new Dictionary<string, SpriteAnimator>();
 
         protected readonly List<SpriteAnimator> m_AnimationsList = new List<SpriteAnimator>();
 
@@ -35,17 +35,17 @@ namespace Infrastructure.ObjectModel.Animators
         {
             i_Animation.BoundSprite = this.BoundSprite;
             i_Animation.Enabled = true;
-            m_AnimationsDictionary.Add(i_Animation.Name, i_Animation);
+            r_AnimationsDictionary.Add(i_Animation.Name, i_Animation);
             m_AnimationsList.Add(i_Animation);
         }
 
         public void Remove(string i_AnimationName)
         {
             SpriteAnimator animationToRemove;
-            m_AnimationsDictionary.TryGetValue(i_AnimationName, out animationToRemove);
+            r_AnimationsDictionary.TryGetValue(i_AnimationName, out animationToRemove);
             if (animationToRemove != null)
             {
-                m_AnimationsDictionary.Remove(i_AnimationName);
+                r_AnimationsDictionary.Remove(i_AnimationName);
                 m_AnimationsList.Remove(animationToRemove);
             }
         }
@@ -55,7 +55,7 @@ namespace Infrastructure.ObjectModel.Animators
             get
             {
                 SpriteAnimator retVal = null;
-                m_AnimationsDictionary.TryGetValue(i_Name, out retVal);
+                r_AnimationsDictionary.TryGetValue(i_Name, out retVal);
                 return retVal;
             }
         }

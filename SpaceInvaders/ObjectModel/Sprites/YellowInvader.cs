@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace SpaceInvaders.ObjectModel
+namespace SpaceInvaders.ObjectModel.Sprites
 {
     internal class YellowInvader : Invader
     {

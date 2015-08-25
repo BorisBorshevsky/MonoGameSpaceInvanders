@@ -1,9 +1,9 @@
 ﻿using Infrastructure.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SpaceInvaders.Managers;
 using SpaceInvaders.ObjectModel;
 using SpaceInvaders.ObjectModel.Managers;
+using SpaceInvaders.ObjectModel.Sprites;
 using SpaceInvaders.Services;
 
 namespace SpaceInvaders

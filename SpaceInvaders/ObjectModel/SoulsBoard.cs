@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Infrastructure.ObjectModel;
+using SpaceInvaders.ObjectModel.Sprites;
 
 namespace SpaceInvaders.ObjectModel
 {
@@ -13,7 +9,6 @@ namespace SpaceInvaders.ObjectModel
     {
         public int SoulsCount { get; private set; }
 
-        private readonly string r_AssetName;
         private readonly List<Sprite> r_Sprites = new List<Sprite>();
         private readonly int r_PlayerId;
         private const int k_RightOffset = 32;

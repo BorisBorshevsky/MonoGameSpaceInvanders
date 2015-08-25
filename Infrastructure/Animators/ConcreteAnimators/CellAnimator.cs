@@ -1,9 +1,9 @@
 //*** Guy Ronen © 2008-2011 ***//
+
 using System;
-using Infrastructure.Animators;
 using Microsoft.Xna.Framework;
 
-namespace Infrastructure.ObjectModel.Animators.ConcreteAnimators
+namespace Infrastructure.Animators.ConcreteAnimators
 {
     public class CellAnimator : SpriteAnimator
     {
@@ -34,7 +34,7 @@ namespace Infrastructure.ObjectModel.Animators.ConcreteAnimators
                 }
                 else
                 {
-                    m_CurrCellIdx = r_NumOfCells - 1; /// lets stop at the last frame
+                    m_CurrCellIdx = r_NumOfCells - 1; // lets stop at the last frame
                     this.IsFinished = true;
                 }
             }
@@ -52,7 +52,7 @@ namespace Infrastructure.ObjectModel.Animators.ConcreteAnimators
                 m_TimeLeftForCell -= i_GameTime.ElapsedGameTime;
                 if (m_TimeLeftForCell.TotalSeconds <= 0)
                 {
-                    /// we have elapsed, so blink
+                    // we have elapsed, so blink
                     goToNextFrame();
                     m_TimeLeftForCell = m_CellTime;
                 }

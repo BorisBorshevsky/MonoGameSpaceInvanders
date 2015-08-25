@@ -1,33 +1,30 @@
-
 using System;
 using Infrastructure.Animators;
 using Infrastructure.Animators.ConcreteAnimators;
 using Infrastructure.ObjectModel;
 using Infrastructure.ObjectModel.Animators;
-using Infrastructure.ObjectModel.Animators.ConcreteAnimators;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SpaceInvaders.Services;
 
-namespace SpaceInvaders.ObjectModel
+namespace SpaceInvaders.ObjectModel.Sprites
 {
     public class MotherShip : Sprite, ICollidable2D
     {
         private const string k_AssteName = @"Sprites\MotherShip_32x120";
         private const int k_HorizontalVelocity = 110;
-        private readonly int m_Score = 750;
+        private const int k_Score = 750;
         public bool IsDying { get; private set; }
         private bool m_StartAnimationOnNextFrame = false;
 
         
         public int Score
         {
-            get { return m_Score; }
+            get { return k_Score; }
         }
 
 
-        public MotherShip(Game i_Game, bool i_Enable = true)
+        public MotherShip(Game i_Game, bool i_Enable = false)
             : base(k_AssteName, i_Game)
         {
             m_TintColor = Color.Red;
@@ -55,7 +52,6 @@ namespace SpaceInvaders.ObjectModel
         protected override void LoadContent()
         {
             m_SpriteBatch = new SpriteBatch(GraphicsDevice);
-            //            Texture = Game.Content.Load<Texture2D>(AssetName);
             base.LoadContent();
         }
 
@@ -78,7 +74,7 @@ namespace SpaceInvaders.ObjectModel
             Animations.Add(dieAnimator);
         }
 
-        private void onDieAnimatorFinished(object sender, EventArgs e)
+        private void onDieAnimatorFinished(object i_Sender, EventArgs i_Args)
         {
             Visible = false;
             Enabled = false;

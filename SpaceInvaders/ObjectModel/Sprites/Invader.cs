@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Infrastructure.Animators.ConcreteAnimators;
 using Infrastructure.ObjectModel;
 using Infrastructure.ObjectModel.Animators;
 using Infrastructure.ObjectModel.Animators.ConcreteAnimators;
@@ -7,20 +8,20 @@ using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using SpaceInvaders.Services;
 
-namespace SpaceInvaders.ObjectModel
+namespace SpaceInvaders.ObjectModel.Sprites
 {
-    public abstract class Invader : PixelSensitiveSprite, ICollidable2D
+    public abstract class Invader : Sprite, ICollidable2D
     {
-        private const int k_MaxAmountOfBulletsSimultaniously = 0; //TODO: should be 2
+        private const int k_MaxAmountOfBulletsSimultaniously = 1; 
         private readonly List<Bullet> r_Bullets = new List<Bullet>();
-        private static readonly TimeSpan k_dyingAnimationTime = TimeSpan.FromSeconds(1.5);
+        private static readonly TimeSpan r_DyingAnimationTime = TimeSpan.FromSeconds(1.5);
         private const float k_BulletVelocity = 115f;
         private const int k_MinTimeBetweenShoots = 3000;
         private const int k_MaxTimeBetweenShoots = 10000;
         private static readonly Random sr_Random = new Random();
         private int m_TimeToNextShooting;
         private const int k_NumOfFrames = 2;
-        private bool m_startDieAnimationOnNextFrame = false;
+        private bool m_StartDieAnimationOnNextFrame = false;
 
 
         protected const string k_AssetName = @"Sprites\AllInvaders";
@@ -31,7 +32,7 @@ namespace SpaceInvaders.ObjectModel
         {
             m_TintColor = i_EnemyColor;
             m_TimeToNextShooting = sr_Random.Next(k_MinTimeBetweenShoots, k_MaxTimeBetweenShoots);
-            this.PositionChanged += onJump;
+            PositionChanged += onJump;
         }
 
         private void onJump(object i_Sender, EventArgs i_Args)
@@ -45,7 +46,7 @@ namespace SpaceInvaders.ObjectModel
             Animations.Enabled = true;
         }
 
-        private void onAnimationFinished(object sender, EventArgs e)
+        private void onAnimationFinished(object i_Sender, EventArgs i_Args)
         {
             isDying = false;
             Dispose();
@@ -70,30 +71,35 @@ namespace SpaceInvaders.ObjectModel
                 {
                     if (bullet.Velocity.Y < 0)
                     {
-                        IsAlive = false;
-                        m_startDieAnimationOnNextFrame = true;
-                        if (OnInvaderDied != null)
-                        {
-                            OnInvaderDied(this, EventArgs.Empty);
-                        }
+                        onInvaderDied();
                     }
                 }
+            }
+        }
+
+        private void onInvaderDied()
+        {
+            IsAlive = false;
+            m_StartDieAnimationOnNextFrame = true;
+            if (InvaderDied != null)
+            {
+                InvaderDied(this, EventArgs.Empty);
             }
         }
 
         private void startDyingAnimation()
         {
             isDying = true;
-            RotateAnimator rotateAnimator = new RotateAnimator(MathHelper.TwoPi*5, k_dyingAnimationTime);
-            ShrinkAnimator shrinkAnimator = new ShrinkAnimator(k_dyingAnimationTime);
+            RotateAnimator rotateAnimator = new RotateAnimator(MathHelper.TwoPi*5, r_DyingAnimationTime);
+            ShrinkAnimator shrinkAnimator = new ShrinkAnimator(r_DyingAnimationTime);
 
-            CompositeAnimator deadAnimation = new CompositeAnimator("deadAnimation", k_dyingAnimationTime, this, shrinkAnimator, rotateAnimator);
+            CompositeAnimator deadAnimation = new CompositeAnimator("deadAnimation", r_DyingAnimationTime, this, shrinkAnimator, rotateAnimator);
             deadAnimation.Finished += onAnimationFinished;
 
             Animations.Add(deadAnimation);
         }
 
-        public event EventHandler<EventArgs> OnInvaderDied;
+        public event EventHandler<EventArgs> InvaderDied;
 
         public override void Initialize()
         {
@@ -103,10 +109,10 @@ namespace SpaceInvaders.ObjectModel
 
         public override void Update(GameTime i_GameTime)
         {
-            if (m_startDieAnimationOnNextFrame)
+            if (m_StartDieAnimationOnNextFrame)
             {
                 startDyingAnimation();
-                m_startDieAnimationOnNextFrame = false;
+                m_StartDieAnimationOnNextFrame = false;
             }
             
             if (Bounds.Bottom > Game.GraphicsDevice.Viewport.Bounds.Bottom)

@@ -10,9 +10,8 @@ using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SpaceInvaders.Configurations;
-using SpaceInvaders.Services;
 
-namespace SpaceInvaders.ObjectModel
+namespace SpaceInvaders.ObjectModel.Sprites
 {
     public class SpaceShip : Sprite, ICollidable2D
     {
@@ -21,59 +20,69 @@ namespace SpaceInvaders.ObjectModel
         private const float k_BulletVelocity = 115f;
         private readonly List<Bullet> r_Bullets = new List<Bullet>();
         
-        private readonly SpaceShipConfiguration m_SpaceShipConfiguration;
+        private readonly SpaceShipConfiguration r_SpaceShipConfiguration;
         private readonly int r_InitialOffsetMultiplayer;
-        private bool isHitable = true;
+        private bool m_IsHitable = true;
 
-        public event EventHandler<EventArgs> OnBulletCollision;
-        public event EventHandler<EventArgs> OnSpaceShipHit;
-        public event EventHandler<EventArgs> OnDie;
+        public event EventHandler<EventArgs> BulletCollided;
+        public event EventHandler<EventArgs> SpaceShipHit;
+        public event EventHandler<EventArgs> Died;
 
         public IInputManager InputManager { get; set; }
 
         public SpaceShip(Game i_Game, SpaceShipConfiguration i_SpaceShipConfiguration, int i_Id)
             : base(i_SpaceShipConfiguration.AssteName, i_Game)
         {
-            m_SpaceShipConfiguration = i_SpaceShipConfiguration;
+            r_SpaceShipConfiguration = i_SpaceShipConfiguration;
             r_InitialOffsetMultiplayer = i_Id;
         }
 
         public override void Collided(ICollidable i_Collidable)
         {
-            if (isHitable)
+            if (m_IsHitable)
             {
                 Bullet bullet = i_Collidable as Bullet;
                 if (bullet != null)
                 {
                     if (bullet.Velocity.Y > 0)
                     {
-                        if (OnSpaceShipHit != null)
-                        {
-                            OnSpaceShipHit(this, EventArgs.Empty);
-                        }
+                        onSpaceShipHit();
                     }
                 }
 
                 Invader invader = i_Collidable as Invader;
                 if (invader != null)
                 {
-                    if (OnDie != null)
-                    {
-                        OnDie(this, EventArgs.Empty);
-                    }
+                    onDied();
                 }
+            }
+        }
+
+        private void onSpaceShipHit()
+        {
+            if (SpaceShipHit != null)
+            {
+                SpaceShipHit(this, EventArgs.Empty);
+            }
+        }
+
+        private void onDied()
+        {
+            if (Died != null)
+            {
+                Died(this, EventArgs.Empty);
             }
         }
 
         public void StartHitAnimation()
         {
-            isHitable = false;
+            m_IsHitable = false;
             Animations["Hit"].Restart();
         }
 
         public void StartDieAnimation()
         {
-            isHitable = false;
+            m_IsHitable = false;
             Animations["Die"].Restart();
         }
 
@@ -95,7 +104,7 @@ namespace SpaceInvaders.ObjectModel
             SpriteAnimator rotateAnimator = new RotateAnimator(4 * MathHelper.TwoPi, TimeSpan.FromSeconds(2));
             SpriteAnimator fadeAnimator = new FadeAnimator(0.25f, TimeSpan.FromSeconds(2));
             SpriteAnimator dieAnimator = new CompositeAnimator("Die", TimeSpan.FromSeconds(2), this, rotateAnimator, fadeAnimator);
-            dieAnimator.Finished += onDieAnimatorFinished;
+            dieAnimator.Finished += onDieAnimationFinished;
 
             Animations.Add(dieAnimator);
 
@@ -106,10 +115,10 @@ namespace SpaceInvaders.ObjectModel
 
         private void onHitAnimationFinished(object i_Sender, EventArgs i_EventArgs)
         {
-            isHitable = true;
+            m_IsHitable = true;
         }
 
-        private void onDieAnimatorFinished(object i_Sender, EventArgs i_EventArgs)
+        private void onDieAnimationFinished(object i_Sender, EventArgs i_EventArgs)
         {
             Visible = false;
             Enabled = false;
@@ -121,7 +130,7 @@ namespace SpaceInvaders.ObjectModel
 
         public void ResetPosition()
         {
-            Position = new Vector2(r_InitialOffsetMultiplayer * Bounds.Width, GraphicsDevice.Viewport.Height - 30 - Bounds.Height / 2);
+            Position = new Vector2(r_InitialOffsetMultiplayer * Bounds.Width, (int)(GraphicsDevice.Viewport.Height - Bounds.Height * 1.25));
         }
 
         protected override void InitBounds()
@@ -140,10 +149,10 @@ namespace SpaceInvaders.ObjectModel
 
         private void handleMouse()
         {
-            if (m_SpaceShipConfiguration.SpaceShipMouseConfiguration != null)
+            if (r_SpaceShipConfiguration.SpaceShipMouseConfiguration != null)
             {
                 m_Velocity.X = InputManager.MousePositionDelta.X * 60;
-                if (InputManager.ButtonPressed(m_SpaceShipConfiguration.SpaceShipMouseConfiguration.ShootButton))
+                if (InputManager.ButtonPressed(r_SpaceShipConfiguration.SpaceShipMouseConfiguration.ShootButton))
                 {
                     ShootIfPossible();
                 }
@@ -152,13 +161,13 @@ namespace SpaceInvaders.ObjectModel
 
         private void handleInputs()
         {
-            if (m_SpaceShipConfiguration.SpaceShipKeyboardConfiguration != null)
+            if (r_SpaceShipConfiguration.SpaceShipKeyboardConfiguration != null)
             {
-                if (InputManager.KeyboardState.IsKeyDown(m_SpaceShipConfiguration.SpaceShipKeyboardConfiguration.LeftMoveButton))
+                if (InputManager.KeyboardState.IsKeyDown(r_SpaceShipConfiguration.SpaceShipKeyboardConfiguration.LeftMoveButton))
                 {
                     m_Velocity.X = k_Velocity*-1;
                 }
-                else if (InputManager.KeyboardState.IsKeyDown(m_SpaceShipConfiguration.SpaceShipKeyboardConfiguration.RightMoveButton))
+                else if (InputManager.KeyboardState.IsKeyDown(r_SpaceShipConfiguration.SpaceShipKeyboardConfiguration.RightMoveButton))
                 {
                     m_Velocity.X = k_Velocity;
                 }
@@ -168,7 +177,7 @@ namespace SpaceInvaders.ObjectModel
                     handleMouse();
                 }
 
-                if (isKeyPressed(m_SpaceShipConfiguration.SpaceShipKeyboardConfiguration.ShootButton))
+                if (isKeyPressed(r_SpaceShipConfiguration.SpaceShipKeyboardConfiguration.ShootButton))
                 {
                     ShootIfPossible();
                 }
@@ -189,17 +198,17 @@ namespace SpaceInvaders.ObjectModel
                 bullet.Initialize();
                 bullet.Position = new Vector2(Bounds.Left + Bounds.Width/2 - bullet.Width/2,Bounds.Top - bullet.Height);
                 bullet.Velocity = new Vector2(0, -k_BulletVelocity);
-                bullet.OnCollision += bulletCollision;
-                bullet.Disposed -= bulletCollision;
+                bullet.CollisionDetected += onBulletCollided;
+                bullet.Disposed -= onBulletCollided;
                 r_Bullets.Add(bullet);
             }
         }
 
-        private void bulletCollision(object i_Sender, EventArgs i_E)
+        private void onBulletCollided(object i_Sender, EventArgs i_E)
         {
-            if (OnBulletCollision != null)
+            if (BulletCollided != null)
             {
-                OnBulletCollision.Invoke(i_Sender, i_E);
+                BulletCollided.Invoke(i_Sender, i_E);
             }
         }
     }

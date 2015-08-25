@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Infrastructure.ObjectModel;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using SpaceInvaders.ObjectModel.Sprites;
 
 namespace SpaceInvaders.ObjectModel
@@ -13,7 +10,7 @@ namespace SpaceInvaders.ObjectModel
     {
         private const int k_GapBetweenBarriers = 1;
         private const int k_NumberOfBarriers = 4;
-        private const int k_BottomOffset = 50;
+        private const int k_BottomOffset = 72;
         readonly List<Barrier> r_Barriers = new List<Barrier>();
 
         public BarrierComposer(Game i_Game) : base(i_Game)
@@ -23,7 +20,7 @@ namespace SpaceInvaders.ObjectModel
 
         private void setBarrierInitialPosition(Barrier i_Barrier, int i_BarrierIndex)
         {
-            int y = Game.GraphicsDevice.Viewport.Height - k_BottomOffset - (2 * i_Barrier.Bounds.Height);
+            int y = Game.GraphicsDevice.Viewport.Height - k_BottomOffset - (i_Barrier.Bounds.Height);
             int x = (Game.GraphicsDevice.Viewport.Width / 2 - getAllBarriersWidth() / 2 + (i_BarrierIndex * (k_GapBetweenBarriers + 1)) * i_Barrier.Bounds.Width) - i_Barrier.Bounds.Width / 4;
             i_Barrier.Position = new Vector2(x,y);
         }
