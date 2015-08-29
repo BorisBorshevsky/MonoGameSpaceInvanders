@@ -1,15 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Infrastructure.ObjectModel.Screens;
+using Microsoft.Xna.Framework;
 
 namespace SpaceInvaders.ObjectModel.Sprites
 {
     internal class YellowInvader : Invader
     {
-        //private const string k_AssteName = @"Sprites\Enemy0301_32x32";
-
-
-
-        public YellowInvader(Game i_Game)
-            : base(i_Game, k_AssetName, Color.LightYellow)
+        public YellowInvader(GameScreen i_GameScreen)
+            : base(i_GameScreen, k_AssetName, Color.LightYellow)
         {
         }
 

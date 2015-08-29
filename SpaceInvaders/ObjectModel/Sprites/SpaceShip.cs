@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Infrastructure;
 using Infrastructure.Animators;
 using Infrastructure.Animators.ConcreteAnimators;
 using Infrastructure.ObjectModel;
@@ -10,6 +11,8 @@ using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SpaceInvaders.Configurations;
+using Infrastructure.ObjectModel.Screens;
+using Microsoft.Xna.Framework.Audio;
 
 namespace SpaceInvaders.ObjectModel.Sprites
 {
@@ -23,6 +26,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
         private readonly SpaceShipConfiguration r_SpaceShipConfiguration;
         private readonly int r_InitialOffsetMultiplayer;
         private bool m_IsHitable = true;
+        private ISoundManager m_SoundManager;
 
         public event EventHandler<EventArgs> BulletCollided;
         public event EventHandler<EventArgs> SpaceShipHit;
@@ -30,12 +34,13 @@ namespace SpaceInvaders.ObjectModel.Sprites
 
         public IInputManager InputManager { get; set; }
 
-        public SpaceShip(Game i_Game, SpaceShipConfiguration i_SpaceShipConfiguration, int i_Id)
-            : base(i_SpaceShipConfiguration.AssteName, i_Game)
+        public SpaceShip(GameScreen i_GameScreen, SpaceShipConfiguration i_SpaceShipConfiguration, int i_Id)
+            : base(i_SpaceShipConfiguration.AssteName, i_GameScreen)
         {
             r_SpaceShipConfiguration = i_SpaceShipConfiguration;
             r_InitialOffsetMultiplayer = i_Id;
         }
+
 
         public override void Collided(ICollidable i_Collidable)
         {
@@ -62,7 +67,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
         {
             if (SpaceShipHit != null)
             {
-                SpaceShipHit(this, EventArgs.Empty);
+                SpaceShipHit.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -90,6 +95,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
         {
             base.Initialize();
             InputManager = Game.Services.GetService(typeof(IInputManager)) as IInputManager;
+            m_SoundManager = Game.Services.GetService(typeof(ISoundManager)) as ISoundManager;
             initAnimations();
         }
 
@@ -194,13 +200,17 @@ namespace SpaceInvaders.ObjectModel.Sprites
             r_Bullets.RemoveAll(i_Bullet => !i_Bullet.IsAlive);
             if (r_Bullets.Count < k_MaxAmountOfBulletsSimultaniously)
             {
-                Bullet bullet = new Bullet(Game);
+                m_SoundManager.PlaySoundEffect(Sounds.k_SsGunShot);
+                
+                Bullet bullet = new Bullet(Screen);
                 bullet.Initialize();
                 bullet.Position = new Vector2(Bounds.Left + Bounds.Width/2 - bullet.Width/2,Bounds.Top - bullet.Height);
                 bullet.Velocity = new Vector2(0, -k_BulletVelocity);
                 bullet.CollisionDetected += onBulletCollided;
                 bullet.Disposed -= onBulletCollided;
                 r_Bullets.Add(bullet);
+
+
             }
         }
 
@@ -210,6 +220,19 @@ namespace SpaceInvaders.ObjectModel.Sprites
             {
                 BulletCollided.Invoke(i_Sender, i_E);
             }
+        }
+
+        protected override void Dispose(bool i_Disposing)
+        {
+            if (i_Disposing)
+            {
+                foreach (var bullet in r_Bullets)
+                {
+                    bullet.Dispose();
+                }
+            }
+
+            base.Dispose(i_Disposing);
         }
     }
 }

@@ -1,27 +1,14 @@
 //*** Guy Ronen © 2008-2011 ***//
+
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Infrastructure.ServiceInterfaces;
-using System;
 
 namespace Infrastructure.ObjectModel
 {
     public abstract class LoadableDrawableComponent : DrawableGameComponent
     {
-        public event EventHandler<EventArgs> Disposed;
-        protected virtual void OnDisposed(object i_Sender, EventArgs i_Args)
-        {
-            if (Disposed != null)
-            {
-                Disposed.Invoke(i_Sender, i_Args);
-            }
-        }
-        protected override void Dispose(bool i_Disposing)
-        {
-            base.Dispose(i_Disposing);
-            OnDisposed(this, EventArgs.Empty);
-        }
-
         protected string m_AssetName;
 
         // used to load the sprite:
@@ -30,25 +17,14 @@ namespace Infrastructure.ObjectModel
             get { return this.Game.Content; }
         }
 
-        // TODO 11: Implement the PositionChanged event:
-        public event EventHandler<EventArgs> PositionChanged;
+        public event PositionChangedEventHandler PositionChanged;
         protected virtual void OnPositionChanged()
         {
             if (PositionChanged != null)
             {
-                PositionChanged(this, EventArgs.Empty);
+                PositionChanged(this);
             }
         }
-
-        public event EventHandler<EventArgs> SizeChanged;
-        protected virtual void OnSizeChanged()
-        {
-            if (SizeChanged != null)
-            {
-                SizeChanged(this, EventArgs.Empty);
-            }
-        }
-        // -- end of TODO 11
 
         public string AssetName
         {
@@ -56,30 +32,21 @@ namespace Infrastructure.ObjectModel
             set { m_AssetName = value; }
         }
 
-        public LoadableDrawableComponent(
-            string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder)
-            : base(i_Game)
+        public LoadableDrawableComponent(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder): base(i_Game)
         {
             this.AssetName = i_AssetName;
             this.UpdateOrder = i_UpdateOrder;
             this.DrawOrder = i_DrawOrder;
-
-            // register in the game:
-            this.Game.Components.Add(this);
         }
 
-        public LoadableDrawableComponent(
-            string i_AssetName,
-            Game i_Game,
-            int i_CallsOrder)
+        public LoadableDrawableComponent(string i_AssetName,Game i_Game,int i_CallsOrder)
             : this(i_AssetName, i_Game, i_CallsOrder, i_CallsOrder)
         { }
 
         public override void Initialize()
         {
             base.Initialize();
-
-            // TODO 12: Register in the collisions manager:
+            
             if (this is ICollidable)
             {
                 ICollisionsManager collisionMgr =
@@ -91,14 +58,12 @@ namespace Infrastructure.ObjectModel
                     collisionMgr.AddObjectToMonitor(this as ICollidable);
                 }
             }
-            // -- end of TODO 12
 
             // After everything is loaded and initialzied,
             // lets init graphical aspects:
             InitBounds();   // a call to an abstract method;
         }
 
-        // TODO 02: Show/Hide Bounding box
 #if DEBUG
         protected bool m_ShowBoundingBox = true;
 #else
@@ -110,18 +75,17 @@ namespace Infrastructure.ObjectModel
             get { return m_ShowBoundingBox; }
             set { m_ShowBoundingBox = value; }
         }
-        // -- end of TODO 02
 
         protected abstract void InitBounds();
 
-        // TODO 03: enforce the logic of drawing the bounding box to the derivies:
-        public override void Draw(GameTime i_GameTime)
+        public override void Draw(GameTime gameTime)
         {
             DrawBoundingBox();
-            base.Draw(i_GameTime);
+            base.Draw(gameTime);
         }
 
         protected abstract void DrawBoundingBox();
-        // -- end of TODO 03
+
+        public event EventHandler<EventArgs> Disposed;
     }
 }

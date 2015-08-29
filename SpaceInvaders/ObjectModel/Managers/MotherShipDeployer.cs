@@ -1,5 +1,6 @@
 ﻿using System;
 using Infrastructure.ObjectModel;
+using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework;
 using SpaceInvaders.ObjectModel.Sprites;
 
@@ -13,8 +14,8 @@ namespace SpaceInvaders.ObjectModel.Managers
         private MotherShip m_MotherShip;
         private int m_TimeToNextMotherShip;
 
-        public MotherShipDeployer(Game i_Game)
-            : base(i_Game)
+        public MotherShipDeployer(GameScreen i_GameScreen)
+            : base(i_GameScreen)
         {
             m_TimeToNextMotherShip = r_Random.Next(k_MinTimeBetweenMotheships, k_MaxTimeBetweenMotheships);
         }
@@ -22,7 +23,7 @@ namespace SpaceInvaders.ObjectModel.Managers
         public override void Initialize()
         {
             base.Initialize();
-            m_MotherShip = new MotherShip(Game);
+            m_MotherShip = new MotherShip(Screen);
             m_MotherShip.Initialize();
         }
 
@@ -43,6 +44,16 @@ namespace SpaceInvaders.ObjectModel.Managers
             }
 
             base.Update(i_GameTime);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                m_MotherShip.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

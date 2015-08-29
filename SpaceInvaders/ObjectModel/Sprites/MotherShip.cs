@@ -1,11 +1,14 @@
 using System;
+using Infrastructure;
 using Infrastructure.Animators;
 using Infrastructure.Animators.ConcreteAnimators;
 using Infrastructure.ObjectModel;
 using Infrastructure.ObjectModel.Animators;
+using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SpaceInvaders.Configurations;
 
 namespace SpaceInvaders.ObjectModel.Sprites
 {
@@ -16,16 +19,17 @@ namespace SpaceInvaders.ObjectModel.Sprites
         private const int k_Score = 750;
         public bool IsDying { get; private set; }
         private bool m_StartAnimationOnNextFrame = false;
+        private ISoundManager m_SoundManager;
 
-        
+
         public int Score
         {
             get { return k_Score; }
         }
 
 
-        public MotherShip(Game i_Game, bool i_Enable = false)
-            : base(k_AssteName, i_Game)
+        public MotherShip(GameScreen i_GameScreen, bool i_Enable = false)
+            : base(k_AssteName, i_GameScreen)
         {
             m_TintColor = Color.Red;
             Enabled = i_Enable;
@@ -47,6 +51,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
         {
             base.Initialize();
             initAnimations();
+            m_SoundManager = Game.Services.GetService(typeof(ISoundManager)) as ISoundManager;
         }
         
         protected override void LoadContent()
@@ -62,6 +67,17 @@ namespace SpaceInvaders.ObjectModel.Sprites
             Animations.Restart();
         }
 
+
+        public event EventHandler<EventArgs> MotherShipDied;
+
+        private void onMotherShipDied()
+        {
+            m_SoundManager.PlaySoundEffect(Sounds.k_MotherShipKill);
+            if (MotherShipDied != null)
+            {
+                MotherShipDied.Invoke(this, EventArgs.Empty);
+            }
+        }
 
         private void initAnimations()
         {
@@ -92,6 +108,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
             if (m_StartAnimationOnNextFrame)
             {
                 startDieAnimation();
+                onMotherShipDied();
                 m_StartAnimationOnNextFrame = false;
             }
             
@@ -116,14 +133,6 @@ namespace SpaceInvaders.ObjectModel.Sprites
             Enabled = true;
             Velocity = new Vector2(k_HorizontalVelocity, 0);
         }
-
-        public override void Draw(GameTime i_GameTime)
-        {
-            m_SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
-            base.Draw(i_GameTime);
-            m_SpriteBatch.End();
-        }
-
 
     }
 }

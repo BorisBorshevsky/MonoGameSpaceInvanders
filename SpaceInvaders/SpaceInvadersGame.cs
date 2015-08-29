@@ -1,10 +1,16 @@
-﻿using Infrastructure.Managers;
+﻿
+using Infrastructure;
+using Infrastructure.Managers;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using SpaceInvaders.Configurations;
 using SpaceInvaders.ObjectModel;
 using SpaceInvaders.ObjectModel.Managers;
 using SpaceInvaders.ObjectModel.Sprites;
-using SpaceInvaders.Services;
+using SpaceInvaders.Screens;
 
 namespace SpaceInvaders
 {
@@ -13,43 +19,51 @@ namespace SpaceInvaders
     /// </summary>
     public class SapceInvadersGame : Game
     {
-        private readonly GraphicsDeviceManager r_Graphics;
-        private SpriteBatch m_SpriteBatch;
+        private GraphicsDeviceManager m_GraphicsMgr;
+        private InputManager m_InputManager;
+        private ScreensMananger m_ScreensMananger;
+        private FontManager m_FontManager;
+        private SoundManager m_SoundManager;
+        private SettingsManager m_SettingsManager;
 
         public SapceInvadersGame()
         {
-            r_Graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-
-            //services
-            new InputManager(this);
-            new GameStateService(this);
+            m_GraphicsMgr = new GraphicsDeviceManager(this);
+            this.Content.RootDirectory = "Content";
+            m_InputManager = new InputManager(this);
+            m_SoundManager = new SoundManager(this);
+            m_FontManager = new FontManager(this, @"Fonts\Arial");
+            m_SettingsManager = new SettingsManager(this);
+            
             new CollisionsManager(this);
 
-            //sprites
-            new Background(this, @"Sprites\BG_Space01_1024x768", 0.3f);
-
-            new BarrierComposer(this);
-            new PlayersManager(this);
-            new MotherShipDeployer(this);
-            new InvaderGrid(this);
+            m_ScreensMananger = new ScreensMananger(this);
+            m_ScreensMananger.SetCurrentScreen(new WelcomeScreen(this));
         }
 
-        protected override void LoadContent()
+        protected override void Initialize()
         {
-            m_SpriteBatch = new SpriteBatch(GraphicsDevice);
-            Services.AddService(typeof(SpriteBatch), m_SpriteBatch);
-
-            base.LoadContent();
+            base.Initialize();
+            this.Window.Title = "Space Invaders Game !!!";
+            this.IsMouseVisible = true;
+            m_SoundManager.PlayBackgroundMusic(Sounds.k_BgMusic);
         }
+
 
         protected override void Draw(GameTime i_GameTime)
         {
-            r_Graphics.GraphicsDevice.Clear(Color.Black);
+            m_GraphicsMgr.GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            m_SpriteBatch.Begin();
             base.Draw(i_GameTime);
-            m_SpriteBatch.End();
+        }
+
+        protected override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            if (m_InputManager.KeyPressed(Keys.M))
+            {
+                m_SoundManager.ToggleMute();
+            }
         }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Infrastructure.ObjectModel;
+using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SpaceInvaders.Configurations;
-using SpaceInvaders.Services;
 
 namespace SpaceInvaders.ObjectModel.Managers
 {
@@ -14,28 +14,47 @@ namespace SpaceInvaders.ObjectModel.Managers
         private readonly List<Player> r_Players = new List<Player>();
         private int m_PlayerCounter = 0;
         private int m_LostPlayerCount = 0;
-        private IGameStateService m_GameStateService;
+        private ISettingsManager m_SettingsManager;
 
-        public PlayersManager(Game i_Game)
-            : base(i_Game)
+        public PlayersManager(GameScreen i_GameScreen)
+            : base(i_GameScreen)
+        { }
+
+        private void createPlayers(IList<IPlayerState> i_PlayersState)
         {
-            createPlayers();
+            if (i_PlayersState[0].Enabled)
+            {
+                r_Players.Add(initializePlayer1(m_PlayerCounter++, i_PlayersState[0]));
+            }
+
+            if (i_PlayersState[1].Enabled)
+            {
+                r_Players.Add(initializePlayer2(m_PlayerCounter++, i_PlayersState[1]));
+            }
         }
 
-        private void createPlayers()
+        public event EventHandler<EventArgs> AllPlayersDied;
+
+        void onAllPlayersDied()
         {
-            r_Players.Add(initializePlayer1(m_PlayerCounter++));
-            r_Players.Add(initializePlayer2(m_PlayerCounter++));
+            if (AllPlayersDied != null)
+            {
+                AllPlayersDied.Invoke(this,EventArgs.Empty);
+            }
         }
+
 
         public override void Initialize()
         {
             base.Initialize();
 
-            m_GameStateService = Game.Services.GetService(typeof(IGameStateService)) as IGameStateService;
+            m_SettingsManager = Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager;
+            m_SettingsManager.ResetLives();
+
+            createPlayers(m_SettingsManager.PlayersData);
         }
 
-        private Player initializePlayer1(int i_PlayerId)
+        private Player initializePlayer1(int i_PlayerId, IPlayerState i_PlayerState)
         {
             SpaceShipConfiguration spaceShipConfiguration = new SpaceShipConfiguration
             {
@@ -53,26 +72,26 @@ namespace SpaceInvaders.ObjectModel.Managers
                 AssteName = @"Sprites\Ship01_32x32"
             };
 
-            return createPlayer(i_PlayerId, spaceShipConfiguration);
+            return createPlayer(i_PlayerId, spaceShipConfiguration, i_PlayerState);
         }
 
-        private Player createPlayer(int i_PlayerId, SpaceShipConfiguration i_SpaceShipConfiguration)
+        private Player createPlayer(int i_PlayerId, SpaceShipConfiguration i_SpaceShipConfiguration, IPlayerState i_PlayerState)
         {
-            Player player = new Player(Game, i_SpaceShipConfiguration, i_PlayerId);
-            player.PlayerLost += playerOnPlayerLost;
+            Player player = new Player(Screen, i_SpaceShipConfiguration, i_PlayerId, i_PlayerState);
+            player.PlayerLost += onPlayerLost;
 
             return player;
         }
 
-        private void playerOnPlayerLost(object i_Sender, EventArgs i_EventArgs)
+        private void onPlayerLost(object i_Sender, EventArgs i_EventArgs)
         {
             if (++m_LostPlayerCount == m_PlayerCounter)
             {
-                m_GameStateService.GameOver();
+                onAllPlayersDied();
             }
         }
 
-        private Player initializePlayer2(int i_PlayerId)
+        private Player initializePlayer2(int i_PlayerId, IPlayerState i_PlayerState)
         {
             SpaceShipConfiguration spaceShipConfiguration = new SpaceShipConfiguration
             {
@@ -85,8 +104,21 @@ namespace SpaceInvaders.ObjectModel.Managers
                 TextColor = Color.Green,
                 AssteName = @"Sprites\Ship02_32x32"
             };
-            
-            return createPlayer(i_PlayerId, spaceShipConfiguration);
+
+            return createPlayer(i_PlayerId, spaceShipConfiguration, i_PlayerState);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                foreach (var player in r_Players)
+                {
+                    player.Dispose();
+                }
+            }
+
+            base.Dispose(disposing);
         }
     }
 }

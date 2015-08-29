@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,18 +14,18 @@ namespace Infrastructure.ObjectModel
         public Color[] Pixels { get; protected set; }
 
 
-        public PixelSensitiveSprite(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder)
-            : base(i_AssetName, i_Game, i_UpdateOrder, i_DrawOrder)
+        public PixelSensitiveSprite(string i_AssetName, GameScreen i_GameScreen, int i_UpdateOrder, int i_DrawOrder)
+            : base(i_AssetName, i_GameScreen, i_UpdateOrder, i_DrawOrder)
         {
         }
 
-        public PixelSensitiveSprite(string i_AssetName, Game i_Game, int i_CallsOrder)
-            : base(i_AssetName, i_Game, i_CallsOrder)
+        public PixelSensitiveSprite(string i_AssetName, GameScreen i_GameScreen, int i_CallsOrder)
+            : base(i_AssetName, i_GameScreen, i_CallsOrder)
         {
         }
 
-        public PixelSensitiveSprite(string i_AssetName, Game i_Game)
-            : base(i_AssetName, i_Game)
+        public PixelSensitiveSprite(string i_AssetName, GameScreen i_GameScreen)
+            : base(i_AssetName, i_GameScreen)
         {
         }
 
@@ -58,38 +59,42 @@ namespace Infrastructure.ObjectModel
 
         public override bool CheckCollision(ICollidable i_Source)
         {
-            bool collidedPerPixel = false;
+            bool collided = false;
 
             if (base.CheckCollision(i_Source))
             {
-                ICollidablePixelBased source = i_Source as ICollidablePixelBased;
-                if (source != null)
+                ICollidablePixelBased pixelSource = i_Source as ICollidablePixelBased;
+                if (pixelSource != null)
                 {
-                    Rectangle collisionRectange = Rectangle.Intersect(Bounds, source.Bounds);
+                    Rectangle collisionRectange = Rectangle.Intersect(Bounds, pixelSource.Bounds);
                     for (int yPixel = collisionRectange.Top; yPixel < collisionRectange.Bottom; yPixel++)
                     {
                         for (int xPixel = collisionRectange.Left; xPixel < collisionRectange.Right; xPixel++)
                         {
                             Color myPixl = Pixels[(xPixel - Bounds.X) + ((yPixel - Bounds.Y) * Texture.Width)];
-                            Color otherPixel =source.Pixels[(xPixel - source.Bounds.X) + ((yPixel - source.Bounds.Y) * source.Bounds.Width)];
+                            Color otherPixel = pixelSource.Pixels[(xPixel - pixelSource.Bounds.X) + ((yPixel - pixelSource.Bounds.Y) * pixelSource.Bounds.Width)];
 
                             if (myPixl.A != 0 && otherPixel.A != 0)
                             {
-                                collidedPerPixel = true;
+                                collided = true;
                                 break;
                             }
 
                         }
-                        if (collidedPerPixel)
+                        if (collided)
                         {
                             break;
                         }
                     }
-
                 }
+                else if (i_Source is ICollidable2D)
+                {
+                    collided = true;
+                }
+                
             }
-            
-            return collidedPerPixel;
+
+            return collided;
         }
     }
 }

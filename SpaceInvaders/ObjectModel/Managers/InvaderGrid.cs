@@ -1,17 +1,19 @@
 ﻿using System;
+using Infrastructure;
 using Infrastructure.ObjectModel;
+using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework;
+using SpaceInvaders.Configurations;
 using SpaceInvaders.ObjectModel.Sprites;
-using SpaceInvaders.Services;
 
 namespace SpaceInvaders.ObjectModel.Managers
 {
     internal class InvaderGrid : RegisteredComponent
     {
-        private const int k_InvadersInRow = 9; //9
-        private const int k_PinkInvadersInColumn = 1;
+        private const int k_PinkInvadersInColumn = 1; //1
         private const int k_LightBlueInvadersInColumn = 2; // 2
         private const int k_YellowInvadersInColumn = 2; // 2
+        private int m_InvadersInRow = 9; //9
 
         private const int k_InvadersInColumn =
             k_PinkInvadersInColumn + k_LightBlueInvadersInColumn + k_YellowInvadersInColumn;
@@ -31,14 +33,13 @@ namespace SpaceInvaders.ObjectModel.Managers
         private float m_TopPadding;
         private float m_VerticalDistanceBetweenEnemies;
         private Rectangle m_GridBounds;
-        private IGameStateService m_GameStateService;
+        private ISoundManager m_SoundManager;
+        private ISettingsManager m_SettingsManager;
 
 
-        public InvaderGrid(Game i_Game)
-            : base(i_Game)
-        {
-            constructInvaders();
-        }
+        public InvaderGrid(GameScreen i_GameScreen)
+            : base(i_GameScreen)
+        { }
 
         public double CurrentElapsedTime { get; set; }
         public Invader[,] Invaders { get; set; }
@@ -83,29 +84,29 @@ namespace SpaceInvaders.ObjectModel.Managers
 
         private void constructInvaders()
         {
-            Invaders = new Invader[k_InvadersInRow, k_InvadersInColumn];
+            Invaders = new Invader[m_InvadersInRow, k_InvadersInColumn];
 
-            for (int col = 0; col < k_InvadersInRow; col++)
+            for (int col = 0; col < m_InvadersInRow; col++)
             {
                 for (int row = 0; row < k_PinkInvadersInColumn; row++)
                 {
-                    Invaders[col, row] = new PinkInvader(Game);
+                    Invaders[col, row] = new PinkInvader(Screen);
                 }
             }
 
-            for (int col = 0; col < k_InvadersInRow; col++)
+            for (int col = 0; col < m_InvadersInRow; col++)
             {
                 for (int row = k_PinkInvadersInColumn; row < k_PinkInvadersInColumn + k_LightBlueInvadersInColumn; row++)
                 {
-                    Invaders[col, row] = new LightBlueInvader(Game);
+                    Invaders[col, row] = new LightBlueInvader(Screen);
                 }
             }
 
-            for (int col = 0; col < k_InvadersInRow; col++)
+            for (int col = 0; col < m_InvadersInRow; col++)
             {
                 for (int row = k_PinkInvadersInColumn + k_LightBlueInvadersInColumn; row < k_InvadersInColumn; row++)
                 {
-                    Invaders[col, row] = new YellowInvader(Game);
+                    Invaders[col, row] = new YellowInvader(Screen);
                 }
             }
         }
@@ -113,8 +114,11 @@ namespace SpaceInvaders.ObjectModel.Managers
         public override void Initialize()
         {
             base.Initialize();
-            m_GameStateService = Game.Services.GetService(typeof(IGameStateService)) as IGameStateService;
+            m_SoundManager = Game.Services.GetService<ISoundManager>();
+            m_SettingsManager = Game.Services.GetService<ISettingsManager>();
 
+            m_InvadersInRow += m_SettingsManager.GetGameLevelSettings().AdditionalInvadersColoumns;
+            constructInvaders();
             initializeInvaders();
             m_GridBounds = calculateBounds();
         }
@@ -133,7 +137,7 @@ namespace SpaceInvaders.ObjectModel.Managers
             m_VerticalDistanceBetweenEnemies = 0.6f * m_EnemyHeight;
             m_TopPadding = k_InitialTopPadding * m_EnemyHeight;
 
-            for (int col = 0; col < k_InvadersInRow; col++)
+            for (int col = 0; col < m_InvadersInRow; col++)
             {
                 for (int row = 0; row < k_InvadersInColumn; row++)
                 {
@@ -144,7 +148,18 @@ namespace SpaceInvaders.ObjectModel.Managers
 
                     invader.Position = new Vector2(enemyXPosition, enemyYPosition);
                     invader.InvaderDied += OnDeadInvader;
+                    invader.InvaderReachedBottom += onInvaderReachedBottom;
                 }
+            }
+        }
+
+        public event EventHandler<EventArgs> InvaderReachedBottom;
+
+        void onInvaderReachedBottom(object i_Sender , EventArgs i_Args)
+        {
+            if (InvaderReachedBottom != null)
+            {
+                InvaderReachedBottom.Invoke(i_Sender, i_Args);
             }
         }
 
@@ -204,7 +219,7 @@ namespace SpaceInvaders.ObjectModel.Managers
 
         private void updateInvadersPositions()
         {
-            for (int col = 0; col < k_InvadersInRow; col++)
+            for (int col = 0; col < m_InvadersInRow; col++)
             {
                 for (int row = 0; row < k_InvadersInColumn; row++)
                 {
@@ -219,14 +234,40 @@ namespace SpaceInvaders.ObjectModel.Managers
             }
         }
 
+
+        public event EventHandler<EventArgs> AllEnemiesDied;
+
+        private void onAllEnemiesDied()
+        {
+            if (AllEnemiesDied != null)
+            {
+                AllEnemiesDied.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+
         public void OnDeadInvader(Object i_Sender, EventArgs i_Args)
         {
             m_TimeBetweenJumpsInSeconds *= k_SpeedAfterInvaderDead;
-            if (++m_AmountOfEnemiesDead >= k_InvadersInColumn * k_InvadersInRow)
+            if (++m_AmountOfEnemiesDead >= k_InvadersInColumn * m_InvadersInRow)
             {
-                //all invaders Died
-                m_GameStateService.GameOver("You Won!");
+                onAllEnemiesDied();
             }
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+
+                foreach (var invader in Invaders)
+                {
+                    invader.Dispose();
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+
     }
 }

@@ -1,11 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Infrastructure.ObjectModel.Screens;
+using Microsoft.Xna.Framework;
 
 namespace SpaceInvaders.ObjectModel.Sprites
 {
     internal class PinkInvader : Invader
     {
 
-        public PinkInvader(Game i_Game)
+        public PinkInvader(GameScreen i_Game)
             : base(i_Game, k_AssetName, Color.LightPink)
         {}
         

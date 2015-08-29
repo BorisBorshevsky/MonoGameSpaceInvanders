@@ -1,4 +1,5 @@
 ﻿using Infrastructure.ObjectModel;
+using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -7,12 +8,14 @@ namespace SpaceInvaders.ObjectModel.Sprites
     class SoulIcon : Sprite
     {
 
-        public SoulIcon(string i_AssetName, Game i_Game) : base(i_AssetName, i_Game)
+        public SoulIcon(string i_AssetName, GameScreen i_GameScreen)
+            : base(i_AssetName, i_GameScreen)
         {}
 
         protected override void LoadContent()
         {
             m_SpriteBatch = new SpriteBatch(GraphicsDevice);
+            
             base.LoadContent();
         }
 
@@ -25,9 +28,9 @@ namespace SpaceInvaders.ObjectModel.Sprites
 
         public override void Draw(GameTime i_GameTime)
         {
-            m_SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
+//            m_SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied);
             base.Draw(i_GameTime);
-            m_SpriteBatch.End();
+//            m_SpriteBatch.End();
         }
     }
 }

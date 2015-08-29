@@ -1,11 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Infrastructure.ObjectModel.Screens;
+using Microsoft.Xna.Framework;
 
 namespace SpaceInvaders.ObjectModel.Sprites
 {
     internal class LightBlueInvader : Invader
     {
-        public LightBlueInvader(Game i_Game)
-            : base(i_Game, k_AssetName, Color.LightBlue)
+        public LightBlueInvader(GameScreen i_GameScreen)
+            : base(i_GameScreen, k_AssetName, Color.LightBlue)
         {
         }
 

@@ -1,7 +1,11 @@
 ﻿using System;
+using Infrastructure;
 using Infrastructure.ObjectModel;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
+using Infrastructure.ObjectModel.Screens;
+using SpaceInvaders.Configurations;
+using SpaceInvaders.ObjectModel.Managers;
 
 namespace SpaceInvaders.ObjectModel.Sprites
 {
@@ -11,12 +15,14 @@ namespace SpaceInvaders.ObjectModel.Sprites
         private const int k_Velocity = 55;
         public Rectangle MovementBounds { get; set; }
         private float m_RangeToMove;
+        private ISoundManager m_SoundManager;
+        private ISettingsManager m_SettingsManager;
         private int LeftBarrier { get; set; }
         private int RightBarrier { get; set; }
 
         private const String k_AssetName = @"Sprites\Barrier_44x32";
-        public Barrier(Game i_Game)
-            : base(k_AssetName, i_Game)
+        public Barrier(GameScreen i_GameScreen)
+            : base(k_AssetName, i_GameScreen)
         { }
 
         protected override void InitBounds()
@@ -49,6 +55,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
                 }
 
                 handleSpriteCollision(pixelSensitiveSpriteHitRectangle, bulletHitRectangle);
+                m_SoundManager.PlaySoundEffect(Sounds.k_BarrierHit);
                 onBarrierHit();
             }
 
@@ -84,16 +91,25 @@ namespace SpaceInvaders.ObjectModel.Sprites
         {
             if (BarrierHit != null)
             {
-                BarrierHit(this, EventArgs.Empty);
+                BarrierHit.Invoke(this, EventArgs.Empty);
             }
         }
 
         public override void Initialize()
         {
             base.Initialize();
-            m_RangeToMove = Bounds.Width / 4;
+            m_RangeToMove = (float)Bounds.Width / 4;
             RightBarrier = (int)(Bounds.Right + Bounds.Width + m_RangeToMove);
             LeftBarrier = (int)(Bounds.Left - m_RangeToMove);
+            m_SoundManager = Game.Services.GetService(typeof(ISoundManager)) as ISoundManager;
+            m_SettingsManager = Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager;
+
+            if (!m_SettingsManager.GetGameLevelSettings().BarrierShouldMove)
+            {
+                Velocity = Vector2.Zero;
+            }
+
+            Velocity += m_SettingsManager.GetGameLevelSettings().AdditionalBarrierSpeedPrecent * Velocity;
         }
 
         public override void Update(GameTime i_GameTime)
@@ -111,5 +127,6 @@ namespace SpaceInvaders.ObjectModel.Sprites
                 Position = new Vector2(LeftBarrier + 1, Position.Y);
             }
         }
+
     }
 }

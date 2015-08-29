@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Infrastructure.ObjectModel;
+using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework;
 using SpaceInvaders.ObjectModel.Sprites;
 
@@ -13,7 +14,8 @@ namespace SpaceInvaders.ObjectModel
         private const int k_BottomOffset = 72;
         readonly List<Barrier> r_Barriers = new List<Barrier>();
 
-        public BarrierComposer(Game i_Game) : base(i_Game)
+        public BarrierComposer(GameScreen i_GameScreen)
+            : base(i_GameScreen)
         {
             generateBarriers();
         }
@@ -48,7 +50,8 @@ namespace SpaceInvaders.ObjectModel
         {
             for (int i = 0; i < k_NumberOfBarriers; i++)
             {
-                r_Barriers.Add(new Barrier(Game));
+                var barrier = new Barrier(Screen);
+                r_Barriers.Add(barrier);
             }
         }
     }

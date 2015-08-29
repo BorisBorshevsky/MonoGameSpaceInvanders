@@ -1,9 +1,9 @@
-//*** Guy Ronen © 2008-2011 ***//
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Infrastructure.ServiceInterfaces;
 using Infrastructure.ObjectModel.Animators;
+using Infrastructure.ObjectModel.Screens;
 
 namespace Infrastructure.ObjectModel
 {
@@ -203,24 +203,24 @@ namespace Infrastructure.ObjectModel
         /// Radians per Second on X Axis
         /// </summary>
         public float AngularVelocity { get; set; }
+        protected GameScreen Screen { get; set; }
 
-        public Sprite(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder)
-            : base(i_AssetName, i_Game, i_UpdateOrder, i_DrawOrder)
+        public Sprite(string i_AssetName, GameScreen i_Game, int i_UpdateOrder, int i_DrawOrder)
+            : base(i_AssetName, i_Game.Game, i_UpdateOrder, i_DrawOrder)
         {
             AngularVelocity = 0;
+            Screen = i_Game;
+            Screen.Add(this);
         }
 
-        public Sprite(string i_AssetName, Game i_Game, int i_CallsOrder)
-            : base(i_AssetName, i_Game, i_CallsOrder)
+        public Sprite(string i_AssetName, GameScreen i_Game, int i_CallsOrder)
+            : this(i_AssetName, i_Game, i_CallsOrder, 0)
         {
-            AngularVelocity = 0;
         }
 
-        public Sprite(string i_AssetName, Game i_Game)
-            : base(i_AssetName, i_Game, int.MaxValue)
-        {
-            AngularVelocity = 0;
-        }
+        public Sprite(string i_AssetName, GameScreen i_Game)
+            : this(i_AssetName, i_Game, int.MaxValue)
+        { }
 
         /// <summary>
         /// Default initialization of bounds

@@ -2,6 +2,7 @@ using System;
 using Infrastructure.ObjectModel;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
+using Infrastructure.ObjectModel.Screens;
 
 namespace SpaceInvaders.ObjectModel.Sprites
 {
@@ -10,8 +11,8 @@ namespace SpaceInvaders.ObjectModel.Sprites
         private const string k_AssstName = @"Sprites\Bullet";
         private readonly Random r_Random = new Random();
         private const int k_ChanceForSpaceShipBulletToBeDisposedAfterBulletsCollision = 33;
-        public Bullet(Game i_Game)
-            : base(k_AssstName, i_Game)
+        public Bullet(GameScreen i_GameScreen)
+            : base(k_AssstName, i_GameScreen)
         {}
 
         public event EventHandler<EventArgs> CollisionDetected; 
