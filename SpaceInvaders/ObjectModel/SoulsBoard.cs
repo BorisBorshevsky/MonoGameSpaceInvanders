@@ -7,7 +7,7 @@ using SpaceInvaders.ObjectModel.Sprites;
 
 namespace SpaceInvaders.ObjectModel
 {
-    public class SoulsBoard : RegisteredComponent
+    class SoulsBoard : RegisteredComponent
     {
         public IPlayerState PlayerState { get; private set; }
 
@@ -17,7 +17,6 @@ namespace SpaceInvaders.ObjectModel
         private const int k_TopOffset = 16;
         private const int k_DistanceBetweenSouls = 8;
 
-
         public SoulsBoard(GameScreen i_GameScreen, IPlayerState i_PlayerState, string i_AssetName, int i_PlayerId)
             : base(i_GameScreen)
         {
@@ -26,7 +25,7 @@ namespace SpaceInvaders.ObjectModel
 
             for (int i = 0; i < PlayerState.Lives; i++)
             {
-                r_Sprites.Add(new SoulIcon(i_AssetName, i_GameScreen));    
+                r_Sprites.Add(new SoulIcon(i_AssetName, i_GameScreen));
             }
         }
 
@@ -34,32 +33,31 @@ namespace SpaceInvaders.ObjectModel
         {
             base.Initialize();
 
-            for (int i = 0; i < PlayerState.Lives; i++)
+            for (int index = 0; index < PlayerState.Lives; index++)
             {
-                r_Sprites[i].Initialize();
+                r_Sprites[index].Initialize();
                 int rightBound = Game.GraphicsDevice.Viewport.Bounds.Width;
-                float xPosition = rightBound - k_RightOffset - (i*(r_Sprites[i].Bounds.Width + k_DistanceBetweenSouls));
-                float yPosition = k_TopOffset + (r_PlayerId*(r_Sprites[i].Bounds.Height + k_DistanceBetweenSouls));
-                r_Sprites[i].Position = new Vector2(xPosition, yPosition);
+                float xPosition = rightBound - k_RightOffset - (index*(r_Sprites[index].Bounds.Width + k_DistanceBetweenSouls));
+                float yPosition = k_TopOffset + (r_PlayerId*(r_Sprites[index].Bounds.Height + k_DistanceBetweenSouls));
+                r_Sprites[index].Position = new Vector2(xPosition, yPosition);
             }
         }
-
 
         public void RemoveSoul()
         {
             r_Sprites[--PlayerState.Lives].Visible = false;
         }
 
-        protected override void Dispose(bool disposing)
+        protected override void Dispose(bool i_Disposing)
         {
-            if (disposing)
+            if (i_Disposing)
             {
                 foreach (var sprite in r_Sprites)
                 {
                     sprite.Dispose();
                 }
             }
-            base.Dispose(disposing);
+            base.Dispose(i_Disposing);
         }
     }
 }

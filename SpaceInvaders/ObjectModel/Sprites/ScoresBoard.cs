@@ -9,18 +9,17 @@ using SpaceInvaders.ObjectModel.Managers;
 
 namespace SpaceInvaders.ObjectModel.Sprites
 {
-    public class ScoresBoard : GameComponent
+    class ScoresBoard : GameComponent
     {
-        private SpriteFont m_ArialFont;
+        private const int k_InitialLeftPadding = 5;
+        private const int k_InitialHeightPadding = 5;
+        private const int k_RecordHeight = 20;
 
         private readonly Color r_TextColor;
-        private const int k_InitialLeftPadding = 5;
-        private const int k_InitialHightPadding = 5;
-        private const int k_RecordHight = 20;
-        private readonly GameScreen r_GameScreen;
-        private SpriteBatch m_SpriteBatch;
-
         private readonly int r_PlayerNumber;
+
+        private SpriteFont m_ArialFont;
+        private SpriteBatch m_SpriteBatch;
         private ISettingsManager m_SettingsManager;
 
         public int PlayerNumber
@@ -39,7 +38,6 @@ namespace SpaceInvaders.ObjectModel.Sprites
         {
             r_TextColor = i_TextColor;
             r_PlayerNumber = i_PlayerNumber;
-            r_GameScreen = i_GameScreen;
             i_GameScreen.Add(this);
         }
 
@@ -68,8 +66,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
 
         private Vector2 getDrawingPosition()
         {
-            return new Vector2(k_InitialLeftPadding, k_InitialHightPadding + (PlayerNumber * k_RecordHight));
+            return new Vector2(k_InitialLeftPadding, k_InitialHeightPadding + (PlayerNumber * k_RecordHeight));
         }
-
     }
 }

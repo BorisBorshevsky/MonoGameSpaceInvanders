@@ -3,17 +3,16 @@ using Infrastructure;
 using Infrastructure.ObjectModel;
 using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework;
-using SpaceInvaders.Configurations;
 using SpaceInvaders.ObjectModel.Sprites;
 
 namespace SpaceInvaders.ObjectModel.Managers
 {
-    internal class InvaderGrid : RegisteredComponent
+    class InvaderGrid : RegisteredComponent
     {
-        private const int k_PinkInvadersInColumn = 1; //1
-        private const int k_LightBlueInvadersInColumn = 2; // 2
-        private const int k_YellowInvadersInColumn = 2; // 2
-        private int m_InvadersInRow = 9; //9
+        private const int k_PinkInvadersInColumn = 1;
+        private const int k_LightBlueInvadersInColumn = 2; 
+        private const int k_YellowInvadersInColumn = 2; 
+        private int m_InvadersInRow = 9;
 
         private const int k_InvadersInColumn =
             k_PinkInvadersInColumn + k_LightBlueInvadersInColumn + k_YellowInvadersInColumn;
@@ -36,6 +35,8 @@ namespace SpaceInvaders.ObjectModel.Managers
         private ISoundManager m_SoundManager;
         private ISettingsManager m_SettingsManager;
 
+        public event EventHandler<EventArgs> InvaderReachedBottom;
+        public event EventHandler<EventArgs> AllEnemiesDied;
 
         public InvaderGrid(GameScreen i_GameScreen)
             : base(i_GameScreen)
@@ -43,7 +44,6 @@ namespace SpaceInvaders.ObjectModel.Managers
 
         public double CurrentElapsedTime { get; set; }
         public Invader[,] Invaders { get; set; }
-
 
         private Rectangle calculateBounds()
         {
@@ -117,7 +117,7 @@ namespace SpaceInvaders.ObjectModel.Managers
             m_SoundManager = Game.Services.GetService<ISoundManager>();
             m_SettingsManager = Game.Services.GetService<ISettingsManager>();
 
-            m_InvadersInRow += m_SettingsManager.GetGameLevelSettings().AdditionalInvadersColoumns;
+            m_InvadersInRow += m_SettingsManager.GetGameLevelSettings().AdditionalInvadersColumns;
             constructInvaders();
             initializeInvaders();
             m_GridBounds = calculateBounds();
@@ -152,8 +152,6 @@ namespace SpaceInvaders.ObjectModel.Managers
                 }
             }
         }
-
-        public event EventHandler<EventArgs> InvaderReachedBottom;
 
         void onInvaderReachedBottom(object i_Sender , EventArgs i_Args)
         {
@@ -224,18 +222,14 @@ namespace SpaceInvaders.ObjectModel.Managers
                 for (int row = 0; row < k_InvadersInColumn; row++)
                 {
                     Invader enemy = Invaders[col, row];
-                    if (enemy.IsAlive)
-                    {
-                        float enemyXPosition = m_LeftPadding + col*(m_HorizontalDistanceBetweenEnemies + enemy.Width);
-                        float enemyYPosition = m_TopPadding + row*(m_VerticalDistanceBetweenEnemies + enemy.Height);
-                        enemy.Position = new Vector2(enemyXPosition, enemyYPosition);
-                    }
+                    if (!enemy.IsAlive) continue;
+                    
+                    float enemyXPosition = m_LeftPadding + col*(m_HorizontalDistanceBetweenEnemies + enemy.Width);
+                    float enemyYPosition = m_TopPadding + row*(m_VerticalDistanceBetweenEnemies + enemy.Height);
+                    enemy.Position = new Vector2(enemyXPosition, enemyYPosition);
                 }
             }
         }
-
-
-        public event EventHandler<EventArgs> AllEnemiesDied;
 
         private void onAllEnemiesDied()
         {
@@ -245,8 +239,7 @@ namespace SpaceInvaders.ObjectModel.Managers
             }
         }
 
-
-        public void OnDeadInvader(Object i_Sender, EventArgs i_Args)
+        public void OnDeadInvader(object i_Sender, EventArgs i_Args)
         {
             m_TimeBetweenJumpsInSeconds *= k_SpeedAfterInvaderDead;
             if (++m_AmountOfEnemiesDead >= k_InvadersInColumn * m_InvadersInRow)
@@ -255,19 +248,17 @@ namespace SpaceInvaders.ObjectModel.Managers
             }
         }
 
-        protected override void Dispose(bool disposing)
+        protected override void Dispose(bool i_Disposing)
         {
-            if (disposing)
+            if (i_Disposing)
             {
-
                 foreach (var invader in Invaders)
                 {
                     invader.Dispose();
                 }
             }
 
-            base.Dispose(disposing);
+            base.Dispose(i_Disposing);
         }
-
     }
 }

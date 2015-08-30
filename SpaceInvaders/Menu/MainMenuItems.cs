@@ -6,12 +6,11 @@ using SpaceInvaders.Screens;
 
 namespace SpaceInvaders.Menu
 {
-    public class PlayItem : MenuItem
+    class PlayItem : MenuItem
     {
         public PlayItem(string i_Title, GameScreen i_GameScreen)
             : base(i_Title, i_GameScreen)
-        {
-        }
+        { }
         
         public override void EnterScreen(GameScreen i_GameScreen)
         {
@@ -19,12 +18,11 @@ namespace SpaceInvaders.Menu
         }
     }
 
-    public class SoundOptionsItem : MenuItem
+    class SoundOptionsItem : MenuItem
     {
         public SoundOptionsItem(string i_Title, GameScreen i_GameScreen)
             : base(i_Title, i_GameScreen)
-        {
-        }
+        { }
 
         public override void EnterScreen(GameScreen i_GameScreen)
         {
@@ -32,11 +30,11 @@ namespace SpaceInvaders.Menu
         }
     }
 
-    public class ChoosePlayersItem : MenuItem
+    class ChoosePlayersItem : MenuItem
     {
         public ChoosePlayersItem(string i_Title, GameScreen i_GameScreen)
             : base(i_Title, i_GameScreen)
-        {}
+        { }
 
         public override string ItemSelected(GameScreen i_GameScreen, Keys i_Key)
         {
@@ -49,17 +47,15 @@ namespace SpaceInvaders.Menu
                 m_SettingsManager.PlayersData[i].Enabled = i < numOfPlayers;
             }
 
-            
             return string.Format("{0}", numOfPlayers == 1 ? "One" : "Two");
         }
     }
 
-    public class ScreenOptionsItem : MenuItem
+    class ScreenOptionsItem : MenuItem
     {
         public ScreenOptionsItem(string i_Title, GameScreen i_GameScreen)
             : base(i_Title, i_GameScreen)
-        {
-        }
+        { }
 
         public override void EnterScreen(GameScreen i_GameScreen)
         {
@@ -67,12 +63,11 @@ namespace SpaceInvaders.Menu
         }
     }
 
-    public class QuitGameItem : MenuItem
+    class QuitGameItem : MenuItem
     {
         public QuitGameItem(string i_Title, GameScreen i_GameScreen)
             : base(i_Title, i_GameScreen)
-        {
-        }
+        { }
 
         public override void EnterScreen(GameScreen i_GameScreen)
         {

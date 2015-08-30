@@ -12,15 +12,18 @@ using SpaceInvaders.Configurations;
 
 namespace SpaceInvaders.ObjectModel.Sprites
 {
-    public class MotherShip : Sprite, ICollidable2D
+    class MotherShip : Sprite, ICollidable2D
     {
-        private const string k_AssteName = @"Sprites\MotherShip_32x120";
+        private const string k_AssetName = @"Sprites\MotherShip_32x120";
         private const int k_HorizontalVelocity = 110;
         private const int k_Score = 750;
-        public bool IsDying { get; private set; }
+
         private bool m_StartAnimationOnNextFrame = false;
         private ISoundManager m_SoundManager;
 
+        public event EventHandler<EventArgs> MotherShipDied;
+
+        public bool IsDying { get; private set; }
 
         public int Score
         {
@@ -29,7 +32,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
 
 
         public MotherShip(GameScreen i_GameScreen, bool i_Enable = false)
-            : base(k_AssteName, i_GameScreen)
+            : base(k_AssetName, i_GameScreen)
         {
             m_TintColor = Color.Red;
             Enabled = i_Enable;
@@ -60,15 +63,11 @@ namespace SpaceInvaders.ObjectModel.Sprites
             base.LoadContent();
         }
 
-
         private void startDieAnimation()
         {
             IsDying = true;
             Animations.Restart();
         }
-
-
-        public event EventHandler<EventArgs> MotherShipDied;
 
         private void onMotherShipDied()
         {
@@ -133,6 +132,5 @@ namespace SpaceInvaders.ObjectModel.Sprites
             Enabled = true;
             Velocity = new Vector2(k_HorizontalVelocity, 0);
         }
-
     }
 }

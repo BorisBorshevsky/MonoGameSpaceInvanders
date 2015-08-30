@@ -13,24 +13,32 @@ using SpaceInvaders.ObjectModel.Managers;
 
 namespace SpaceInvaders.ObjectModel.Sprites
 {
-    public abstract class Invader : Sprite, ICollidable2D
+    abstract class Invader : Sprite, ICollidable2D
     {
-        private int m_MaxAmountOfBulletsSimultaniously = 1;
-        private readonly List<Bullet> r_Bullets = new List<Bullet>();
-        private static readonly TimeSpan r_DyingAnimationTime = TimeSpan.FromSeconds(1.5);
+        protected const string k_AssetName = @"Sprites\AllInvaders";
         private const float k_BulletVelocity = 115f;
         private const int k_MinTimeBetweenShoots = 3000;
         private const int k_MaxTimeBetweenShoots = 10000;
-        private static readonly Random sr_Random = new Random();
-        private int m_TimeToNextShooting;
         private const int k_NumOfFrames = 2;
+
+        private readonly List<Bullet> r_Bullets = new List<Bullet>();
+
+        private static readonly TimeSpan r_DyingAnimationTime = TimeSpan.FromSeconds(1.5);
+        private static readonly Random sr_Random = new Random();
+
+        private int m_MaxAmountOfBulletsInBackground= 1;
+        private int m_TimeToNextShooting;
         private bool m_StartDieAnimationOnNextFrame = false;
-
-
-        protected const string k_AssetName = @"Sprites\AllInvaders";
-        protected bool isDying = false;
         private ISoundManager m_SoundManager;
+        private ISettingsManager m_SettingsManager;
 
+        protected bool isDying = false;
+
+        public abstract int Score { get; }
+        public double CurrentElapsedTime { get; set; }
+
+        public event EventHandler<EventArgs> InvaderDied;
+        
         protected Invader(GameScreen i_GameScreen, String i_AssetName, Color i_EnemyColor)
             : base(i_AssetName, i_GameScreen)
         {
@@ -61,10 +69,6 @@ namespace SpaceInvaders.ObjectModel.Sprites
             get { return isDying; }
             protected set { isDying = value; }
         }
-
-
-        public abstract int Score { get; }
-        public double CurrentElapsedTime { get; set; }
 
         public override void Collided(ICollidable i_Collidable)
         {
@@ -105,15 +109,12 @@ namespace SpaceInvaders.ObjectModel.Sprites
             Animations.Add(deadAnimation);
         }
 
-        public event EventHandler<EventArgs> InvaderDied;
-        private ISettingsManager m_SettingsManager;
-
         public override void Initialize()
         {
             base.Initialize();
             m_SoundManager = Game.Services.GetService<ISoundManager>();
             m_SettingsManager = Game.Services.GetService<ISettingsManager>();
-            m_MaxAmountOfBulletsSimultaniously += m_SettingsManager.GetGameLevelSettings().AdditionalInvadersBullets;
+            m_MaxAmountOfBulletsInBackground += m_SettingsManager.GetGameLevelSettings().AdditionalInvadersBullets;
             initAnimations();
         }
 
@@ -126,7 +127,6 @@ namespace SpaceInvaders.ObjectModel.Sprites
                 InvaderReachedBottom.Invoke(this, EventArgs.Empty);
             }
         }
-
 
         public override void Update(GameTime i_GameTime)
         {
@@ -143,7 +143,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
 
             CurrentElapsedTime += i_GameTime.ElapsedGameTime.TotalMilliseconds;
             r_Bullets.RemoveAll(i_Bullet => !i_Bullet.IsAlive);
-            if (CurrentElapsedTime >= m_TimeToNextShooting && r_Bullets.Count < m_MaxAmountOfBulletsSimultaniously)
+            if (CurrentElapsedTime >= m_TimeToNextShooting && r_Bullets.Count < m_MaxAmountOfBulletsInBackground)
             {
                 Shoot();
                 CurrentElapsedTime = 0;

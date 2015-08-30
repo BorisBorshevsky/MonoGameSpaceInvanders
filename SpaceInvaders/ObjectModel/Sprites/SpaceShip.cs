@@ -12,19 +12,19 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SpaceInvaders.Configurations;
 using Infrastructure.ObjectModel.Screens;
-using Microsoft.Xna.Framework.Audio;
 
 namespace SpaceInvaders.ObjectModel.Sprites
 {
-    public class SpaceShip : Sprite, ICollidable2D
+    class SpaceShip : Sprite, ICollidable2D
     {
-        private const int k_MaxAmountOfBulletsSimultaniously = 2;
+        private const int k_MaxAmountOfBulletsInBackground = 2;
         private const float k_Velocity = 150f;
         private const float k_BulletVelocity = 115f;
+
         private readonly List<Bullet> r_Bullets = new List<Bullet>();
-        
         private readonly SpaceShipConfiguration r_SpaceShipConfiguration;
         private readonly int r_InitialOffsetMultiplayer;
+
         private bool m_IsHitable = true;
         private ISoundManager m_SoundManager;
 
@@ -35,7 +35,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
         public IInputManager InputManager { get; set; }
 
         public SpaceShip(GameScreen i_GameScreen, SpaceShipConfiguration i_SpaceShipConfiguration, int i_Id)
-            : base(i_SpaceShipConfiguration.AssteName, i_GameScreen)
+            : base(i_SpaceShipConfiguration.AssetName, i_GameScreen)
         {
             r_SpaceShipConfiguration = i_SpaceShipConfiguration;
             r_InitialOffsetMultiplayer = i_Id;
@@ -200,7 +200,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
         protected void ShootIfPossible()
         {
             r_Bullets.RemoveAll(i_Bullet => !i_Bullet.IsAlive);
-            if (r_Bullets.Count < k_MaxAmountOfBulletsSimultaniously)
+            if (r_Bullets.Count < k_MaxAmountOfBulletsInBackground)
             {
                 m_SoundManager.PlaySoundEffect(Sounds.k_SsGunShot);
                 
@@ -210,7 +210,6 @@ namespace SpaceInvaders.ObjectModel.Sprites
                 bullet.Velocity = new Vector2(0, -k_BulletVelocity);
                 bullet.CollisionDetected += onBulletCollided;
                 r_Bullets.Add(bullet);
-
             }
         }
 

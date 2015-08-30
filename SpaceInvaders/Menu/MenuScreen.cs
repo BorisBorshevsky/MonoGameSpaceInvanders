@@ -13,9 +13,10 @@ namespace Infrastructure
 {
     public class MenuScreen : GameScreen
     {
+        protected SpriteFont m_Font;
+
         private List<MenuItem> m_MenuItem;
         private List<AnimatedSpriteText> m_AnimetedSpriteText;
-        protected SpriteFont m_Font;
         private int m_ActiveItemIndex;
         private int m_MaxActiveItemIndex;
         private Vector2 m_ItemPosition = Vector2.Zero;
@@ -89,7 +90,6 @@ namespace Infrastructure
             if (InputManager.KeyPressed(Keys.PageDown))
             {
                 string newValue = m_MenuItem[m_ActiveItemIndex].ItemSelected(this, Keys.PageDown);
-                //todo move sound to constructor
                 this.SoundManager.PlaySoundEffect(Sounds.k_MenuMove);
                 m_AnimetedSpriteText[m_ActiveItemIndex].TextValue = newValue;
             }
@@ -109,6 +109,7 @@ namespace Infrastructure
             this.Game.GraphicsDevice.Clear(Color.Black);
             SpriteBatch.DrawString(m_Font, m_MenuTitle, Vector2.Zero, Color.White);
             SpriteBatch.End();
+
             base.Draw(i_GameTime);
         }
     }

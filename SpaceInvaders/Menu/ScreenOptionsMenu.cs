@@ -4,37 +4,38 @@ using System.Linq;
 using System.Text;
 using Infrastructure;
 using Microsoft.Xna.Framework;
+using SpaceInvaders.Menu;
 using SpaceInvaders.ObjectModel.Managers;
 
 namespace SpaceInvaders
 {
     public class ScreenOptionsMenu : MenuScreen
     {
-        private WindowResizingItem m_WindowResizingItem;
-        private FullScreenModeItem m_FullScreenModeItem;
-        private MouseVisabilityItem m_MouseVisabilityItem;
-        private DoneItem m_DoneItem;
-        private SettingsManager m_SettingsManager;
+        private readonly WindowResizingItem r_WindowResizingItem;
+        private readonly FullScreenModeItem r_FullScreenModeItem;
+        private readonly MouseVisibilityItem r_MouseVisibilityItem;
+        private readonly DoneItem r_DoneItem;
+        private readonly ISettingsManager r_SettingsManager;
 
         public ScreenOptionsMenu(Game i_Game)
             : base(i_Game, "Screen Options")
         {
-            m_SettingsManager = (SettingsManager)Game.Services.GetService(typeof(ISettingsManager));
+            r_SettingsManager = i_Game.Services.GetService<ISettingsManager>();
 
-            m_MouseVisabilityItem = new MouseVisabilityItem("Mouse Visability: ", this);
-            m_MouseVisabilityItem.TitleValue = m_SettingsManager.IsMouseVisible ? "Visible" : "Invisible";
-            AddMenuItem(m_MouseVisabilityItem);
+            r_MouseVisibilityItem = new MouseVisibilityItem("Mouse Visibility: ", this);
+            r_MouseVisibilityItem.TitleValue = r_SettingsManager.IsMouseVisible ? "Visible" : "Invisible";
+            AddMenuItem(r_MouseVisibilityItem);
 
-            m_FullScreenModeItem = new FullScreenModeItem("Full Screen Mode: ", this);
-            m_FullScreenModeItem.TitleValue = m_SettingsManager.FullScreenMode ? "On" : "Off";
-            AddMenuItem(m_FullScreenModeItem);
+            r_FullScreenModeItem = new FullScreenModeItem("Full Screen Mode: ", this);
+            r_FullScreenModeItem.TitleValue = r_SettingsManager.FullScreenMode ? "On" : "Off";
+            AddMenuItem(r_FullScreenModeItem);
 
-            m_WindowResizingItem = new WindowResizingItem("Allow Window Resizing: ", this);
-            m_WindowResizingItem.TitleValue = (m_SettingsManager.AllowWindowResizing) ? "On" : "Off";
-            AddMenuItem(m_WindowResizingItem);
+            r_WindowResizingItem = new WindowResizingItem("Allow Window Resizing: ", this);
+            r_WindowResizingItem.TitleValue = (r_SettingsManager.AllowWindowResizing) ? "On" : "Off";
+            AddMenuItem(r_WindowResizingItem);
 
-            m_DoneItem = new DoneItem("Done", this);
-            AddMenuItem(m_DoneItem);
+            r_DoneItem = new DoneItem("Done", this);
+            AddMenuItem(r_DoneItem);
         }
     }
 }

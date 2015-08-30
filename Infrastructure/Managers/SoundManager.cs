@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Collections.Generic;
 using Infrastructure.ObjectModel;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -12,15 +8,16 @@ namespace Infrastructure.Managers
 {
     public class SoundManager : GameService, ISoundManager
     {
-        readonly Dictionary<string, SoundEffect> r_SoundEffects = new Dictionary<string, SoundEffect>();
+        private readonly Dictionary<string, SoundEffect> r_SoundEffects = new Dictionary<string, SoundEffect>();
 
+        private Song m_BackgroundSong;
         private int m_BackgroundMusicVolume = 10;
         private int m_SoundEffectsMusicVolume = 10;
         private bool m_Mute;
 
         public SoundManager(Game i_Game)
             : base(i_Game)
-        {}
+        { }
 
         public void IncreaseBackGroundVolume()
         {
@@ -80,21 +77,23 @@ namespace Infrastructure.Managers
             if (!m_Mute)
             {
                 r_SoundEffects[i_Path].Play((float)m_SoundEffectsMusicVolume / 100, 0f, 0f);    
-            }
-            
+            }    
         }
 
         public void PlayBackgroundMusic(string i_Path)
         {
             if (MediaPlayer.State != MediaState.Playing)
             {
-                var song = Game.Content.Load<Song>(i_Path);
-                MediaPlayer.Play(song);
+                var backgroundSong = getBackgroundSong(i_Path);
+                MediaPlayer.Play(backgroundSong);
                 MediaPlayer.IsRepeating = true;
                 MediaPlayer.Volume = m_Mute ? 0 : (float)m_BackgroundMusicVolume / 100;
             }
-            //todo: rami shit with music
+        }
 
+        private Song getBackgroundSong(string i_Path)
+        {
+            return m_BackgroundSong ?? (m_BackgroundSong = Game.Content.Load<Song>(i_Path));
         }
 
         protected override void RegisterAsService()

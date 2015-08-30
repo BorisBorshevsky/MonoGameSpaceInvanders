@@ -6,18 +6,22 @@ using SpaceInvaders.ObjectModel.Sprites;
 
 namespace SpaceInvaders.ObjectModel.Managers
 {
-    internal class MotherShipDeployer : RegisteredComponent
+    class MotherShipDeployer : RegisteredComponent
     {
-        private const int k_MinTimeBetweenMotheships = 3000;
-        private const int k_MaxTimeBetweenMotheships = 10000;
+        private const int k_MinTimeBetweenMotherships = 3000;
+        private const int k_MaxTimeBetweenMotherships = 10000;
+
         private readonly Random r_Random = new Random();
+
         private MotherShip m_MotherShip;
         private int m_TimeToNextMotherShip;
+
+        public double CurrentElapsedTime { get; set; }
 
         public MotherShipDeployer(GameScreen i_GameScreen)
             : base(i_GameScreen)
         {
-            m_TimeToNextMotherShip = r_Random.Next(k_MinTimeBetweenMotheships, k_MaxTimeBetweenMotheships);
+            m_TimeToNextMotherShip = r_Random.Next(k_MinTimeBetweenMotherships, k_MaxTimeBetweenMotherships);
         }
 
         public override void Initialize()
@@ -26,8 +30,6 @@ namespace SpaceInvaders.ObjectModel.Managers
             m_MotherShip = new MotherShip(Screen);
             m_MotherShip.Initialize();
         }
-
-        public double CurrentElapsedTime { get; set; }
 
         public override void Update(GameTime i_GameTime)
         {
@@ -40,7 +42,7 @@ namespace SpaceInvaders.ObjectModel.Managers
                 }
 
                 CurrentElapsedTime = 0;
-                m_TimeToNextMotherShip = r_Random.Next(k_MinTimeBetweenMotheships, k_MaxTimeBetweenMotheships);
+                m_TimeToNextMotherShip = r_Random.Next(k_MinTimeBetweenMotherships, k_MaxTimeBetweenMotherships);
             }
 
             base.Update(i_GameTime);

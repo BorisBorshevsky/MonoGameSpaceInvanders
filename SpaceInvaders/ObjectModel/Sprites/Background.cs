@@ -1,6 +1,5 @@
 using Infrastructure.ObjectModel;
 using Infrastructure.ObjectModel.Screens;
-using Microsoft.Xna.Framework;
 
 namespace SpaceInvaders.ObjectModel.Sprites
 {
@@ -17,6 +16,5 @@ namespace SpaceInvaders.ObjectModel.Sprites
             base.InitBounds();
             DrawOrder = int.MinValue;
         }
-
-      }
+    }
 }

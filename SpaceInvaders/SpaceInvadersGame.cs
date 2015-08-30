@@ -1,15 +1,8 @@
-﻿
-using Infrastructure;
-using Infrastructure.Managers;
+﻿using Infrastructure.Managers;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 using SpaceInvaders.Configurations;
-using SpaceInvaders.ObjectModel;
 using SpaceInvaders.ObjectModel.Managers;
-using SpaceInvaders.ObjectModel.Sprites;
 using SpaceInvaders.Screens;
 
 namespace SpaceInvaders
@@ -17,26 +10,26 @@ namespace SpaceInvaders
     /// <summary>
     ///     This is the main type for your game.
     /// </summary>
-    public class SapceInvadersGame : Game
+    public class SpaceInvadersGame : Game
     {
-        private GraphicsDeviceManager m_GraphicsMgr;
-        private InputManager m_InputManager;
-        private ScreensMananger m_ScreensMananger;
-        private FontManager m_FontManager;
-        private SoundManager m_SoundManager;
-        private SettingsManager m_SettingsManager;
+        private readonly GraphicsDeviceManager m_GraphicsMgr;
+        private readonly InputManager m_InputManager;
+        private readonly ScreensMananger m_ScreensMananger;
+        private readonly FontManager m_FontManager;
+        private readonly SoundManager m_SoundManager;
+        private readonly SettingsManager m_SettingsManager;
+        private readonly CollisionsManager m_CollisionsManager;
 
-        public SapceInvadersGame()
+        public SpaceInvadersGame()
         {
-            m_GraphicsMgr = new GraphicsDeviceManager(this);
             this.Content.RootDirectory = "Content";
+
+            m_GraphicsMgr = new GraphicsDeviceManager(this);
             m_InputManager = new InputManager(this);
             m_SoundManager = new SoundManager(this);
             m_FontManager = new FontManager(this, @"Fonts\Arial");
             m_SettingsManager = new SettingsManager(this);
-            
-            new CollisionsManager(this);
-
+            m_CollisionsManager = new CollisionsManager(this);
             m_ScreensMananger = new ScreensMananger(this);
             m_ScreensMananger.SetCurrentScreen(new WelcomeScreen(this));
         }
@@ -48,7 +41,6 @@ namespace SpaceInvaders
             this.IsMouseVisible = true;
             m_SoundManager.PlayBackgroundMusic(Sounds.k_BgMusic);
         }
-
 
         protected override void Draw(GameTime i_GameTime)
         {

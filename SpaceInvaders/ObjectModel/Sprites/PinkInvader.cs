@@ -3,12 +3,11 @@ using Microsoft.Xna.Framework;
 
 namespace SpaceInvaders.ObjectModel.Sprites
 {
-    internal class PinkInvader : Invader
+    class PinkInvader : Invader
     {
-
         public PinkInvader(GameScreen i_Game)
             : base(i_Game, k_AssetName, Color.LightPink)
-        {}
+        { }
         
         protected override void InitSourceRectangle()
         {

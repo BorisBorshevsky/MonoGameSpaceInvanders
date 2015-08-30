@@ -12,7 +12,8 @@ namespace SpaceInvaders.ObjectModel
         private const int k_GapBetweenBarriers = 1;
         private const int k_NumberOfBarriers = 4;
         private const int k_BottomOffset = 72;
-        readonly List<Barrier> r_Barriers = new List<Barrier>();
+
+        private readonly List<Barrier> r_Barriers = new List<Barrier>();
 
         public BarrierComposer(GameScreen i_GameScreen)
             : base(i_GameScreen)
@@ -44,7 +45,6 @@ namespace SpaceInvaders.ObjectModel
             
             base.Initialize();
         }
-
 
         private void generateBarriers()
         {

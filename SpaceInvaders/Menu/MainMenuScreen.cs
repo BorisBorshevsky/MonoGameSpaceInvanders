@@ -1,43 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Infrastructure;
+﻿using Infrastructure;
 using Microsoft.Xna.Framework;
-using SpaceInvaders.Menu;
 using SpaceInvaders.ObjectModel.Managers;
 
-namespace SpaceInvaders.Screens
+namespace SpaceInvaders.Menu
 {
     public class MainMenuScreen : MenuScreen
     {
-        private PlayItem m_PlayItem;
-        private SoundOptionsItem m_SoundOptionsItem;
-        private ChoosePlayersItem m_ChoosePlayersItem;
-        private ScreenOptionsItem m_ScreenOptionsItem;
-        private QuitGameItem m_QuitItem;
-        private SettingsManager m_SettingsManager;
+        private readonly PlayItem r_PlayItem;
+        private readonly SoundOptionsItem r_SoundOptionsItem;
+        private readonly ChoosePlayersItem r_ChoosePlayersItem;
+        private readonly ScreenOptionsItem r_ScreenOptionsItem;
+        private readonly QuitGameItem r_QuitItem;
+        private readonly SettingsManager r_SettingsManager;
 
         public MainMenuScreen(Game i_Game)
             : base(i_Game, "Main Menu")
         {
-            m_SettingsManager = (SettingsManager)Game.Services.GetService(typeof(ISettingsManager));
+            r_SettingsManager = (SettingsManager)Game.Services.GetService(typeof(ISettingsManager));
             
-            m_ScreenOptionsItem = new ScreenOptionsItem("Screen Options", this);
-            AddMenuItem(m_ScreenOptionsItem);
+            r_ScreenOptionsItem = new ScreenOptionsItem("Screen Options", this);
+            AddMenuItem(r_ScreenOptionsItem);
 
-            m_ChoosePlayersItem = new ChoosePlayersItem("Players: ", this);
-            m_ChoosePlayersItem.TitleValue = m_SettingsManager.NumOfPlayers == 1 ? "One" : "Two";
-            AddMenuItem(m_ChoosePlayersItem);
+            r_ChoosePlayersItem = new ChoosePlayersItem("Players: ", this);
+            r_ChoosePlayersItem.TitleValue = r_SettingsManager.NumOfPlayers == 1 ? "One" : "Two";
+            AddMenuItem(r_ChoosePlayersItem);
 
-            m_SoundOptionsItem = new SoundOptionsItem("Sound Options", this);
-            AddMenuItem(m_SoundOptionsItem);
+            r_SoundOptionsItem = new SoundOptionsItem("Sound Options", this);
+            AddMenuItem(r_SoundOptionsItem);
             
-            m_PlayItem = new PlayItem("Play", this);
-            AddMenuItem(m_PlayItem);
+            r_PlayItem = new PlayItem("Play", this);
+            AddMenuItem(r_PlayItem);
 
-            m_QuitItem = new QuitGameItem("Quit", this);
-            AddMenuItem(m_QuitItem);
+            r_QuitItem = new QuitGameItem("Quit", this);
+            AddMenuItem(r_QuitItem);
         }
     }
 }

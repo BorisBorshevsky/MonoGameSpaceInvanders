@@ -19,11 +19,10 @@ namespace SpaceInvaders.Screens
         private readonly InvaderGrid r_InvaderGrid;
         private readonly PauseScreen m_PauseScreen;
         private readonly PlayersManager r_playersManager;
+        private readonly Background r_Background;
 
-        private Background r_Background;
         private ISettingsManager m_SettingsManager;
         private SpriteFont m_FontArial;
-
 
         public PlayScreen(Game i_Game) : base(i_Game)
         {
@@ -38,15 +37,12 @@ namespace SpaceInvaders.Screens
             r_InvaderGrid.InvaderReachedBottom += onGameLost;
             r_InvaderGrid.AllEnemiesDied += onAllEnemiesDied;
 
-            
             m_PauseScreen = new PauseScreen(this);
 
             this.UseFadeTransition = true; 
             this.BlendState = BlendState.NonPremultiplied;
             this.SpritesSortMode = SpriteSortMode.Deferred;
         }
-
-
 
         private void onGameLost(object i_Sender, EventArgs i_EventArgs)
         {
@@ -63,7 +59,6 @@ namespace SpaceInvaders.Screens
             m_SoundManager = Game.Services.GetService<ISoundManager>();
             m_FontArial = Game.Services.GetService<IFontManager>().SpriteFont;
         }
-
 
         public override void Update(GameTime i_GameTime)
         {
@@ -82,12 +77,10 @@ namespace SpaceInvaders.Screens
             {
                 onGameLost(null, null);
             }
-
         }
 
         private void onAllEnemiesDied(object i_Sender, EventArgs i_Args)
         {
-
             m_SoundManager.PlaySoundEffect(Sounds.k_LevelWin);
             m_SettingsManager.IncrementLevel();
             this.ExitScreen();

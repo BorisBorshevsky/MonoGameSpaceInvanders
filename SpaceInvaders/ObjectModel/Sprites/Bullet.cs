@@ -9,11 +9,13 @@ namespace SpaceInvaders.ObjectModel.Sprites
     public class Bullet : PixelSensitiveSprite, ICollidablePixelBased
     {
         private const string k_AssstName = @"Sprites\Bullet";
-        private readonly Random r_Random = new Random();
         private const int k_ChanceForSpaceShipBulletToBeDisposedAfterBulletsCollision = 33;
+
+        private readonly Random r_Random = new Random();
+        
         public Bullet(GameScreen i_GameScreen)
             : base(k_AssstName, i_GameScreen)
-        {}
+        { }
 
         public event EventHandler<EventArgs> CollisionDetected; 
 
@@ -69,7 +71,6 @@ namespace SpaceInvaders.ObjectModel.Sprites
                         onCollisionDetected(i_Collidable);
                     }
                 }
-
             }
         }
 

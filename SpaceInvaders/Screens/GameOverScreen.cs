@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using Infrastructure.Animators.ConcreteAnimators;
 using Infrastructure.ObjectModel;
 using Infrastructure.ObjectModel.Screens;
@@ -6,36 +7,35 @@ using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SpaceInvaders.Menu;
 using SpaceInvaders.ObjectModel.Managers;
 using SpaceInvaders.ObjectModel.Sprites;
-using SpaceInvaders.Screens;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Screens
 {
-
-
-    public class GameOverScreen : GameScreen
+    class GameOverScreen : GameScreen
     {
+        private readonly Vector2 r_MessagePosition = new Vector2(70, 300);
+        private readonly ISettingsManager r_SettingsManager;
         private readonly Sprite r_GameOverMessage;
-
         private readonly Background r_Background;
-        private SpriteFont m_FontArial;
-        private Vector2 m_MsgPosition = new Vector2(70, 300);
-        private readonly ISettingsManager m_SettingsManager;
 
+        private SpriteFont m_FontArial;
+        
         public GameOverScreen(Game i_Game)
             : base(i_Game)
         {
             r_Background = new Background(this, @"Sprites\BG_Space01_1024x768", 1);
             r_Background.TintColor = Color.DarkOrange;
     
-            m_SettingsManager = Game.Services.GetService<ISettingsManager>();
+            r_SettingsManager = Game.Services.GetService<ISettingsManager>();
             r_GameOverMessage = new Sprite(@"Sprites\GameOverMessage", this);
         }
 
         public override void Initialize()
         {
             base.Initialize();
+
             m_FontArial = Game.Services.GetService<IFontManager>().SpriteFont;
             r_GameOverMessage.Animations.Add(new PulseAnimator("Pulse", TimeSpan.Zero, 1.05f, 0.7f));
             r_GameOverMessage.Animations.Enabled = true;
@@ -55,30 +55,29 @@ namespace SpaceInvaders
 
             if (InputManager.KeyPressed(Keys.P))
             {
-                m_SettingsManager.ResetScores();
+                r_SettingsManager.ResetScores();
                 ExitScreen();
                 ScreensManager.SetCurrentScreen(new PlayScreen(Game));                
             }
 
             if (InputManager.KeyPressed(Keys.F6))
             {
-                m_SettingsManager.ResetGameSettings();
+                r_SettingsManager.ResetGameSettings();
                 ExitScreen();
                 ScreensManager.SetCurrentScreen(new MainMenuScreen(Game));  
             }
         }
 
-        private string winningMsg()
+        private string createWinningMessage()
         {
-            string msg = "Game Over:\n";
-
-            for (int i = 0; i < m_SettingsManager.NumOfPlayers; i++)
+            StringBuilder message = new StringBuilder();
+            message.AppendLine("Game Over:");
+            for (int i = 0; i < r_SettingsManager.NumOfPlayers; i++)
             {
-                msg += string.Format("Player {0}: Final Score is {1}\n", i, m_SettingsManager.PlayersData[i].Score);
+                message.AppendLine(string.Format("Player {0}: Final Score is {1}", i, r_SettingsManager.PlayersData[i].Score));
             }
 
-
-            return msg;
+            return message.ToString();
         }
 
         public override void Draw(GameTime i_GameTime)
@@ -90,9 +89,9 @@ namespace SpaceInvaders
 @"Press 'Esc'   to  End Game
 Press 'P'     for New Game
 Press 'F6'   for Main Menu"
-            , m_MsgPosition,Color.White);
+            , r_MessagePosition,Color.White);
 
-            SpriteBatch.DrawString(m_FontArial, winningMsg(), new Vector2(40, 70), Color.LightBlue);
+            SpriteBatch.DrawString(m_FontArial, createWinningMessage(), new Vector2(40, 70), Color.LightBlue);
             SpriteBatch.End();
         }
     }

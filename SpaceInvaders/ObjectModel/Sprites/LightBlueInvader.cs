@@ -3,18 +3,16 @@ using Microsoft.Xna.Framework;
 
 namespace SpaceInvaders.ObjectModel.Sprites
 {
-    internal class LightBlueInvader : Invader
+    class LightBlueInvader : Invader
     {
         public LightBlueInvader(GameScreen i_GameScreen)
             : base(i_GameScreen, k_AssetName, Color.LightBlue)
-        {
-        }
+        { }
 
         protected override void InitSourceRectangle()
         {
             SourceRectangle = new Rectangle(64, 0, 32, 32);
         }
-
 
         public override int Score
         {

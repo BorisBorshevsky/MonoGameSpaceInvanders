@@ -9,9 +9,10 @@ using SpaceInvaders.Configurations;
 
 namespace SpaceInvaders.ObjectModel.Managers
 {
-    public class PlayersManager : RegisteredComponent
+    class PlayersManager : RegisteredComponent
     {
         private readonly List<Player> r_Players = new List<Player>();
+
         private int m_PlayerCounter = 0;
         private int m_LostPlayerCount = 0;
         private ISettingsManager m_SettingsManager;
@@ -48,7 +49,6 @@ namespace SpaceInvaders.ObjectModel.Managers
             }
         }
 
-
         public override void Initialize()
         {
             base.Initialize();
@@ -74,7 +74,7 @@ namespace SpaceInvaders.ObjectModel.Managers
                     LeftMoveButton = Keys.Left
                 },
                 TextColor = Color.Blue,
-                AssteName = @"Sprites\Ship01_32x32"
+                AssetName = @"Sprites\Ship01_32x32"
             };
 
             return createPlayer(i_PlayerId, spaceShipConfiguration, i_PlayerState);
@@ -107,7 +107,7 @@ namespace SpaceInvaders.ObjectModel.Managers
                     LeftMoveButton = Keys.A
                 },
                 TextColor = Color.Green,
-                AssteName = @"Sprites\Ship02_32x32"
+                AssetName = @"Sprites\Ship02_32x32"
             };
 
             return createPlayer(i_PlayerId, spaceShipConfiguration, i_PlayerState);

@@ -1,19 +1,17 @@
 //*** Guy Ronen © 2008-2011 ***//
 using System;
-using Infrastructure;
-using Infrastructure.Managers;
 using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Screens
 {
-    public class PauseScreen : GameScreen
+    class PauseScreen : GameScreen
     {
         private SpriteFont m_Font;
-        private Vector2 m_MsgPosition = new Vector2(70, 300);
+        private Vector2 m_MessagePosition = new Vector2(70, 300);
 
         public PauseScreen(GameScreen i_Game)
             : base(i_Game.Game)
@@ -44,7 +42,7 @@ namespace SpaceInvaders
 @"
 [ Game Paused ]
 Press 'R' to Resume Game",
-m_MsgPosition,
+m_MessagePosition,
 Color.White);
 
             SpriteBatch.End();
@@ -59,7 +57,7 @@ Color.White);
                 this.ExitScreen();
             }
 
-            m_MsgPosition.X = (float)Math.Pow(70, TransitionPosition);
+            m_MessagePosition.X = (float)Math.Pow(70, TransitionPosition);
         }
     }
 }

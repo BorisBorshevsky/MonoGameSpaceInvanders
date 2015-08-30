@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace SpaceInvaders.ObjectModel.Managers
 {
-    public interface ISettingsManager
+    interface ISettingsManager
     {
         List<IPlayerState> PlayersData { get; }
 
@@ -22,13 +19,12 @@ namespace SpaceInvaders.ObjectModel.Managers
         bool IsMouseVisible { get;}
         void ToggleMouseVisibility();
 
-        int InitialeLivesPerPlayer { get; }
+        int InitialLivesPerPlayer { get; }
         void ResetLives();
         void ResetScores();
 
         void ResetGameSettings();
        
-
         GameLevelSettings GetGameLevelSettings();
     }
 }

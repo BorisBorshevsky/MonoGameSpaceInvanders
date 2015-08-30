@@ -6,25 +6,26 @@ using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SpaceInvaders.Menu;
 using SpaceInvaders.ObjectModel.Sprites;
 
 namespace SpaceInvaders.Screens
 {
-
-    public class WelcomeScreen : GameScreen
+    class WelcomeScreen : GameScreen
     {
         private const float k_ScaleFactor = 1.16f;
-        private readonly Sprite r_WelcomeMessage;
-        private Background m_Background;
-        private SpriteFont m_Font;
+        
         private readonly Vector2 r_MsgPosition = new Vector2(100, 300);
-
+        private readonly Sprite r_WelcomeMessage;
+        private readonly Background r_Background;
+        
+        private SpriteFont m_Font;
+        
         public WelcomeScreen(Game i_Game)
             : base(i_Game)
         {
-            m_Background = new Background(this, @"Sprites\BG_Space01_1024x768", 1);
+            r_Background = new Background(this, @"Sprites\BG_Space01_1024x768", 1);
             r_WelcomeMessage = new Sprite(@"Sprites\WelcomeMessage", this);
-            
         }
 
         public override void Initialize()

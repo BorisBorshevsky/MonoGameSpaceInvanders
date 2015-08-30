@@ -14,7 +14,7 @@ namespace SpaceInvaders
         [STAThread]
         private static void Main()
         {
-            using (SapceInvadersGame game = new SapceInvadersGame())
+            using (SpaceInvadersGame game = new SpaceInvadersGame())
                 game.Run();
         }
     }

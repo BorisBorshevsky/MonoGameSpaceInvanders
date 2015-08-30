@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Infrastructure.ObjectModel;
 using Microsoft.Xna.Framework;
 
@@ -11,10 +9,10 @@ namespace SpaceInvaders.ObjectModel.Managers
     {
         private const int k_MaxAmountOfPlayers = 2;
         private const int k_InitialLivesPerPlayer = 3;
+
         private int m_GameLevel = 1;
         private GraphicsDeviceManager m_GraphicsDeviceManager;
         readonly List<IPlayerState> r_PlayersData = new List<IPlayerState>();
-
 
         public override void Initialize()
         {
@@ -78,7 +76,7 @@ namespace SpaceInvaders.ObjectModel.Managers
             Game.IsMouseVisible = !Game.IsMouseVisible;
         }
 
-        public int InitialeLivesPerPlayer
+        public int InitialLivesPerPlayer
         {
             get { return k_InitialLivesPerPlayer; }
         }
@@ -116,7 +114,6 @@ namespace SpaceInvaders.ObjectModel.Managers
             GameLevel = 1;
         }
 
-
         public GameLevelSettings GetGameLevelSettings()
         {
             switch (GameLevel % 5)
@@ -125,9 +122,9 @@ namespace SpaceInvaders.ObjectModel.Managers
                     return new GameLevelSettings
                     {
                         BarrierShouldMove = false,
-                        AdditionalInvadersColoumns = 0,
+                        AdditionalInvadersColumns = 0,
                         AdditionalInvadersPoints = 0,
-                        AdditionalBarrierSpeedPrecent = 0,
+                        AdditionalBarrierSpeedPercent = 0,
                         AdditionalInvadersBullets = 0,
                     };
                 case 2:
@@ -135,9 +132,9 @@ namespace SpaceInvaders.ObjectModel.Managers
                     return new GameLevelSettings
                     {
                         BarrierShouldMove = true,
-                        AdditionalInvadersColoumns = 1,
+                        AdditionalInvadersColumns = 1,
                         AdditionalInvadersPoints = 30,
-                        AdditionalBarrierSpeedPrecent = 0f,
+                        AdditionalBarrierSpeedPercent = 0f,
                         AdditionalInvadersBullets = 0,
                     };
                 }
@@ -146,9 +143,9 @@ namespace SpaceInvaders.ObjectModel.Managers
                     return new GameLevelSettings
                     {
                         BarrierShouldMove = true,
-                        AdditionalInvadersColoumns = 2,
+                        AdditionalInvadersColumns = 2,
                         AdditionalInvadersPoints = 30 * 2,
-                        AdditionalBarrierSpeedPrecent = 0.05f,
+                        AdditionalBarrierSpeedPercent = 0.05f,
                         AdditionalInvadersBullets = 1,
                     };
                 }
@@ -157,9 +154,9 @@ namespace SpaceInvaders.ObjectModel.Managers
                     return new GameLevelSettings
                     {
                         BarrierShouldMove = true,
-                        AdditionalInvadersColoumns = 3,
+                        AdditionalInvadersColumns = 3,
                         AdditionalInvadersPoints = 30 * 3,
-                        AdditionalBarrierSpeedPrecent = 0.05f * 2,
+                        AdditionalBarrierSpeedPercent = 0.05f * 2,
                         AdditionalInvadersBullets = 1,
                     };
                 }
@@ -168,9 +165,9 @@ namespace SpaceInvaders.ObjectModel.Managers
                     return new GameLevelSettings
                     {
                         BarrierShouldMove = true,
-                        AdditionalInvadersColoumns = 4,
+                        AdditionalInvadersColumns = 4,
                         AdditionalInvadersPoints = 30 * 4,
-                        AdditionalBarrierSpeedPrecent = 0.05f * 3,
+                        AdditionalBarrierSpeedPercent = 0.05f * 3,
                         AdditionalInvadersBullets = 20,
                     };
                 }

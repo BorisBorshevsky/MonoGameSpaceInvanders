@@ -13,14 +13,18 @@ namespace SpaceInvaders.ObjectModel.Sprites
     {
         private const float k_BulletHitPercentage = 0.55f;
         private const int k_Velocity = 55;
-        public Rectangle MovementBounds { get; set; }
+        private const String k_AssetName = @"Sprites\Barrier_44x32";
+
         private float m_RangeToMove;
         private ISoundManager m_SoundManager;
         private ISettingsManager m_SettingsManager;
+
+        public event EventHandler<EventArgs> BarrierHit;
+
         private int LeftBarrier { get; set; }
         private int RightBarrier { get; set; }
-
-        private const String k_AssetName = @"Sprites\Barrier_44x32";
+        public Rectangle MovementBounds { get; set; }
+        
         public Barrier(GameScreen i_GameScreen)
             : base(k_AssetName, i_GameScreen)
         { }
@@ -30,8 +34,6 @@ namespace SpaceInvaders.ObjectModel.Sprites
             Velocity = new Vector2(k_Velocity, 0);
             base.InitBounds();
         }
-
-        public event EventHandler<EventArgs> BarrierHit;
 
         public override void Collided(ICollidable i_Collidable)
         {
@@ -67,7 +69,6 @@ namespace SpaceInvaders.ObjectModel.Sprites
             }
 
             Texture.SetData(Pixels);
-
         }
 
         private void handleSpriteCollision(PixelSensitiveSprite i_PixelSensitiveSprite, Rectangle i_HitRectangle)
@@ -109,7 +110,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
                 Velocity = Vector2.Zero;
             }
 
-            Velocity += m_SettingsManager.GetGameLevelSettings().AdditionalBarrierSpeedPrecent * Velocity;
+            Velocity += m_SettingsManager.GetGameLevelSettings().AdditionalBarrierSpeedPercent * Velocity;
         }
 
         public override void Update(GameTime i_GameTime)
@@ -127,6 +128,5 @@ namespace SpaceInvaders.ObjectModel.Sprites
                 Position = new Vector2(LeftBarrier + 1, Position.Y);
             }
         }
-
     }
 }

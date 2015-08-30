@@ -8,7 +8,7 @@ namespace SpaceInvaders.Configurations
 
         public SpaceShipKeyboardConfiguration SpaceShipKeyboardConfiguration { get; set; }
 
-        public string AssteName { get; set; }
+        public string AssetName { get; set; }
 
         public Color TextColor { get; set; }
     }
