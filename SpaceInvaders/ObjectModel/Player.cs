@@ -63,7 +63,9 @@ namespace SpaceInvaders.ObjectModel
         private void spaceShipOnHit(object i_Sender, EventArgs i_EventArgs)
         {
             ScoresBoard.AddScore(k_LoosingLifeScorePanalty);
+            
             r_SoulsBoard.RemoveSoul();
+
             if (r_SoulsBoard.PlayerState.Lives == 0)
             {
                 spaceShipOnDie(i_Sender, i_EventArgs);

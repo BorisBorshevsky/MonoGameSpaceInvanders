@@ -42,11 +42,6 @@ namespace SpaceInvaders.ObjectModel.Managers
             private set { m_GameLevel = value; }
         }
 
-        public int GameLevelDisplayedToPlayer
-        {
-            get { throw new NotImplementedException(); }
-        }
-
         public void IncrementLevel()
         {
             GameLevel++;
@@ -100,6 +95,27 @@ namespace SpaceInvaders.ObjectModel.Managers
                 playerState.Lives = k_InitialLivesPerPlayer;
             }
         }
+
+        public void ResetScores()
+        {
+            foreach (var playerState in PlayersData)
+            {
+                playerState.Score = 0;
+            }
+        }
+
+        public void ResetGameSettings()
+        {
+            ResetScores();
+            ResetLives();
+            ResetGameLevel();
+        }
+
+        protected void ResetGameLevel()
+        {
+            GameLevel = 1;
+        }
+
 
         public GameLevelSettings GetGameLevelSettings()
         {

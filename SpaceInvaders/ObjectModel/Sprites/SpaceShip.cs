@@ -65,6 +65,8 @@ namespace SpaceInvaders.ObjectModel.Sprites
 
         private void onSpaceShipHit()
         {
+            m_SoundManager.PlaySoundEffect(Sounds.k_LifeDie);
+
             if (SpaceShipHit != null)
             {
                 SpaceShipHit.Invoke(this, EventArgs.Empty);
@@ -207,18 +209,16 @@ namespace SpaceInvaders.ObjectModel.Sprites
                 bullet.Position = new Vector2(Bounds.Left + Bounds.Width/2 - bullet.Width/2,Bounds.Top - bullet.Height);
                 bullet.Velocity = new Vector2(0, -k_BulletVelocity);
                 bullet.CollisionDetected += onBulletCollided;
-                bullet.Disposed -= onBulletCollided;
                 r_Bullets.Add(bullet);
-
 
             }
         }
 
-        private void onBulletCollided(object i_Sender, EventArgs i_E)
+        private void onBulletCollided(object i_Sender, EventArgs i_EventArgs)
         {
             if (BulletCollided != null)
             {
-                BulletCollided.Invoke(i_Sender, i_E);
+                BulletCollided.Invoke(i_Sender, i_EventArgs);
             }
         }
 
@@ -226,7 +226,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
         {
             if (i_Disposing)
             {
-                foreach (var bullet in r_Bullets)
+                foreach (Bullet bullet in r_Bullets)
                 {
                     bullet.Dispose();
                 }

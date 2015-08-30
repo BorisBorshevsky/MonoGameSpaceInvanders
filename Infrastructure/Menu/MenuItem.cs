@@ -9,26 +9,16 @@ namespace Infrastructure
 {
     public class MenuItem : IMenuItem
     {
-        private string m_Title;
-        private string m_TitleValue = string.Empty;
-
         public MenuItem(string i_Title, GameScreen i_GameScreen)
-            : base()
         {
-            m_Title = i_Title;
-            m_GameScreen = i_GameScreen;
+            TitleValue = string.Empty;
+            Title = i_Title;
+            GameScreen = i_GameScreen;
         }
 
-        public string Title
-        {
-            get { return m_Title; }
-        }
+        public string Title { get; private set; }
 
-        public string TitleValue
-        {
-            get { return m_TitleValue; }
-            set { m_TitleValue = value; }
-        }
+        public string TitleValue { get; set; }
 
         public virtual void EnterScreen(GameScreen i_GameScreen) 
         { 
@@ -39,11 +29,6 @@ namespace Infrastructure
             return string.Empty;
         }
 
-        private GameScreen m_GameScreen;
-
-        public GameScreen GameScreen
-        {
-            get { return m_GameScreen; }
-        }
+        public GameScreen GameScreen { get; private set; }
     }
 }

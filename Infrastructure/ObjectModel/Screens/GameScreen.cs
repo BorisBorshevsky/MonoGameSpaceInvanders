@@ -161,7 +161,7 @@ namespace Infrastructure.ObjectModel.Screens
             get { return this.HasFocus ? m_InputManager : m_DummyInputManager; }
         }
 
-        private ISoundManager m_SoundManager;
+        protected ISoundManager m_SoundManager;
 
         public ISoundManager SoundManager
         {

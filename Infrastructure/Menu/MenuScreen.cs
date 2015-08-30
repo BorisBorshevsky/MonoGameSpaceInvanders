@@ -7,7 +7,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Infrastructure;
 using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework.Input;
-using SpaceInvaders.Configurations;
 
 namespace Infrastructure
 {
@@ -22,6 +21,11 @@ namespace Infrastructure
         private string m_MenuTitle;
         private Color m_InactiveColor = Color.Green;
         private Color m_ActiveColor = Color.Blue;
+        private string r_MenuMoveSound;
+
+
+        private bool HasMenuMoveSound { get; set; }
+
 
         public MenuScreen(Game i_Game, string i_MenuTitle)
             : base(i_Game)
@@ -30,6 +34,29 @@ namespace Infrastructure
             m_MenuItem = new List<MenuItem>();
             m_AnimetedSpriteText = new List<AnimatedSpriteText>();
         }
+
+        public MenuScreen(Game i_Game, string i_MenuTitle, string i_MenuMoveSound)
+            : this(i_Game, i_MenuTitle)
+        {
+            r_MenuMoveSound = i_MenuMoveSound;
+            HasMenuMoveSound = true;
+        }
+
+        protected event EventHandler<EventArgs> MenuMoved;
+
+        protected void OnMenuMoved()
+        {
+            if (HasMenuMoveSound)
+            {
+                SoundManager.PlaySoundEffect(r_MenuMoveSound);
+            }
+            
+            if (MenuMoved != null)
+            {
+                MenuMoved.Invoke(this, EventArgs.Empty);
+            }
+        }
+
 
         public override void Initialize()
         {
@@ -71,7 +98,7 @@ namespace Infrastructure
                     m_ActiveItemIndex = (m_ActiveItemIndex < m_MaxActiveItemIndex + 1) ? m_ActiveItemIndex : 0;
                 }
 
-                SoundManager.PlaySoundEffect(Sounds.k_MenuMove);
+                OnMenuMoved();
             }
 
             if (InputManager.KeyPressed(Keys.Enter))
@@ -82,20 +109,21 @@ namespace Infrastructure
             if (InputManager.KeyPressed(Keys.PageUp))
             {
                 string newValue = m_MenuItem[m_ActiveItemIndex].ItemSelected(this, Keys.PageUp);
-                this.SoundManager.PlaySoundEffect(Sounds.k_MenuMove);
                 m_AnimetedSpriteText[m_ActiveItemIndex].TextValue = newValue;
+                OnMenuMoved();
             }
 
             if (InputManager.KeyPressed(Keys.PageDown))
             {
                 string newValue = m_MenuItem[m_ActiveItemIndex].ItemSelected(this, Keys.PageDown);
-                //todo move sound to constructor
-                this.SoundManager.PlaySoundEffect(Sounds.k_MenuMove);
                 m_AnimetedSpriteText[m_ActiveItemIndex].TextValue = newValue;
+                OnMenuMoved();
             }
 
             m_AnimetedSpriteText[m_ActiveItemIndex].Animations.Enabled = true;
         }
+
+        
 
         protected override void LoadContent()
         {
@@ -106,7 +134,7 @@ namespace Infrastructure
         public override void Draw(GameTime i_GameTime)
         {
             SpriteBatch.Begin();
-            this.Game.GraphicsDevice.Clear(Color.Black);
+            Game.GraphicsDevice.Clear(Color.Black);
             SpriteBatch.DrawString(m_Font, m_MenuTitle, Vector2.Zero, Color.White);
             SpriteBatch.End();
             base.Draw(i_GameTime);

@@ -1,8 +1,11 @@
 ﻿using System;
+using Infrastructure;
 using Infrastructure.ObjectModel.Screens;
+using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SpaceInvaders.Configurations;
 using SpaceInvaders.ObjectModel;
 using SpaceInvaders.ObjectModel.Managers;
 using SpaceInvaders.ObjectModel.Sprites;
@@ -19,7 +22,8 @@ namespace SpaceInvaders.Screens
 
         private Background r_Background;
         private ISettingsManager m_SettingsManager;
-        
+        private SpriteFont m_FontArial;
+
 
         public PlayScreen(Game i_Game) : base(i_Game)
         {
@@ -34,8 +38,6 @@ namespace SpaceInvaders.Screens
             r_InvaderGrid.InvaderReachedBottom += onGameLost;
             r_InvaderGrid.AllEnemiesDied += onAllEnemiesDied;
 
-            new ScoresBoard(this, 1, Color.White);
-            
             
             m_PauseScreen = new PauseScreen(this);
 
@@ -48,7 +50,7 @@ namespace SpaceInvaders.Screens
 
         private void onGameLost(object i_Sender, EventArgs i_EventArgs)
         {
-            //todo add sound lose
+            m_SoundManager.PlaySoundEffect(Sounds.k_GameOver);
             this.ExitScreen();
             this.Dispose();
             ScreensManager.SetCurrentScreen(new GameOverScreen(Game));
@@ -58,6 +60,8 @@ namespace SpaceInvaders.Screens
         {
             base.Initialize();
             m_SettingsManager = Game.Services.GetService<ISettingsManager>();
+            m_SoundManager = Game.Services.GetService<ISoundManager>();
+            m_FontArial = Game.Services.GetService<IFontManager>().SpriteFont;
         }
 
 
@@ -83,13 +87,19 @@ namespace SpaceInvaders.Screens
 
         private void onAllEnemiesDied(object i_Sender, EventArgs i_Args)
         {
+
+            m_SoundManager.PlaySoundEffect(Sounds.k_LevelWin);
             m_SettingsManager.IncrementLevel();
-            //todo add sound win
             this.ExitScreen();
             this.Dispose();
             ScreensManager.SetCurrentScreen(new LevelTransitionScreen(Game));
         }
 
-
+        public override void Draw(GameTime i_GameTime)
+        {
+            base.Draw(i_GameTime);
+         
+            r_playersManager.Players.ForEach(i_Player => i_Player.ScoresBoard.Draw(i_GameTime));
+        }
     }
 }

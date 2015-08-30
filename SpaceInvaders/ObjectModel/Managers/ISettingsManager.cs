@@ -9,8 +9,6 @@ namespace SpaceInvaders.ObjectModel.Managers
     {
         List<IPlayerState> PlayersData { get; }
 
-//        int GameLevel { get; }
-
         int GameLevel { get; }
         void IncrementLevel();
 
@@ -26,6 +24,10 @@ namespace SpaceInvaders.ObjectModel.Managers
 
         int InitialeLivesPerPlayer { get; }
         void ResetLives();
+        void ResetScores();
+
+        void ResetGameSettings();
+       
 
         GameLevelSettings GetGameLevelSettings();
     }

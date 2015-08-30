@@ -16,6 +16,11 @@ namespace SpaceInvaders.ObjectModel.Managers
         private int m_LostPlayerCount = 0;
         private ISettingsManager m_SettingsManager;
 
+        public List<Player> Players
+        {
+            get { return r_Players; }
+        }
+
         public PlayersManager(GameScreen i_GameScreen)
             : base(i_GameScreen)
         { }
@@ -108,9 +113,9 @@ namespace SpaceInvaders.ObjectModel.Managers
             return createPlayer(i_PlayerId, spaceShipConfiguration, i_PlayerState);
         }
 
-        protected override void Dispose(bool disposing)
+        protected override void Dispose(bool i_Disposing)
         {
-            if (disposing)
+            if (i_Disposing)
             {
                 foreach (var player in r_Players)
                 {
@@ -118,7 +123,7 @@ namespace SpaceInvaders.ObjectModel.Managers
                 }
             }
 
-            base.Dispose(disposing);
+            base.Dispose(i_Disposing);
         }
     }
 }

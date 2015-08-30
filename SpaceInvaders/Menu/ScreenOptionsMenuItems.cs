@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
 using SpaceInvaders.ObjectModel.Managers;
 
+
 namespace SpaceInvaders
 {
     public class WindowResizingItem : MenuItem
