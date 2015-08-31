@@ -16,14 +16,14 @@ namespace SpaceInvaders.Screens
         public PauseScreen(GameScreen i_Game)
             : base(i_Game.Game)
         {
-            this.IsModal = true;
-            this.IsOverlayed = true;
-            this.UseGradientBackground = true;
-            this.BlackTintAlpha = 0.6f;
-            this.UseFadeTransition = true;
+            IsModal = true;
+            IsOverlayed = true;
+            UseGradientBackground = true;
+            BlackTintAlpha = 0.6f;
+            UseFadeTransition = true;
 
-            this.ActivationLength = TimeSpan.FromSeconds(0.5f);
-            this.DeactivationLength = TimeSpan.FromSeconds(0.5f);
+            ActivationLength = TimeSpan.FromSeconds(0.5f);
+            DeactivationLength = TimeSpan.FromSeconds(0.5f);
         }
 
         public override void Initialize()
@@ -54,7 +54,7 @@ Color.White);
 
             if (InputManager.KeyPressed(Keys.R))
             {
-                this.ExitScreen();
+                ExitScreen();
             }
 
             m_MessagePosition.X = (float)Math.Pow(70, TransitionPosition);

@@ -1,14 +1,12 @@
-﻿using Infrastructure.Animators;
+﻿using System;
 using Infrastructure.Animators.ConcreteAnimators;
 using Infrastructure.ObjectModel;
 using Infrastructure.ObjectModel.Screens;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace Infrastructure
+namespace Infrastructure.Animators
 {
-    using System;
-    using Microsoft.Xna.Framework;
-    using Microsoft.Xna.Framework.Graphics;
-
     public class AnimatedSpriteText : Sprite
     {
         private SpriteAnimator m_PulseAnimator;

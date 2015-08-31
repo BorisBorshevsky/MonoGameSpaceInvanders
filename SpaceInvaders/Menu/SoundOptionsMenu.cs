@@ -1,6 +1,6 @@
 ﻿using Infrastructure;
-using Infrastructure.Managers;
 using Microsoft.Xna.Framework;
+using SpaceInvaders.Menu.SoundOptionsMenuItems;
 
 namespace SpaceInvaders.Menu
 {
@@ -10,7 +10,6 @@ namespace SpaceInvaders.Menu
         private ToggleSoundItem m_ToggleSoundItem;
         private BackgroundMusicVolumItem r_MBackgroundMusicVolumItem;
         private DoneItem m_DoneItem;
-        private ISoundManager m_SoundManager;
 
         public SoundOptionsMenu(Game i_Game)
             : base(i_Game, "Sound Options")

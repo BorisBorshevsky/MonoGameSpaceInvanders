@@ -102,8 +102,8 @@ namespace SpaceInvaders.ObjectModel.Sprites
             m_RangeToMove = (float)Bounds.Width / 4;
             RightBarrier = (int)(Bounds.Right + Bounds.Width + m_RangeToMove);
             LeftBarrier = (int)(Bounds.Left - m_RangeToMove);
-            m_SoundManager = Game.Services.GetService(typeof(ISoundManager)) as ISoundManager;
-            m_SettingsManager = Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager;
+            m_SoundManager = Game.Services.GetService<ISoundManager>();
+            m_SettingsManager = Game.Services.GetService<ISettingsManager>();
 
             if (!m_SettingsManager.GetGameLevelSettings().BarrierShouldMove)
             {

@@ -1,23 +1,19 @@
-﻿using Infrastructure;
-using Microsoft.Xna.Framework;
-using SpaceInvaders.ObjectModel.Managers;
+﻿using Microsoft.Xna.Framework;
+using SpaceInvaders.Menu.MainMenuItems;
 
 namespace SpaceInvaders.Menu
 {
-    public class MainMenuScreen : MenuScreen
+    class MainMenuScreen : MenuScreen
     {
         private readonly PlayItem r_PlayItem;
         private readonly SoundOptionsItem r_SoundOptionsItem;
         private readonly ChoosePlayersItem r_ChoosePlayersItem;
         private readonly ScreenOptionsItem r_ScreenOptionsItem;
         private readonly QuitGameItem r_QuitItem;
-        private readonly SettingsManager r_SettingsManager;
 
         public MainMenuScreen(Game i_Game)
             : base(i_Game, "Main Menu")
-        {
-            r_SettingsManager = (SettingsManager)Game.Services.GetService(typeof(ISettingsManager));
-            
+        {   
             r_ScreenOptionsItem = new ScreenOptionsItem("Screen Options", this);
             AddMenuItem(r_ScreenOptionsItem);
 

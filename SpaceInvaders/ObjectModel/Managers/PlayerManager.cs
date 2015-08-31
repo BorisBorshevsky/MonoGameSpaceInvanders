@@ -53,7 +53,7 @@ namespace SpaceInvaders.ObjectModel.Managers
         {
             base.Initialize();
 
-            m_SettingsManager = Game.Services.GetService(typeof(ISettingsManager)) as ISettingsManager;
+            m_SettingsManager = Game.Services.GetService<ISettingsManager>();
             m_SettingsManager.ResetLives();
 
             createPlayers(m_SettingsManager.PlayersData);

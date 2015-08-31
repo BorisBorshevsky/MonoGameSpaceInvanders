@@ -1,51 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using Infrastructure;
+using Infrastructure.Animators;
+using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Infrastructure;
-using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework.Input;
 using SpaceInvaders.Configurations;
+using SpaceInvaders.ObjectModel.Managers;
 
-namespace Infrastructure
+namespace SpaceInvaders.Menu
 {
-    public class MenuScreen : GameScreen
+    class MenuScreen : GameScreen
     {
         protected SpriteFont m_Font;
 
-        private List<MenuItem> m_MenuItem;
-        private List<AnimatedSpriteText> m_AnimetedSpriteText;
+        protected readonly ISettingsManager r_SettingsManager;
+        private readonly List<MenuItem> r_MenuItem;
+        private readonly List<AnimatedSpriteText> r_AnimatedSpriteText;
+        private readonly string r_MenuTitle;
+        private readonly Color r_InactiveColor = Color.Green;
+        private readonly Color r_ActiveColor = Color.Blue;
+
         private int m_ActiveItemIndex;
         private int m_MaxActiveItemIndex;
-        private Vector2 m_ItemPosition = Vector2.Zero;
-        private string m_MenuTitle;
-        private Color m_InactiveColor = Color.Green;
-        private Color m_ActiveColor = Color.Blue;
-
+        
         public MenuScreen(Game i_Game, string i_MenuTitle)
             : base(i_Game)
         {
-            m_MenuTitle = i_MenuTitle;
-            m_MenuItem = new List<MenuItem>();
-            m_AnimetedSpriteText = new List<AnimatedSpriteText>();
+            r_MenuTitle = i_MenuTitle;
+            r_MenuItem = new List<MenuItem>();
+            r_AnimatedSpriteText = new List<AnimatedSpriteText>();
+            r_SettingsManager = i_Game.Services.GetService<ISettingsManager>();
         }
 
         public override void Initialize()
         {
             base.Initialize();
             m_ActiveItemIndex = 0;
-            m_MaxActiveItemIndex = m_MenuItem.Count - 1;
+            m_MaxActiveItemIndex = r_MenuItem.Count - 1;
         }
 
         public void AddMenuItem(MenuItem i_MenuItem)
         {
             AnimatedSpriteText current = new AnimatedSpriteText(@"Fonts\Arial", i_MenuItem.Title, this);
-            m_MenuItem.Add(i_MenuItem);
-            m_AnimetedSpriteText.Add(current);
-            current.Position = new Vector2(0, m_AnimetedSpriteText.Count * 30);
-            current.TintColor = m_InactiveColor;
+            r_MenuItem.Add(i_MenuItem);
+            r_AnimatedSpriteText.Add(current);
+            current.Position = new Vector2(0, r_AnimatedSpriteText.Count * 30);
+            current.TintColor = r_InactiveColor;
             current.TextValue = i_MenuItem.TitleValue;
         }
 
@@ -53,12 +54,12 @@ namespace Infrastructure
         {
             base.Update(i_GameTime);
 
-            m_AnimetedSpriteText[m_ActiveItemIndex].Animations.Enabled = false;
-            m_AnimetedSpriteText[m_ActiveItemIndex].TintColor = m_ActiveColor;
+            r_AnimatedSpriteText[m_ActiveItemIndex].Animations.Enabled = false;
+            r_AnimatedSpriteText[m_ActiveItemIndex].TintColor = r_ActiveColor;
 
             if (InputManager.KeyPressed(Keys.Up) || InputManager.KeyPressed(Keys.Down))
             {
-                m_AnimetedSpriteText[m_ActiveItemIndex].TintColor = m_InactiveColor;
+                r_AnimatedSpriteText[m_ActiveItemIndex].TintColor = r_InactiveColor;
 
                 if (InputManager.KeyPressed(Keys.Up))
                 {
@@ -77,24 +78,24 @@ namespace Infrastructure
 
             if (InputManager.KeyPressed(Keys.Enter))
             {
-                m_MenuItem[m_ActiveItemIndex].EnterScreen(this);
+                r_MenuItem[m_ActiveItemIndex].EnterScreen(this);
             }
 
             if (InputManager.KeyPressed(Keys.PageUp))
             {
-                string newValue = m_MenuItem[m_ActiveItemIndex].ItemSelected(this, Keys.PageUp);
-                this.SoundManager.PlaySoundEffect(Sounds.k_MenuMove);
-                m_AnimetedSpriteText[m_ActiveItemIndex].TextValue = newValue;
+                string newValue = r_MenuItem[m_ActiveItemIndex].ItemSelected(this, Keys.PageUp);
+                SoundManager.PlaySoundEffect(Sounds.k_MenuMove);
+                r_AnimatedSpriteText[m_ActiveItemIndex].TextValue = newValue;
             }
 
             if (InputManager.KeyPressed(Keys.PageDown))
             {
-                string newValue = m_MenuItem[m_ActiveItemIndex].ItemSelected(this, Keys.PageDown);
-                this.SoundManager.PlaySoundEffect(Sounds.k_MenuMove);
-                m_AnimetedSpriteText[m_ActiveItemIndex].TextValue = newValue;
+                string newValue = r_MenuItem[m_ActiveItemIndex].ItemSelected(this, Keys.PageDown);
+                SoundManager.PlaySoundEffect(Sounds.k_MenuMove);
+                r_AnimatedSpriteText[m_ActiveItemIndex].TextValue = newValue;
             }
 
-            m_AnimetedSpriteText[m_ActiveItemIndex].Animations.Enabled = true;
+            r_AnimatedSpriteText[m_ActiveItemIndex].Animations.Enabled = true;
         }
 
         protected override void LoadContent()
@@ -106,8 +107,8 @@ namespace Infrastructure
         public override void Draw(GameTime i_GameTime)
         {
             SpriteBatch.Begin();
-            this.Game.GraphicsDevice.Clear(Color.Black);
-            SpriteBatch.DrawString(m_Font, m_MenuTitle, Vector2.Zero, Color.White);
+            Game.GraphicsDevice.Clear(Color.Black);
+            SpriteBatch.DrawString(m_Font, r_MenuTitle, Vector2.Zero, Color.White);
             SpriteBatch.End();
 
             base.Draw(i_GameTime);

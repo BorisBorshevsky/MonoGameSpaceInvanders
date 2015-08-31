@@ -1,5 +1,4 @@
 ﻿using System;
-using Infrastructure;
 using Infrastructure.ObjectModel;
 using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework;
@@ -32,7 +31,6 @@ namespace SpaceInvaders.ObjectModel.Managers
         private float m_TopPadding;
         private float m_VerticalDistanceBetweenEnemies;
         private Rectangle m_GridBounds;
-        private ISoundManager m_SoundManager;
         private ISettingsManager m_SettingsManager;
 
         public event EventHandler<EventArgs> InvaderReachedBottom;
@@ -114,7 +112,6 @@ namespace SpaceInvaders.ObjectModel.Managers
         public override void Initialize()
         {
             base.Initialize();
-            m_SoundManager = Game.Services.GetService<ISoundManager>();
             m_SettingsManager = Game.Services.GetService<ISettingsManager>();
 
             m_InvadersInRow += m_SettingsManager.GetGameLevelSettings().AdditionalInvadersColumns;

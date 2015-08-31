@@ -39,16 +39,16 @@ namespace SpaceInvaders.Screens
 
             m_PauseScreen = new PauseScreen(this);
 
-            this.UseFadeTransition = true; 
-            this.BlendState = BlendState.NonPremultiplied;
-            this.SpritesSortMode = SpriteSortMode.Deferred;
+            UseFadeTransition = true; 
+            BlendState = BlendState.NonPremultiplied;
+            SpritesSortMode = SpriteSortMode.Deferred;
         }
 
         private void onGameLost(object i_Sender, EventArgs i_EventArgs)
         {
             m_SoundManager.PlaySoundEffect(Sounds.k_GameOver);
-            this.ExitScreen();
-            this.Dispose();
+            ExitScreen();
+            Dispose();
             ScreensManager.SetCurrentScreen(new GameOverScreen(Game));
         }
 
@@ -83,8 +83,8 @@ namespace SpaceInvaders.Screens
         {
             m_SoundManager.PlaySoundEffect(Sounds.k_LevelWin);
             m_SettingsManager.IncrementLevel();
-            this.ExitScreen();
-            this.Dispose();
+            ExitScreen();
+            Dispose();
             ScreensManager.SetCurrentScreen(new LevelTransitionScreen(Game));
         }
 

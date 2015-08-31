@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Infrastructure.Managers;
 using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;

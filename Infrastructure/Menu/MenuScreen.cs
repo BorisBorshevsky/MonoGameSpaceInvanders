@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Infrastructure;
+using Infrastructure.Animators;
 using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework.Input;
 

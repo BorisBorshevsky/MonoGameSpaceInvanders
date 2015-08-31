@@ -22,7 +22,7 @@ namespace SpaceInvaders
 
         public SpaceInvadersGame()
         {
-            this.Content.RootDirectory = "Content";
+            Content.RootDirectory = "Content";
 
             m_GraphicsMgr = new GraphicsDeviceManager(this);
             m_InputManager = new InputManager(this);
@@ -37,8 +37,8 @@ namespace SpaceInvaders
         protected override void Initialize()
         {
             base.Initialize();
-            this.Window.Title = "Space Invaders Game !!!";
-            this.IsMouseVisible = true;
+            Window.Title = "Space Invaders Game !!!";
+            IsMouseVisible = true;
             m_SoundManager.PlayBackgroundMusic(Sounds.k_BgMusic);
         }
 

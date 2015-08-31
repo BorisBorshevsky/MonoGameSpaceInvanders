@@ -1,27 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Infrastructure;
-using Microsoft.Xna.Framework;
-using SpaceInvaders.Menu;
-using SpaceInvaders.ObjectModel.Managers;
+﻿using Microsoft.Xna.Framework;
+using SpaceInvaders.Menu.ScreenOptionsMenuItems;
+using SpaceInvaders.Menu.SoundOptionsMenuItems;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Menu
 {
-    public class ScreenOptionsMenu : MenuScreen
+    class ScreenOptionsMenu : MenuScreen
     {
         private readonly WindowResizingItem r_WindowResizingItem;
         private readonly FullScreenModeItem r_FullScreenModeItem;
         private readonly MouseVisibilityItem r_MouseVisibilityItem;
         private readonly DoneItem r_DoneItem;
-        private readonly ISettingsManager r_SettingsManager;
 
         public ScreenOptionsMenu(Game i_Game)
             : base(i_Game, "Screen Options")
         {
-            r_SettingsManager = i_Game.Services.GetService<ISettingsManager>();
-
             r_MouseVisibilityItem = new MouseVisibilityItem("Mouse Visibility: ", this);
             r_MouseVisibilityItem.TitleValue = r_SettingsManager.IsMouseVisible ? "Visible" : "Invisible";
             AddMenuItem(r_MouseVisibilityItem);
