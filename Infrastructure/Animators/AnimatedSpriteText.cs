@@ -10,13 +10,13 @@ namespace Infrastructure.Animators
     public class AnimatedSpriteText : Sprite
     {
         private SpriteAnimator m_PulseAnimator;
-        private string m_Text = string.Empty;
+        private readonly string r_Text;
         private string m_TextValue = string.Empty;
 
         public AnimatedSpriteText(string i_AssetName, string i_Text, GameScreen i_Game)
             : base(i_AssetName, i_Game, int.MaxValue)
         {
-            m_Text = i_Text + m_TextValue;
+            r_Text = i_Text + m_TextValue;
         }
 
         public string TextValue
@@ -40,8 +40,8 @@ namespace Infrastructure.Animators
 
         protected override void InitBounds()
         {
-            m_WidthBeforeScale = SpriteFont.MeasureString(m_Text).X;
-            m_HeightBeforeScale = SpriteFont.MeasureString(m_Text).Y;
+            m_WidthBeforeScale = SpriteFont.MeasureString(r_Text).X;
+            m_HeightBeforeScale = SpriteFont.MeasureString(r_Text).Y;
             InitSourceRectangle();
             InitOrigins();
         }
@@ -53,7 +53,7 @@ namespace Infrastructure.Animators
 
         private string displayText()
         {
-            return string.Format("{0} {1}", m_Text, m_TextValue);
+            return string.Format("{0} {1}", r_Text, m_TextValue);
         }
 
         public SpriteFont SpriteFont { get; set; }
