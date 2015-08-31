@@ -10,12 +10,12 @@ namespace SpaceInvaders.Menu
         private ToggleSoundItem m_ToggleSoundItem;
         private BackgroundMusicVolumItem r_MBackgroundMusicVolumItem;
         private DoneItem m_DoneItem;
-        private SoundManager m_SoundManager;
+        private ISoundManager m_SoundManager;
 
         public SoundOptionsMenu(Game i_Game)
             : base(i_Game, "Sound Options")
         {
-            m_SoundManager = i_Game.Services.GetService<SoundManager>();
+            m_SoundManager = i_Game.Services.GetService<ISoundManager>();
 
             m_ToggleSoundItem = new ToggleSoundItem("Toggle Sound: ", this);
             m_ToggleSoundItem.TitleValue = m_SoundManager.IsMute ? "Off" : "On";
