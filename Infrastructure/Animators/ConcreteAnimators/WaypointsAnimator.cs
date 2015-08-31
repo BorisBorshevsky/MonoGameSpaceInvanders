@@ -7,11 +7,12 @@ namespace Infrastructure.Animators.ConcreteAnimators
 {
     public class WaypointsAnimator : SpriteAnimator
     {
-        private float m_VelocityPerSecond;
-        private Vector2[] m_Waypoints;
-        private int m_CurrentWaypointIdx = 0;
-        private bool m_Loop = false;
+        private readonly float r_VelocityPerSecond;
+        private readonly Vector2[] r_Waypoints;
+        private readonly bool r_Loop = false;
 
+        private int m_CurrentWaypointIdx = 0;
+        
         // CTORs
         public WaypointsAnimator(float i_VelocityPerSecond,TimeSpan i_AnimationLength,bool i_Loop,params Vector2[] i_Waypoints)
             : this("Waypoints", i_VelocityPerSecond, i_AnimationLength, i_Loop, i_Waypoints)
@@ -21,9 +22,9 @@ namespace Infrastructure.Animators.ConcreteAnimators
 
             : base(i_Name, i_AnimationLength)
         {
-            this.m_VelocityPerSecond = i_VelocityPerSecond;
-            this.m_Waypoints = i_Waypoints;
-            m_Loop = i_Loop;
+            this.r_VelocityPerSecond = i_VelocityPerSecond;
+            this.r_Waypoints = i_Waypoints;
+            r_Loop = i_Loop;
             m_ResetAfterFinish = false;
         }
 
@@ -36,10 +37,10 @@ namespace Infrastructure.Animators.ConcreteAnimators
         {
             // This offset is how much we need to move based on how much time 
             // has elapsed.
-            float maxDistance = (float)i_GameTime.ElapsedGameTime.TotalSeconds * m_VelocityPerSecond;
+            float maxDistance = (float)i_GameTime.ElapsedGameTime.TotalSeconds * r_VelocityPerSecond;
 
             // The vector that is left to get to the current waypoint
-            Vector2 remainingVector = m_Waypoints[m_CurrentWaypointIdx] - this.BoundSprite.Position;
+            Vector2 remainingVector = r_Waypoints[m_CurrentWaypointIdx] - this.BoundSprite.Position;
             if (remainingVector.Length() > maxDistance)
             {
                 // The vector is longer than we can travel,
@@ -59,7 +60,7 @@ namespace Infrastructure.Animators.ConcreteAnimators
 
         private void lookAtNextWayPoint()
         {
-            if (reachedLastWaypoint() && !m_Loop)
+            if (reachedLastWaypoint() && !r_Loop)
             {
                 // No more waypoints, so this animation is finished
                 base.IsFinished = true;
@@ -68,18 +69,18 @@ namespace Infrastructure.Animators.ConcreteAnimators
             {
                 // We have more waypoints to go. NEXT!
                 m_CurrentWaypointIdx++;
-                m_CurrentWaypointIdx %= m_Waypoints.Length;
+                m_CurrentWaypointIdx %= r_Waypoints.Length;
             }
         }
 
         private bool reachedLastWaypoint()
         {
-            return (m_CurrentWaypointIdx == m_Waypoints.Length - 1);
+            return (m_CurrentWaypointIdx == r_Waypoints.Length - 1);
         }
 
         private bool reachedCurrentWaypoint()
         {
-            return (this.BoundSprite.Position == m_Waypoints[m_CurrentWaypointIdx]);
+            return (this.BoundSprite.Position == r_Waypoints[m_CurrentWaypointIdx]);
         }
     }
 }

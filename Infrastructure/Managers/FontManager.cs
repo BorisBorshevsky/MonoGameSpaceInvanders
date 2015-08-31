@@ -31,6 +31,4 @@ namespace Infrastructure.Managers
             get { return m_SpriteFont; }
         }
     }
-
-
 }
