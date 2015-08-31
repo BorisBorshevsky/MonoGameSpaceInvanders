@@ -1,17 +1,17 @@
 //*** Guy Ronen © 2008-2011 ***//
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using Infrastructure.Animators;
+using Infrastructure.ObjectModel;
 using Microsoft.Xna.Framework;
 
-namespace Infrastructure.ObjectModel.Animators
+namespace Infrastructure.Animators
 {
     public class CompositeAnimator : SpriteAnimator
     {
         private readonly Dictionary<string, SpriteAnimator> r_AnimationsDictionary = new Dictionary<string, SpriteAnimator>();
 
-        protected readonly List<SpriteAnimator> m_AnimationsList = new List<SpriteAnimator>();
+        protected readonly List<SpriteAnimator> r_AnimationsList = new List<SpriteAnimator>();
 
         public CompositeAnimator(Sprite i_BoundSprite)
             : this("AnimationsMamager", TimeSpan.Zero, i_BoundSprite)
@@ -36,7 +36,7 @@ namespace Infrastructure.ObjectModel.Animators
             i_Animation.BoundSprite = this.BoundSprite;
             i_Animation.Enabled = true;
             r_AnimationsDictionary.Add(i_Animation.Name, i_Animation);
-            m_AnimationsList.Add(i_Animation);
+            r_AnimationsList.Add(i_Animation);
         }
 
         public void Remove(string i_AnimationName)
@@ -46,7 +46,7 @@ namespace Infrastructure.ObjectModel.Animators
             if (animationToRemove != null)
             {
                 r_AnimationsDictionary.Remove(i_AnimationName);
-                m_AnimationsList.Remove(animationToRemove);
+                r_AnimationsList.Remove(animationToRemove);
             }
         }
 
@@ -64,7 +64,7 @@ namespace Infrastructure.ObjectModel.Animators
         {
             base.Restart();
 
-            foreach (SpriteAnimator animation in m_AnimationsList)
+            foreach (SpriteAnimator animation in r_AnimationsList)
             {
                 animation.Restart();
             }
@@ -74,7 +74,7 @@ namespace Infrastructure.ObjectModel.Animators
         {
             base.Restart(i_AnimationLength);
 
-            foreach (SpriteAnimator animation in m_AnimationsList)
+            foreach (SpriteAnimator animation in r_AnimationsList)
             {
                 animation.Restart();
             }
@@ -82,7 +82,7 @@ namespace Infrastructure.ObjectModel.Animators
 
         protected override void RevertToOriginal()
         {
-            foreach (SpriteAnimator animation in m_AnimationsList)
+            foreach (SpriteAnimator animation in r_AnimationsList)
             {
                 animation.Reset();
             }
@@ -92,7 +92,7 @@ namespace Infrastructure.ObjectModel.Animators
         {
             base.CloneSpriteInfo();
 
-            foreach (SpriteAnimator animation in m_AnimationsList)
+            foreach (SpriteAnimator animation in r_AnimationsList)
             {
                 animation.m_OriginalSpriteInfo = m_OriginalSpriteInfo;
             }
@@ -100,7 +100,7 @@ namespace Infrastructure.ObjectModel.Animators
 
         protected override void DoFrame(GameTime i_GameTime)
         {
-            foreach (SpriteAnimator animation in m_AnimationsList)
+            foreach (SpriteAnimator animation in r_AnimationsList)
             {
                 animation.Update(i_GameTime);
             }

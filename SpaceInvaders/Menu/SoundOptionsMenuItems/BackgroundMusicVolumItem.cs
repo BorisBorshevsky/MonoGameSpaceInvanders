@@ -1,31 +1,26 @@
-﻿using Infrastructure.ObjectModel.Screens;
+﻿using Infrastructure.Menu;
+using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework.Input;
 
 namespace SpaceInvaders.Menu.SoundOptionsMenuItems
 {
     class BackgroundMusicVolumItem : SpaceInvaderMenuItem
     {
-        public BackgroundMusicVolumItem(string i_Title, GameScreen i_GameScreen)
-            : base(i_Title, i_GameScreen)
+        public BackgroundMusicVolumItem(string i_Title, GameScreen i_GameScreen, IMenuConfiguration i_MenuConfiguration)
+            : base(i_Title, i_GameScreen, i_MenuConfiguration)
         { }
 
         public override string ItemSelected(GameScreen i_GameScreen, Keys i_Key)
         {
             int currentVolume = i_GameScreen.SoundManager.BackgroundVolumeLevel;
-            if (i_Key == Keys.PageUp)
+            if (i_Key == r_MenuConfiguration.ScrollUpKey)
             {
-                if (currentVolume < 100)
-                {
-                    i_GameScreen.SoundManager.IncreaseBackGroundVolume();
-                }
+                i_GameScreen.SoundManager.IncreaseBackGroundVolume();
             }
 
-            if (i_Key == Keys.PageDown)
+            if (i_Key == r_MenuConfiguration.ScrollDownKey)
             {
-                if (currentVolume > 0)
-                {
-                    i_GameScreen.SoundManager.DecreaseBackGroundVolume();
-                }
+                i_GameScreen.SoundManager.DecreaseBackGroundVolume();
             }
 
             return i_GameScreen.SoundManager.BackgroundVolumeLevel.ToString();

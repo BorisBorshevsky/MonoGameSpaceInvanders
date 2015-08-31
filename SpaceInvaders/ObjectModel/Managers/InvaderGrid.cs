@@ -3,6 +3,7 @@ using Infrastructure.ObjectModel;
 using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework;
 using SpaceInvaders.ObjectModel.Sprites;
+using SpaceInvaders.Settings;
 
 namespace SpaceInvaders.ObjectModel.Managers
 {

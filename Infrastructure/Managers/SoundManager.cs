@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Infrastructure.ObjectModel;
+using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
@@ -11,9 +12,8 @@ namespace Infrastructure.Managers
         private readonly Dictionary<string, SoundEffect> r_SoundEffects = new Dictionary<string, SoundEffect>();
 
         private Song m_BackgroundSong;
-        private int m_BackgroundMusicVolume = 10;
-        private int m_SoundEffectsMusicVolume = 10;
-        private bool m_Mute;
+        private int m_BackgroundMusicVolume = 50; //initial value
+        private int m_SoundEffectsMusicVolume = 50; //initial value
 
         public SoundManager(Game i_Game)
             : base(i_Game)
@@ -33,8 +33,8 @@ namespace Infrastructure.Managers
 
         public void ToggleMute()
         {
-            m_Mute = !m_Mute;
-            MediaPlayer.Volume = m_Mute ? 0 : (float) m_BackgroundMusicVolume / 100;
+            IsMute = !IsMute;
+            MediaPlayer.Volume = IsMute ? 0 : (float) m_BackgroundMusicVolume / 100;
         }
 
         public void IncreaseSoundsEffectsVolume()
@@ -62,10 +62,7 @@ namespace Infrastructure.Managers
             set { m_SoundEffectsMusicVolume = MathHelper.Clamp(value, 0, 100); }
         }
 
-        public bool IsMute
-        {
-            get { return m_Mute; }
-        }
+        public bool IsMute { get; private set; }
 
         public void PlaySoundEffect(string i_Path)
         {
@@ -74,7 +71,7 @@ namespace Infrastructure.Managers
                 r_SoundEffects.Add(i_Path, Game.Content.Load<SoundEffect>(i_Path));
             }
             
-            if (!m_Mute)
+            if (!IsMute)
             {
                 r_SoundEffects[i_Path].Play((float)m_SoundEffectsMusicVolume / 100, 0f, 0f);    
             }    
@@ -84,10 +81,10 @@ namespace Infrastructure.Managers
         {
             if (MediaPlayer.State != MediaState.Playing)
             {
-                var backgroundSong = getBackgroundSong(i_Path);
+                Song backgroundSong = getBackgroundSong(i_Path);
                 MediaPlayer.Play(backgroundSong);
                 MediaPlayer.IsRepeating = true;
-                MediaPlayer.Volume = m_Mute ? 0 : (float)m_BackgroundMusicVolume / 100;
+                MediaPlayer.Volume = IsMute ? 0 : (float)m_BackgroundMusicVolume / 100;
             }
         }
 

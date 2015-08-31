@@ -57,9 +57,10 @@
     <Compile Include="Managers\FontManager.cs" />
     <Compile Include="Managers\InputManager.cs" />
     <Compile Include="Managers\ScreensManager.cs" />
-    <None Include="Managers\SoundManager.cs.old" />
     <Compile Include="Managers\SoundManager.cs" />
     <Compile Include="Animators\AnimatedSpriteText.cs" />
+    <Compile Include="Menu\BackItem.cs" />
+    <Compile Include="Menu\IMenuConfiguration.cs" />
     <Compile Include="Menu\IMenuItem.cs" />
     <Compile Include="Menu\MenuItem.cs" />
     <Compile Include="Menu\MenuScreen.cs" />

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Infrastructure.ObjectModel;
 using Infrastructure.ObjectModel.Screens;
-using SpaceInvaders.ObjectModel.Managers;
+using Microsoft.Xna.Framework;
 using SpaceInvaders.ObjectModel.Sprites;
+using SpaceInvaders.Settings;
 
 namespace SpaceInvaders.ObjectModel
 {

@@ -1,6 +1,6 @@
-﻿using Infrastructure;
+﻿using Infrastructure.Menu;
 using Infrastructure.ObjectModel.Screens;
-using SpaceInvaders.ObjectModel.Managers;
+using SpaceInvaders.Settings;
 
 namespace SpaceInvaders.Menu
 {
@@ -8,7 +8,8 @@ namespace SpaceInvaders.Menu
     {
         protected readonly ISettingsManager r_SettingsManager;
 
-        public SpaceInvaderMenuItem(string i_Title, GameScreen i_GameScreen) : base(i_Title, i_GameScreen)
+        public SpaceInvaderMenuItem(string i_Title, GameScreen i_GameScreen, IMenuConfiguration i_MenuConfiguration)
+            : base(i_Title, i_GameScreen, i_MenuConfiguration)
         {
             r_SettingsManager = i_GameScreen.Game.Services.GetService<ISettingsManager>();
         }

@@ -1,11 +1,8 @@
 //*** Guy Ronen © 2008-2011 ***//
+
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Infrastructure.Animators.ConcreteAnimators;
 using Infrastructure.ObjectModel;
-using Infrastructure.ObjectModel.Animators;
-using Infrastructure.ObjectModel.Animators.ConcreteAnimators;
 using Microsoft.Xna.Framework;
 
 namespace Infrastructure.Animators

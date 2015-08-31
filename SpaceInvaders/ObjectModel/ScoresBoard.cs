@@ -3,9 +3,9 @@ using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SpaceInvaders.ObjectModel.Managers;
+using SpaceInvaders.Settings;
 
-namespace SpaceInvaders.ObjectModel.Sprites
+namespace SpaceInvaders.ObjectModel
 {
     class ScoresBoard : GameComponent
     {

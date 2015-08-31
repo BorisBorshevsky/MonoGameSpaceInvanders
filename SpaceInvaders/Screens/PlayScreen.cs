@@ -1,14 +1,13 @@
 ﻿using System;
-using Infrastructure;
 using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SpaceInvaders.Configurations;
-using SpaceInvaders.ObjectModel;
 using SpaceInvaders.ObjectModel.Managers;
 using SpaceInvaders.ObjectModel.Sprites;
+using SpaceInvaders.Settings;
 
 namespace SpaceInvaders.Screens
 {
@@ -17,18 +16,17 @@ namespace SpaceInvaders.Screens
         private readonly BarrierComposer r_BarrierComposer;
         private readonly MotherShipDeployer r_MotherShipDeployer;
         private readonly InvaderGrid r_InvaderGrid;
-        private readonly PauseScreen m_PauseScreen;
-        private readonly PlayersManager r_playersManager;
+        private readonly PauseScreen r_PauseScreen;
+        private readonly PlayersManager r_PlayersManager;
         private readonly Background r_Background;
 
         private ISettingsManager m_SettingsManager;
-        private SpriteFont m_FontArial;
 
         public PlayScreen(Game i_Game) : base(i_Game)
         {
             r_Background = new Background(this, @"Sprites\BG_Space01_1024x768", 1f);
-            r_playersManager = new PlayersManager(this);
-            r_playersManager.AllPlayersDied += onGameLost;
+            r_PlayersManager = new PlayersManager(this);
+            r_PlayersManager.AllPlayersDied += onGameLost;
             
             r_BarrierComposer = new BarrierComposer(this);
             r_MotherShipDeployer = new MotherShipDeployer(this);
@@ -37,7 +35,7 @@ namespace SpaceInvaders.Screens
             r_InvaderGrid.InvaderReachedBottom += onGameLost;
             r_InvaderGrid.AllEnemiesDied += onAllEnemiesDied;
 
-            m_PauseScreen = new PauseScreen(this);
+            r_PauseScreen = new PauseScreen(this);
 
             UseFadeTransition = true; 
             BlendState = BlendState.NonPremultiplied;
@@ -57,7 +55,6 @@ namespace SpaceInvaders.Screens
             base.Initialize();
             m_SettingsManager = Game.Services.GetService<ISettingsManager>();
             m_SoundManager = Game.Services.GetService<ISoundManager>();
-            m_FontArial = Game.Services.GetService<IFontManager>().SpriteFont;
         }
 
         public override void Update(GameTime i_GameTime)
@@ -65,7 +62,7 @@ namespace SpaceInvaders.Screens
             base.Update(i_GameTime);
             if (InputManager.KeyPressed(Keys.P))
             {
-                ScreensManager.SetCurrentScreen(m_PauseScreen);
+                ScreensManager.SetCurrentScreen(r_PauseScreen);
             }
 
             if(InputManager.KeyPressed(Keys.T))
@@ -92,7 +89,7 @@ namespace SpaceInvaders.Screens
         {
             base.Draw(i_GameTime);
          
-            r_playersManager.Players.ForEach(i_Player => i_Player.ScoresBoard.Draw(i_GameTime));
+            r_PlayersManager.Players.ForEach(i_Player => i_Player.ScoresBoard.Draw(i_GameTime));
         }
     }
 }

@@ -1,9 +1,9 @@
 ==========================Exercise Checking Report==========================
-Exercise No...........: 2
+Exercise No...........: 3
 First Student Details.: 302848197 - Rami Moshe
 Second Student Details: 311898746 - Boris Borshevsky
 Delivery Date.........: 20 - August - 2015
-Delivered In Delay....: Yes (One day)
-Delay Reason..........: Will explain in class
+Delivered In Delay....: No
+Delay Reason..........: -
 Comments..............: -
 ========================End Exercise Checking Report========================

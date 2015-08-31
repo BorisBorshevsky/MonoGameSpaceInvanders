@@ -1,8 +1,8 @@
 using System;
 using Infrastructure.ObjectModel;
+using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
-using Infrastructure.ObjectModel.Screens;
 
 namespace SpaceInvaders.ObjectModel.Sprites
 {

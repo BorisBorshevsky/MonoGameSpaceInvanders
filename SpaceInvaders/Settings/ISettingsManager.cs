@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using SpaceInvaders.Configurations;
 
-namespace SpaceInvaders.ObjectModel.Managers
+namespace SpaceInvaders.Settings
 {
     interface ISettingsManager
     {

@@ -180,7 +180,7 @@ namespace Infrastructure.Managers
         /// <summary>
         ///     Returns if one (or more) of the provided button(s) are up at this frame
         /// </summary>
-        /// <param name="button"></param>
+        /// <param name="i_MouseButtons"></param>
         /// <returns>
         ///     true if one of the specified buttons is currently up.
         ///     false otherwise

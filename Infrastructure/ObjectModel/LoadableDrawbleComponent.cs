@@ -1,9 +1,9 @@
 //*** Guy Ronen © 2008-2011 ***//
 
 using System;
+using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Infrastructure.ServiceInterfaces;
 
 namespace Infrastructure.ObjectModel
 {
@@ -32,14 +32,14 @@ namespace Infrastructure.ObjectModel
             set { m_AssetName = value; }
         }
 
-        public LoadableDrawableComponent(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder): base(i_Game)
+        protected LoadableDrawableComponent(string i_AssetName, Game i_Game, int i_UpdateOrder, int i_DrawOrder): base(i_Game)
         {
             this.AssetName = i_AssetName;
             this.UpdateOrder = i_UpdateOrder;
             this.DrawOrder = i_DrawOrder;
         }
 
-        public LoadableDrawableComponent(string i_AssetName,Game i_Game,int i_CallsOrder)
+        protected LoadableDrawableComponent(string i_AssetName,Game i_Game,int i_CallsOrder)
             : this(i_AssetName, i_Game, i_CallsOrder, i_CallsOrder)
         { }
 

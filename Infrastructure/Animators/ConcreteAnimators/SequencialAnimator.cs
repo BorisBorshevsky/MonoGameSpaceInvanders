@@ -1,9 +1,10 @@
 //*** Guy Ronen © 2008-2011 ***//
+
 using System;
-using Infrastructure.Animators;
+using Infrastructure.ObjectModel;
 using Microsoft.Xna.Framework;
 
-namespace Infrastructure.ObjectModel.Animators.ConcreteAnimators
+namespace Infrastructure.Animators.ConcreteAnimators
 {
     public class SequencialAnimator : CompositeAnimator
     {
@@ -18,7 +19,7 @@ namespace Infrastructure.ObjectModel.Animators.ConcreteAnimators
         protected override void DoFrame(GameTime i_GameTime)
         {
             bool allFinished = true;
-            foreach (SpriteAnimator animation in m_AnimationsList)
+            foreach (SpriteAnimator animation in r_AnimationsList)
             {
                 if (!animation.IsFinished)
                 {

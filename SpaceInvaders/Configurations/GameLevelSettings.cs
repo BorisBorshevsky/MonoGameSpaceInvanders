@@ -1,5 +1,5 @@
 ﻿
-namespace SpaceInvaders.ObjectModel.Managers
+namespace SpaceInvaders.Configurations
 {
     class GameLevelSettings
     {

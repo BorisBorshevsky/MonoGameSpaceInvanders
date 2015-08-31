@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Infrastructure.ObjectModel;
 using Microsoft.Xna.Framework;
+using SpaceInvaders.Configurations;
 
-namespace SpaceInvaders.ObjectModel.Managers
+namespace SpaceInvaders.Settings
 {
     class SettingsManager : GameService, ISettingsManager
     {
@@ -88,7 +90,7 @@ namespace SpaceInvaders.ObjectModel.Managers
 
         public void ResetLives()
         {
-            foreach (var playerState in PlayersData)
+            foreach (IPlayerState playerState in PlayersData)
             {
                 playerState.Lives = k_InitialLivesPerPlayer;
             }
@@ -96,7 +98,7 @@ namespace SpaceInvaders.ObjectModel.Managers
 
         public void ResetScores()
         {
-            foreach (var playerState in PlayersData)
+            foreach (IPlayerState playerState in PlayersData)
             {
                 playerState.Score = 0;
             }
@@ -160,7 +162,7 @@ namespace SpaceInvaders.ObjectModel.Managers
                         AdditionalInvadersBullets = 1,
                     };
                 }
-                default: // Level 5
+                case 0: // Level 5
                 {
                     return new GameLevelSettings
                     {
@@ -170,6 +172,10 @@ namespace SpaceInvaders.ObjectModel.Managers
                         AdditionalBarrierSpeedPercent = 0.05f * 3,
                         AdditionalInvadersBullets = 20,
                     };
+                }
+                default:
+                {
+                    throw new ArgumentException("Bad Level Parameter - Should not happen");
                 }
             }
         }

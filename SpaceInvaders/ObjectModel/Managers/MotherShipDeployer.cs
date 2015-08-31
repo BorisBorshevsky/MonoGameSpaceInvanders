@@ -48,14 +48,14 @@ namespace SpaceInvaders.ObjectModel.Managers
             base.Update(i_GameTime);
         }
 
-        protected override void Dispose(bool disposing)
+        protected override void Dispose(bool i_Disposing)
         {
-            if (disposing)
+            if (i_Disposing)
             {
                 m_MotherShip.Dispose();
             }
 
-            base.Dispose(disposing);
+            base.Dispose(i_Disposing);
         }
     }
 }

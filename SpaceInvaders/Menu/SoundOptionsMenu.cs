@@ -1,35 +1,36 @@
-﻿using Infrastructure;
+﻿using Infrastructure.Menu;
+using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using SpaceInvaders.Menu.SoundOptionsMenuItems;
 
 namespace SpaceInvaders.Menu
 {
-    class SoundOptionsMenu : MenuScreen
+    class SoundOptionsMenu : SpaceInvadersMenuScreen
     {
-        private SoundEffectsItem m_SoundEffectsItem;
-        private ToggleSoundItem m_ToggleSoundItem;
-        private BackgroundMusicVolumItem r_MBackgroundMusicVolumItem;
-        private DoneItem m_DoneItem;
+        private readonly SoundEffectsItem r_SoundEffectsItem;
+        private readonly ToggleSoundItem r_ToggleSoundItem;
+        private readonly BackgroundMusicVolumItem r_BackgroundMusicVolumItem;
+        private readonly BackItem r_BackItem;
 
-        public SoundOptionsMenu(Game i_Game)
-            : base(i_Game, "Sound Options")
+        public SoundOptionsMenu(Game i_Game, IMenuConfiguration i_MenuConfiguration)
+            : base(i_Game, "Sound Options", i_MenuConfiguration)
         {
             m_SoundManager = i_Game.Services.GetService<ISoundManager>();
 
-            m_ToggleSoundItem = new ToggleSoundItem("Toggle Sound: ", this);
-            m_ToggleSoundItem.TitleValue = m_SoundManager.IsMute ? "Off" : "On";
-            AddMenuItem(m_ToggleSoundItem);
+            r_ToggleSoundItem = new ToggleSoundItem("Toggle Sound: ", this, i_MenuConfiguration);
+            r_ToggleSoundItem.TitleValue = m_SoundManager.IsMute ? "Off" : "On";
+            AddMenuItem(r_ToggleSoundItem);
 
-            r_MBackgroundMusicVolumItem = new BackgroundMusicVolumItem("Background Music Volume: ", this);
-            r_MBackgroundMusicVolumItem.TitleValue = m_SoundManager.BackgroundVolumeLevel.ToString();
-            AddMenuItem(r_MBackgroundMusicVolumItem);
+            r_BackgroundMusicVolumItem = new BackgroundMusicVolumItem("Background Music Volume: ", this, i_MenuConfiguration);
+            r_BackgroundMusicVolumItem.TitleValue = m_SoundManager.BackgroundVolumeLevel.ToString();
+            AddMenuItem(r_BackgroundMusicVolumItem);
 
-            m_SoundEffectsItem = new SoundEffectsItem("Sound Effects: ", this);
-            m_SoundEffectsItem.TitleValue = m_SoundManager.SoundsEffectsVolumeLevel.ToString();
-            AddMenuItem(m_SoundEffectsItem);
+            r_SoundEffectsItem = new SoundEffectsItem("Sound Effects: ", this, i_MenuConfiguration);
+            r_SoundEffectsItem.TitleValue = m_SoundManager.SoundsEffectsVolumeLevel.ToString();
+            AddMenuItem(r_SoundEffectsItem);
 
-            m_DoneItem = new DoneItem("Done", this);
-            AddMenuItem(m_DoneItem);
+            r_BackItem = new BackItem("Done", this, i_MenuConfiguration);
+            AddMenuItem(r_BackItem);
         }
     }
 }

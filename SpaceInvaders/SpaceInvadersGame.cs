@@ -1,9 +1,10 @@
 ﻿using Infrastructure.Managers;
+using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SpaceInvaders.Configurations;
-using SpaceInvaders.ObjectModel.Managers;
 using SpaceInvaders.Screens;
+using SpaceInvaders.Settings;
 
 namespace SpaceInvaders
 {
@@ -12,26 +13,26 @@ namespace SpaceInvaders
     /// </summary>
     public class SpaceInvadersGame : Game
     {
-        private readonly GraphicsDeviceManager m_GraphicsMgr;
-        private readonly InputManager m_InputManager;
-        private readonly ScreensMananger m_ScreensMananger;
-        private readonly FontManager m_FontManager;
-        private readonly SoundManager m_SoundManager;
-        private readonly SettingsManager m_SettingsManager;
-        private readonly CollisionsManager m_CollisionsManager;
+        private readonly GraphicsDeviceManager r_GraphicsMgr;
+        private readonly IInputManager r_InputManager;
+        private readonly IScreensMananger r_ScreensMananger;
+        private readonly IFontManager r_FontManager;
+        private readonly ISoundManager r_SoundManager;
+        private readonly ISettingsManager r_SettingsManager;
+        private readonly ICollisionsManager r_CollisionsManager;
 
         public SpaceInvadersGame()
         {
             Content.RootDirectory = "Content";
 
-            m_GraphicsMgr = new GraphicsDeviceManager(this);
-            m_InputManager = new InputManager(this);
-            m_SoundManager = new SoundManager(this);
-            m_FontManager = new FontManager(this, @"Fonts\Arial");
-            m_SettingsManager = new SettingsManager(this);
-            m_CollisionsManager = new CollisionsManager(this);
-            m_ScreensMananger = new ScreensMananger(this);
-            m_ScreensMananger.SetCurrentScreen(new WelcomeScreen(this));
+            r_GraphicsMgr = new GraphicsDeviceManager(this);
+            r_InputManager = new InputManager(this);
+            r_SoundManager = new SoundManager(this);
+            r_FontManager = new FontManager(this, @"Fonts\Arial");
+            r_SettingsManager = new SettingsManager(this);
+            r_CollisionsManager = new CollisionsManager(this);
+            r_ScreensMananger = new ScreensMananger(this);
+            r_ScreensMananger.SetCurrentScreen(new WelcomeScreen(this));
         }
 
         protected override void Initialize()
@@ -39,22 +40,22 @@ namespace SpaceInvaders
             base.Initialize();
             Window.Title = "Space Invaders Game !!!";
             IsMouseVisible = true;
-            m_SoundManager.PlayBackgroundMusic(Sounds.k_BgMusic);
+            r_SoundManager.PlayBackgroundMusic(Sounds.k_BgMusic);
         }
 
         protected override void Draw(GameTime i_GameTime)
         {
-            m_GraphicsMgr.GraphicsDevice.Clear(Color.CornflowerBlue);
+            r_GraphicsMgr.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             base.Draw(i_GameTime);
         }
 
-        protected override void Update(GameTime gameTime)
+        protected override void Update(GameTime i_GameTime)
         {
-            base.Update(gameTime);
-            if (m_InputManager.KeyPressed(Keys.M))
+            base.Update(i_GameTime);
+            if (r_InputManager.KeyPressed(Keys.M))
             {
-                m_SoundManager.ToggleMute();
+                r_SoundManager.ToggleMute();
             }
         }
     }

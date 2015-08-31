@@ -1,9 +1,9 @@
 
+using Infrastructure.Animators;
+using Infrastructure.ObjectModel.Screens;
+using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Infrastructure.ServiceInterfaces;
-using Infrastructure.ObjectModel.Animators;
-using Infrastructure.ObjectModel.Screens;
 
 namespace Infrastructure.ObjectModel
 {
@@ -131,13 +131,13 @@ namespace Infrastructure.ObjectModel
         {
             get
             {
-                return new Vector2((float)(m_Texture.Width / 2), (float)(m_Texture.Height / 2));
+                return new Vector2((float)m_Texture.Width / 2, (float)m_Texture.Height / 2);
             }
         }
 
         public Vector2 SourceRectangleCenter
         {
-            get { return new Vector2((float)(m_SourceRectangle.Width / 2), (float)(m_SourceRectangle.Height / 2)); }
+            get { return new Vector2((float)m_SourceRectangle.Width / 2, (float)m_SourceRectangle.Height / 2); }
         }
 
         protected float m_Rotation = 0;
@@ -171,8 +171,8 @@ namespace Infrastructure.ObjectModel
 
         public float Opacity
         {
-            get { return (float)m_TintColor.A / (float)byte.MaxValue; }
-            set { m_TintColor.A = (byte)(value * (float)byte.MaxValue); }
+            get { return m_TintColor.A / (float)byte.MaxValue; }
+            set { m_TintColor.A = (byte)(value * byte.MaxValue); }
         }
 
         protected float m_LayerDepth;

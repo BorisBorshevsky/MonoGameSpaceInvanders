@@ -1,17 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Infrastructure;
 using Infrastructure.Animators;
 using Infrastructure.Animators.ConcreteAnimators;
 using Infrastructure.ObjectModel;
-using Infrastructure.ObjectModel.Animators;
-using Infrastructure.ObjectModel.Animators.ConcreteAnimators;
+using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SpaceInvaders.Configurations;
-using Infrastructure.ObjectModel.Screens;
 
 namespace SpaceInvaders.ObjectModel.Sprites
 {

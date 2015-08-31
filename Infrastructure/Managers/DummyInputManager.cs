@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-
 namespace Infrastructure.Managers
 {
     public class DummyInputManager : IInputManager

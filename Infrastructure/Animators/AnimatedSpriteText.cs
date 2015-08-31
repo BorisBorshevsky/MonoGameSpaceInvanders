@@ -21,7 +21,7 @@ namespace Infrastructure.Animators
 
         public string TextValue
         {
-            set{m_TextValue = value;}
+            set {m_TextValue = value;}
         }
 
         protected override void LoadContent()

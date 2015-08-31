@@ -5,7 +5,7 @@ using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework;
 using SpaceInvaders.ObjectModel.Sprites;
 
-namespace SpaceInvaders.ObjectModel
+namespace SpaceInvaders.ObjectModel.Managers
 {
     class BarrierComposer : RegisteredComponent
     {

@@ -6,6 +6,7 @@ using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SpaceInvaders.Configurations;
+using SpaceInvaders.Settings;
 
 namespace SpaceInvaders.ObjectModel.Managers
 {
@@ -13,8 +14,8 @@ namespace SpaceInvaders.ObjectModel.Managers
     {
         private readonly List<Player> r_Players = new List<Player>();
 
-        private int m_PlayerCounter = 0;
-        private int m_LostPlayerCount = 0;
+        private int m_PlayerCounter;
+        private int m_LostPlayerCount;
         private ISettingsManager m_SettingsManager;
 
         public List<Player> Players

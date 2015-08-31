@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
-using Infrastructure;
+using Infrastructure.Animators;
 using Infrastructure.Animators.ConcreteAnimators;
 using Infrastructure.ObjectModel;
-using Infrastructure.ObjectModel.Animators;
-using Infrastructure.ObjectModel.Animators.ConcreteAnimators;
 using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using SpaceInvaders.Configurations;
-using SpaceInvaders.ObjectModel.Managers;
+using SpaceInvaders.Settings;
 
 namespace SpaceInvaders.ObjectModel.Sprites
 {
@@ -32,7 +30,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
         private ISoundManager m_SoundManager;
         private ISettingsManager m_SettingsManager;
 
-        protected bool isDying = false;
+        protected bool m_IsDying = false;
 
         public abstract int Score { get; }
         public double CurrentElapsedTime { get; set; }
@@ -60,14 +58,14 @@ namespace SpaceInvaders.ObjectModel.Sprites
 
         private void onAnimationFinished(object i_Sender, EventArgs i_Args)
         {
-            isDying = false;
+            m_IsDying = false;
             Dispose();
         }
 
         public bool IsDying
         {
-            get { return isDying; }
-            protected set { isDying = value; }
+            get { return m_IsDying; }
+            protected set { m_IsDying = value; }
         }
 
         public override void Collided(ICollidable i_Collidable)
@@ -99,7 +97,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
 
         private void startDyingAnimation()
         {
-            isDying = true;
+            m_IsDying = true;
             RotateAnimator rotateAnimator = new RotateAnimator(MathHelper.TwoPi*5, r_DyingAnimationTime);
             ShrinkAnimator shrinkAnimator = new ShrinkAnimator(r_DyingAnimationTime);
 

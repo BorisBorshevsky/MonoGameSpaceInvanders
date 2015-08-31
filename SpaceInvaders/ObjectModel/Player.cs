@@ -1,16 +1,15 @@
 ﻿using System;
-using SpaceInvaders.Configurations;
 using Infrastructure.Managers;
 using Infrastructure.ObjectModel.Screens;
-using SpaceInvaders.ObjectModel.Managers;
+using SpaceInvaders.Configurations;
 using SpaceInvaders.ObjectModel.Sprites;
+using SpaceInvaders.Settings;
 
 namespace SpaceInvaders.ObjectModel
 {
     class Player : IDisposable
     {
         private const int k_LoosingLifeScorePenalty = -1000;
-
         private readonly SpaceShip r_SpaceShip;
         private readonly SoulsBoard r_SoulsBoard;
 

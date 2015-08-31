@@ -1,4 +1,5 @@
 ﻿//*** Guy Ronen © 2008-2015 ***//
+
 using System;
 using System.Collections.Generic;
 using Infrastructure.ObjectModel;
@@ -75,7 +76,7 @@ namespace Infrastructure.Managers
                 case eScreenState.Deactivating:
                     break;
                 case eScreenState.Closing:
-                    Pop(sender as GameScreen);
+                    pop(sender as GameScreen);
                     break;
                 case eScreenState.Inactive:
                     break;
@@ -89,7 +90,7 @@ namespace Infrastructure.Managers
             OnScreenStateChanged(sender, e);
         }
 
-        private void Pop(GameScreen i_GameScreen)
+        private void pop(GameScreen i_GameScreen)
         {
             m_ScreensStack.Pop();
 

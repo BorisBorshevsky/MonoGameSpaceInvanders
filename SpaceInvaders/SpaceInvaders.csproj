@@ -38,6 +38,7 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Configurations\MenuConfiguration.cs" />
     <Compile Include="Configurations\Sounds.cs" />
     <Compile Include="Configurations\SpaceShipConfiguration.cs" />
     <Compile Include="Configurations\SpaceShipKeyboardConfiguration.cs" />
@@ -51,23 +52,22 @@
     <Compile Include="Menu\ScreenOptionsMenuItems\MouseVisibilityItem.cs" />
     <Compile Include="Menu\ScreenOptionsMenuItems\WindowResizingItem.cs" />
     <Compile Include="Menu\SoundOptionsMenuItems\BackgroundMusicVolumItem.cs" />
-    <Compile Include="Menu\SoundOptionsMenuItems\DoneItem.cs" />
     <Compile Include="Menu\SoundOptionsMenuItems\SoundEffectsItem.cs" />
     <Compile Include="Menu\SoundOptionsMenuItems\ToggleSoundItem.cs" />
     <Compile Include="Menu\SpaceInvaderMenuItem.cs" />
-    <Compile Include="ObjectModel\Managers\GameLevelSettings.cs" />
-    <Compile Include="ObjectModel\Managers\PlayerState.cs" />
-    <Compile Include="ObjectModel\Managers\SettingsManager.cs" />
-    <Compile Include="Menu\MenuScreen.cs" />
+    <Compile Include="Configurations\GameLevelSettings.cs" />
+    <Compile Include="Menu\SpaceInvadersMenuScreen.cs" />
+    <Compile Include="Settings\PlayerState.cs" />
+    <Compile Include="Settings\SettingsManager.cs" />
     <Compile Include="Menu\ScreenOptionsMenu.cs" />
     <Compile Include="Menu\SoundOptionsMenu.cs" />
-    <Compile Include="ObjectModel\BarrierComposer.cs" />
-    <Compile Include="ObjectModel\Managers\IPlayerState.cs" />
-    <Compile Include="ObjectModel\Managers\ISettingsManager.cs" />
+    <Compile Include="ObjectModel\Managers\BarrierComposer.cs" />
+    <Compile Include="Settings\IPlayerState.cs" />
+    <Compile Include="Settings\ISettingsManager.cs" />
     <Compile Include="ObjectModel\Managers\PlayerManager.cs" />
     <Compile Include="ObjectModel\Player.cs" />
     <Compile Include="ObjectModel\Sprites\Barrier.cs" />
-    <Compile Include="ObjectModel\Sprites\ScoresBoard.cs" />
+    <Compile Include="ObjectModel\ScoresBoard.cs" />
     <Compile Include="ObjectModel\Sprites\SoulIcon.cs" />
     <Compile Include="ObjectModel\SoulsBoard.cs" />
     <Compile Include="Screens\GameOverScreen.cs" />

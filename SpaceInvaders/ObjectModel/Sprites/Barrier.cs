@@ -1,11 +1,10 @@
 ﻿using System;
-using Infrastructure;
 using Infrastructure.ObjectModel;
+using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
-using Infrastructure.ObjectModel.Screens;
 using SpaceInvaders.Configurations;
-using SpaceInvaders.ObjectModel.Managers;
+using SpaceInvaders.Settings;
 
 namespace SpaceInvaders.ObjectModel.Sprites
 {
@@ -38,7 +37,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
         public override void Collided(ICollidable i_Collidable)
         {
             PixelSensitiveSprite pixelSensitiveSpriteHitRectangle = i_Collidable as PixelSensitiveSprite;
-            if (pixelSensitiveSpriteHitRectangle != null && pixelSensitiveSpriteHitRectangle is Bullet)
+            if (pixelSensitiveSpriteHitRectangle is Bullet)
             {
                 Rectangle bulletHitRectangle;
                 if (pixelSensitiveSpriteHitRectangle.Velocity.Y < 0)

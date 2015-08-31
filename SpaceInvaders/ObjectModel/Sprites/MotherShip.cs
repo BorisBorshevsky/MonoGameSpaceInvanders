@@ -1,9 +1,7 @@
 using System;
-using Infrastructure;
 using Infrastructure.Animators;
 using Infrastructure.Animators.ConcreteAnimators;
 using Infrastructure.ObjectModel;
-using Infrastructure.ObjectModel.Animators;
 using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;

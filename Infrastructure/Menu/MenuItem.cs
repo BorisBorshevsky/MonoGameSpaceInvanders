@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Infrastructure.ObjectModel.Screens;
+﻿using Infrastructure.ObjectModel.Screens;
 using Microsoft.Xna.Framework.Input;
 
-namespace Infrastructure
+namespace Infrastructure.Menu
 {
     public class MenuItem : IMenuItem
     {
-        public MenuItem(string i_Title, GameScreen i_GameScreen)
+        protected readonly IMenuConfiguration r_MenuConfiguration;
+        public MenuItem(string i_Title, GameScreen i_GameScreen, IMenuConfiguration i_MenuConfiguration)
         {
             TitleValue = string.Empty;
             Title = i_Title;
             GameScreen = i_GameScreen;
+            r_MenuConfiguration = i_MenuConfiguration;
         }
 
         public string Title { get; private set; }

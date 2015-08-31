@@ -6,6 +6,7 @@ using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SpaceInvaders.Configurations;
 using SpaceInvaders.Menu;
 using SpaceInvaders.ObjectModel.Sprites;
 
@@ -58,7 +59,7 @@ namespace SpaceInvaders.Screens
 
             if (InputManager.KeyPressed(Keys.F6))
             {
-                ScreensManager.SetCurrentScreen(new MainMenuScreen(Game));
+                ScreensManager.SetCurrentScreen(new MainMenuScreen(Game, new MenuConfiguration()));
             }
         }
 

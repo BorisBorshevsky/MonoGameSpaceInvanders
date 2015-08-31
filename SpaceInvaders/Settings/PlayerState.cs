@@ -1,5 +1,5 @@
 ﻿
-namespace SpaceInvaders.ObjectModel.Managers
+namespace SpaceInvaders.Settings
 {
     class PlayerState : IPlayerState
     {
