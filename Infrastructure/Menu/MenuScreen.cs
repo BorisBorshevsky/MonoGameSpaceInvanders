@@ -25,7 +25,6 @@ namespace Infrastructure.Menu
             r_MenuItem = new List<MenuItem>();
             r_AnimatedSpriteText = new List<AnimatedSpriteText>();
             r_MenuConfiguration = i_MenuConfiguration;
-//            r_SettingsManager = i_Game.Services.GetService<ISettingsManager>();
         }
 
         public override void Initialize()

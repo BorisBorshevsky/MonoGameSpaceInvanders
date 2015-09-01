@@ -12,7 +12,6 @@ namespace SpaceInvaders.Menu.SoundOptionsMenuItems
 
         public override string ItemSelected(GameScreen i_GameScreen, Keys i_Key)
         {
-            int currentVolume = i_GameScreen.SoundManager.BackgroundVolumeLevel;
             if (i_Key == r_MenuConfiguration.ScrollUpKey)
             {
                 i_GameScreen.SoundManager.IncreaseBackGroundVolume();

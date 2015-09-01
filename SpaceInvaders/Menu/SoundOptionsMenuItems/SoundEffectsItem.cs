@@ -14,12 +14,12 @@ namespace SpaceInvaders.Menu.SoundOptionsMenuItems
         {
             if (i_Key == r_MenuConfiguration.ScrollUpKey)
             {
-                    i_GameScreen.SoundManager.IncreaseSoundsEffectsVolume();
+                i_GameScreen.SoundManager.IncreaseSoundsEffectsVolume();
             }
 
             if (i_Key == r_MenuConfiguration.ScrollDownKey)
             {
-                    i_GameScreen.SoundManager.DecreaseSoundsEffectsVolume();
+                i_GameScreen.SoundManager.DecreaseSoundsEffectsVolume();
             }
 
             return i_GameScreen.SoundManager.SoundsEffectsVolumeLevel.ToString();

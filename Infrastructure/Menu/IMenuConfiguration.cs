@@ -10,15 +10,10 @@ namespace Infrastructure.Menu
         Keys ScrollDownKey { get; }
         Keys ScrollUpKey { get; }
         Keys EnterKey { get; }
-
         Color ActiveColor { get; }
         Color InActiveColor { get; }
-
         Color MenuHeadColor { get; }
-
         string MenuMoveSoundAssetName { get; }
-
         string MenuFontAssetName { get; }
-
     }
 }

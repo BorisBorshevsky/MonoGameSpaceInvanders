@@ -11,7 +11,7 @@ namespace Infrastructure.Menu
             TitleValue = string.Empty;
             Title = i_Title;
             GameScreen = i_GameScreen;
-            r_MenuConfiguration = i_MenuConfiguration;
+            r_MenuConfiguration= i_MenuConfiguration;
         }
 
         public string Title { get; private set; }

@@ -12,9 +12,8 @@ namespace SpaceInvaders.Menu.ScreenOptionsMenuItems
 
         public override string ItemSelected(GameScreen i_GameScreen, Keys i_Key)
         {
-            bool allowResizing = !r_SettingsManager.AllowWindowResizing;
-            r_SettingsManager.AllowWindowResizing = allowResizing;
-            return allowResizing ? "On" : "Off";
+            r_SettingsManager.AllowWindowResizing = !r_SettingsManager.AllowWindowResizing;
+            return r_SettingsManager.AllowWindowResizing ? "On" : "Off";
         }
     }
 }
