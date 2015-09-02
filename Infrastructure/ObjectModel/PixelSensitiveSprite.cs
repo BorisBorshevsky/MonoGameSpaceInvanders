@@ -62,10 +62,10 @@ namespace Infrastructure.ObjectModel
                 ICollidablePixelBased pixelSource = i_Source as ICollidablePixelBased;
                 if (pixelSource != null)
                 {
-                    Rectangle collisionRectange = Rectangle.Intersect(Bounds, pixelSource.Bounds);
-                    for (int yPixel = collisionRectange.Top; yPixel < collisionRectange.Bottom; yPixel++)
+                    Rectangle collisionRectangle = Rectangle.Intersect(Bounds, pixelSource.Bounds);
+                    for (int yPixel = collisionRectangle.Top; yPixel < collisionRectangle.Bottom; yPixel++)
                     {
-                        for (int xPixel = collisionRectange.Left; xPixel < collisionRectange.Right; xPixel++)
+                        for (int xPixel = collisionRectangle.Left; xPixel < collisionRectangle.Right; xPixel++)
                         {
                             Color myPixl = Pixels[(xPixel - Bounds.X) + ((yPixel - Bounds.Y) * Texture.Width)];
                             Color otherPixel = pixelSource.Pixels[(xPixel - pixelSource.Bounds.X) + ((yPixel - pixelSource.Bounds.Y) * pixelSource.Bounds.Width)];
