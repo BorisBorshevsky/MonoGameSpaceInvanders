@@ -92,10 +92,10 @@ namespace Infrastructure.Menu
             }
         }
 
-        private void updateMenuTextValue(string newValue)
+        private void updateMenuTextValue(string i_Value)
         {
             SoundManager.PlaySoundEffect(r_MenuConfiguration.MenuMoveSoundAssetName);
-            r_AnimatedSpriteText[m_ActiveItemIndex].TextValue = newValue;
+            r_AnimatedSpriteText[m_ActiveItemIndex].TextValue = i_Value;
         }
 
         private void handleKeyboard()
