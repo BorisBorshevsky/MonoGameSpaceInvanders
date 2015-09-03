@@ -38,7 +38,7 @@ namespace SpaceInvaders.Screens
             base.Initialize();
 
             m_FontArial = Game.Services.GetService<IFontManager>().SpriteFont;
-            r_GameOverMessage.Animations.Add(new PulseAnimator("Pulse", TimeSpan.Zero, 1.05f, 0.7f));
+            r_GameOverMessage.Animations.Add(new PulseAnimator("Pulse", TimeSpan.Zero, 1.5f, 0.3f));
             r_GameOverMessage.Animations.Enabled = true;
             r_GameOverMessage.PositionOrigin = r_GameOverMessage.SourceRectangleCenter;
             r_GameOverMessage.RotationOrigin = r_GameOverMessage.SourceRectangleCenter;

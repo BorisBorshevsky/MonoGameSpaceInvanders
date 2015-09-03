@@ -32,8 +32,7 @@ namespace SpaceInvaders.Screens
         public override void Initialize()
         {
             base.Initialize();
-            m_Font = ((IFontManager)Game.Services.GetService(typeof(IFontManager))).SpriteFont;
-
+            m_Font = Game.Services.GetService<IFontManager>().SpriteFont;
             r_WelcomeMessage.Animations.Add(new PulseAnimator("Pulse", TimeSpan.Zero, k_ScaleFactor, 0.7f));
             r_WelcomeMessage.Animations.Enabled = true;
             r_WelcomeMessage.PositionOrigin = r_WelcomeMessage.SourceRectangleCenter;

@@ -1,26 +1,30 @@
 ﻿using System.Collections.Generic;
+using Infrastructure;
 using Infrastructure.Animators;
+using Infrastructure.Menu;
 using Infrastructure.ObjectModel.Screens;
-using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using SpaceInvaders.Configurations;
 
-namespace Infrastructure.Menu
+namespace SpaceInvaders.Menu
 {
-    public class MenuScreen : GameScreen
+    class MenuScreen : GameScreen
     {
-        protected const int k_ItemHeight = 30;
-
         protected SpriteFont m_Font;
 
+//        protected readonly ISettingsManager r_SettingsManager;
         private readonly List<MenuItem> r_MenuItem;
         private readonly List<AnimatedSpriteText> r_AnimatedSpriteText;
         private readonly string r_MenuTitle;
+//        private readonly Color r_InactiveColor = Color.Green;
+//        private readonly Color r_ActiveColor = Color.Blue;
         protected readonly IMenuConfiguration r_MenuConfiguration;
 
         private int m_ActiveItemIndex;
         private int m_MaxActiveItemIndex;
-
+        
         public MenuScreen(Game i_Game, string i_MenuTitle, IMenuConfiguration i_MenuConfiguration)
             : base(i_Game)
         {
@@ -28,6 +32,7 @@ namespace Infrastructure.Menu
             r_MenuItem = new List<MenuItem>();
             r_AnimatedSpriteText = new List<AnimatedSpriteText>();
             r_MenuConfiguration = i_MenuConfiguration;
+//            r_SettingsManager = i_Game.Services.GetService<ISettingsManager>();
         }
 
         public override void Initialize()
@@ -42,7 +47,7 @@ namespace Infrastructure.Menu
             AnimatedSpriteText current = new AnimatedSpriteText(r_MenuConfiguration.MenuFontAssetName, i_MenuItem.Title, this);
             r_MenuItem.Add(i_MenuItem);
             r_AnimatedSpriteText.Add(current);
-            current.Position = new Vector2(0, r_AnimatedSpriteText.Count * k_ItemHeight);
+            current.Position = new Vector2(0, r_AnimatedSpriteText.Count * 30);
             current.TintColor = r_MenuConfiguration.InActiveColor;
             current.TextValue = i_MenuItem.TitleValue;
         }
@@ -50,57 +55,11 @@ namespace Infrastructure.Menu
         public override void Update(GameTime i_GameTime)
         {
             base.Update(i_GameTime);
-            handleMouse();
-            handleKeyboard();
-        }
 
-        private void handleMouse()
-        {
-            foreach (var animatedSpriteText in r_AnimatedSpriteText)
-            {
-                var mouseRectangle = new Rectangle(InputManager.MouseState.X - 5, InputManager.MouseState.Y - 5, 10, 10);
-                if (animatedSpriteText.Bounds.Intersects(mouseRectangle))
-                {
-                    r_AnimatedSpriteText[m_ActiveItemIndex].Animations.Enabled = false;
-                    r_AnimatedSpriteText[m_ActiveItemIndex].TintColor = r_MenuConfiguration.InActiveColor;
-                    m_ActiveItemIndex = r_AnimatedSpriteText.IndexOf(animatedSpriteText);
-                    r_AnimatedSpriteText[m_ActiveItemIndex].Animations.Enabled = true;
-                    r_AnimatedSpriteText[m_ActiveItemIndex].TintColor = r_MenuConfiguration.ActiveColor;
-
-                    handleMouseClick();
-                }
-            }
-        }
-
-        private void handleMouseClick()
-        {
-            if ( InputManager.ScrollWheelDelta < 0)
-            {
-                string newValue = r_MenuItem[m_ActiveItemIndex].ItemSelected(this, r_MenuConfiguration.ScrollDownKey);
-                updateMenuTextValue(newValue);
-            }
-            else if (InputManager.ButtonPressed(eInputButtons.Right | eInputButtons.Left) || InputManager.ScrollWheelDelta > 0)
-            {
-                string newValue = r_MenuItem[m_ActiveItemIndex].ItemSelected(this, r_MenuConfiguration.ScrollUpKey);
-                updateMenuTextValue(newValue);
-                r_MenuItem[m_ActiveItemIndex].EnterScreen(this);
-            }
-
-        }
-
-        private void updateMenuTextValue(string i_Value)
-        {
-            SoundManager.PlaySoundEffect(r_MenuConfiguration.MenuMoveSoundAssetName);
-            r_AnimatedSpriteText[m_ActiveItemIndex].TextValue = i_Value;
-        }
-
-        private void handleKeyboard()
-        {
             r_AnimatedSpriteText[m_ActiveItemIndex].Animations.Enabled = false;
             r_AnimatedSpriteText[m_ActiveItemIndex].TintColor = r_MenuConfiguration.ActiveColor;
 
-            if (InputManager.KeyPressed(r_MenuConfiguration.MoveUpKey) ||
-                InputManager.KeyPressed(r_MenuConfiguration.MoveDownKey))
+            if (InputManager.KeyPressed(r_MenuConfiguration.MoveUpKey) || InputManager.KeyPressed(r_MenuConfiguration.MoveDownKey))
             {
                 r_AnimatedSpriteText[m_ActiveItemIndex].TintColor = r_MenuConfiguration.InActiveColor;
 

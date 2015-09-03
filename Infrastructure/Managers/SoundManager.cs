@@ -21,13 +21,13 @@ namespace Infrastructure.Managers
 
         public void IncreaseBackGroundVolume()
         {
-            m_BackgroundMusicVolume = MathHelper.Clamp(m_BackgroundMusicVolume + 10, 0, 100);
+            m_BackgroundMusicVolume = m_BackgroundMusicVolume == 100 ? 0 : MathHelper.Clamp(m_BackgroundMusicVolume + 10, 0, 100);
             MediaPlayer.Volume = IsMute ? 0 : (float)m_BackgroundMusicVolume / 100;
         }
 
         public void DecreaseBackGroundVolume()
         {
-            m_BackgroundMusicVolume = MathHelper.Clamp(m_BackgroundMusicVolume - 10, 0, 100);
+            m_BackgroundMusicVolume = m_BackgroundMusicVolume == 0 ? 0 : MathHelper.Clamp(m_BackgroundMusicVolume + -10, 0, 100);
             MediaPlayer.Volume = IsMute ? 0 : (float)m_BackgroundMusicVolume / 100;
         }
 
@@ -39,12 +39,12 @@ namespace Infrastructure.Managers
 
         public void IncreaseSoundsEffectsVolume()
         {
-            m_SoundEffectsMusicVolume = MathHelper.Clamp(m_SoundEffectsMusicVolume + 10, 0, 100);
+            m_SoundEffectsMusicVolume = m_SoundEffectsMusicVolume == 100 ? 0 : MathHelper.Clamp(m_SoundEffectsMusicVolume + 10, 0, 100);
         }
 
         public void DecreaseSoundsEffectsVolume()
         {
-            m_SoundEffectsMusicVolume = MathHelper.Clamp(m_SoundEffectsMusicVolume - 10, 0, 100);
+            m_SoundEffectsMusicVolume = m_SoundEffectsMusicVolume == 0 ? 100 : MathHelper.Clamp(m_SoundEffectsMusicVolume - 10, 0, 100);
         }
 
         public int BackgroundVolumeLevel

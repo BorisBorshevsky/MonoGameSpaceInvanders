@@ -5,8 +5,8 @@ namespace SpaceInvaders.ObjectModel.Sprites
 {
     class LightBlueInvader : Invader
     {
-        public LightBlueInvader(GameScreen i_GameScreen)
-            : base(i_GameScreen, k_AssetName, Color.LightBlue)
+        public LightBlueInvader(GameScreen i_GameScreen, int i_InitialTextureOffset = 0)
+            : base(i_GameScreen, k_AssetName, Color.LightBlue, i_InitialTextureOffset)
         { }
 
         protected override void InitSourceRectangle()

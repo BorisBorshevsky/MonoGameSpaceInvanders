@@ -17,11 +17,11 @@ namespace Infrastructure.Managers
             i_Game.Components.Add(this);
         }
 
-        private Stack<GameScreen> m_ScreensStack = new Stack<GameScreen>();
+        private readonly Stack<GameScreen> r_ScreensStack = new Stack<GameScreen>();
 
         public GameScreen ActiveScreen
         {
-            get { return m_ScreensStack.Count > 0 ? m_ScreensStack.Peek() : null; }
+            get { return r_ScreensStack.Count > 0 ? r_ScreensStack.Peek() : null; }
         }
 
         public void SetCurrentScreen(GameScreen i_GameScreen)
@@ -59,10 +59,10 @@ namespace Infrastructure.Managers
 
             if (ActiveScreen != i_GameScreen)
             {
-                m_ScreensStack.Push(i_GameScreen);
+                r_ScreensStack.Push(i_GameScreen);
             }
 
-            i_GameScreen.DrawOrder = m_ScreensStack.Count;
+            i_GameScreen.DrawOrder = r_ScreensStack.Count;
         }
 
         private void Screen_StateChanged(object sender, StateChangedEventArgs e)
@@ -92,9 +92,9 @@ namespace Infrastructure.Managers
 
         private void pop(GameScreen i_GameScreen)
         {
-            m_ScreensStack.Pop();
+            r_ScreensStack.Pop();
 
-            if (m_ScreensStack.Count > 0)
+            if (r_ScreensStack.Count > 0)
             {
                 // when one is popped, the previous becomes the active one
                 ActiveScreen.Activate();
@@ -126,7 +126,7 @@ namespace Infrastructure.Managers
 
             e.GameComponent.StateChanged -= Screen_StateChanged;
 
-            if (m_ScreensStack.Count == 0)
+            if (r_ScreensStack.Count == 0)
             {
                 Game.Exit();
             }

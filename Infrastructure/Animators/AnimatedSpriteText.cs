@@ -33,7 +33,7 @@ namespace Infrastructure.Animators
         {
             base.Initialize();
             m_SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
-            m_PulseAnimator = new PulseAnimator("PulseAnimator", new TimeSpan(), 1.1f, 1.0f);
+            m_PulseAnimator = new PulseAnimator("PulseAnimator", new TimeSpan(), 1f, 1f);
             this.Animations.Add(m_PulseAnimator);
             this.Animations.Enabled = false;
         }

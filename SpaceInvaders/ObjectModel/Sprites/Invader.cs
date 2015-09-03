@@ -24,7 +24,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
         private static readonly TimeSpan r_DyingAnimationTime = TimeSpan.FromSeconds(1.5);
         private static readonly Random sr_Random = new Random();
 
-        private int m_MaxAmountOfBulletsInBackground= 1;
+        private int m_MaxAmountOfBulletsInBackground = 1;
         private int m_TimeToNextShooting;
         private bool m_StartDieAnimationOnNextFrame = false;
         private ISoundManager m_SoundManager;
@@ -36,10 +36,13 @@ namespace SpaceInvaders.ObjectModel.Sprites
         public double CurrentElapsedTime { get; set; }
 
         public event EventHandler<EventArgs> InvaderDied;
-        
-        protected Invader(GameScreen i_GameScreen, String i_AssetName, Color i_EnemyColor)
+        protected readonly int r_InitialTextureOffset;
+
+
+        protected Invader(GameScreen i_GameScreen, String i_AssetName, Color i_EnemyColor, int i_InitialTextureOffset = 0)
             : base(i_AssetName, i_GameScreen)
         {
+            r_InitialTextureOffset = i_InitialTextureOffset;
             m_TintColor = i_EnemyColor;
             m_TimeToNextShooting = sr_Random.Next(k_MinTimeBetweenShoots, k_MaxTimeBetweenShoots);
             PositionChanged += onJump;
@@ -50,6 +53,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
             int rectangleY = (SourceRectangle.Y + SourceRectangle.Height) % (SourceRectangle.Height * k_NumOfFrames);
             SourceRectangle = new Rectangle(SourceRectangle.X, rectangleY, SourceRectangle.Height, SourceRectangle.Width);
         }
+
 
         private void initAnimations()
         {
@@ -88,7 +92,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
             IsAlive = false;
             m_StartDieAnimationOnNextFrame = true;
             m_SoundManager.PlaySoundEffect(Sounds.k_EnemyKill);
-            
+
             if (InvaderDied != null)
             {
                 InvaderDied(this, EventArgs.Empty);
@@ -98,7 +102,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
         private void startDyingAnimation()
         {
             m_IsDying = true;
-            RotateAnimator rotateAnimator = new RotateAnimator(MathHelper.TwoPi*5, r_DyingAnimationTime);
+            RotateAnimator rotateAnimator = new RotateAnimator(MathHelper.TwoPi * 5, r_DyingAnimationTime);
             ShrinkAnimator shrinkAnimator = new ShrinkAnimator(r_DyingAnimationTime);
 
             CompositeAnimator deadAnimation = new CompositeAnimator("deadAnimation", r_DyingAnimationTime, this, shrinkAnimator, rotateAnimator);
@@ -113,6 +117,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
             m_SoundManager = Game.Services.GetService<ISoundManager>();
             m_SettingsManager = Game.Services.GetService<ISettingsManager>();
             m_MaxAmountOfBulletsInBackground += m_SettingsManager.GetGameLevelSettings().AdditionalInvadersBullets;
+            initializeSourceRectangle();
             initAnimations();
         }
 
@@ -133,7 +138,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
                 startDyingAnimation();
                 m_StartDieAnimationOnNextFrame = false;
             }
-            
+
             if (Bounds.Bottom > Game.GraphicsDevice.Viewport.Bounds.Bottom)
             {
                 onInvaderReachedBottom();
@@ -161,6 +166,14 @@ namespace SpaceInvaders.ObjectModel.Sprites
             bullet.Velocity = new Vector2(0, k_BulletVelocity);
             r_Bullets.Add(bullet);
         }
+        private void initializeSourceRectangle()
+        {
+            for (var i = 0; i < r_InitialTextureOffset; i++)
+            {
+                int rectangleY = (SourceRectangle.Y + SourceRectangle.Height) % (SourceRectangle.Height * k_NumOfFrames);
+                SourceRectangle = new Rectangle(SourceRectangle.X, rectangleY, SourceRectangle.Height, SourceRectangle.Width);
+            }
+        }
 
         protected override void Dispose(bool i_Disposing)
         {
@@ -168,7 +181,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
             {
                 bullet.Dispose();
             }
-            
+
             base.Dispose(i_Disposing);
         }
     }

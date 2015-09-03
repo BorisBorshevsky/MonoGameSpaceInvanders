@@ -89,7 +89,7 @@ namespace SpaceInvaders.ObjectModel.Managers
             {
                 for (int row = 0; row < k_PinkInvadersInColumn; row++)
                 {
-                    Invaders[col, row] = new PinkInvader(Screen);
+                    Invaders[col, row] = new PinkInvader(Screen, row);
                 }
             }
 
@@ -97,7 +97,7 @@ namespace SpaceInvaders.ObjectModel.Managers
             {
                 for (int row = k_PinkInvadersInColumn; row < k_PinkInvadersInColumn + k_LightBlueInvadersInColumn; row++)
                 {
-                    Invaders[col, row] = new LightBlueInvader(Screen);
+                    Invaders[col, row] = new LightBlueInvader(Screen, row);
                 }
             }
 
@@ -105,7 +105,7 @@ namespace SpaceInvaders.ObjectModel.Managers
             {
                 for (int row = k_PinkInvadersInColumn + k_LightBlueInvadersInColumn; row < k_InvadersInColumn; row++)
                 {
-                    Invaders[col, row] = new YellowInvader(Screen);
+                    Invaders[col, row] = new YellowInvader(Screen, row);
                 }
             }
         }

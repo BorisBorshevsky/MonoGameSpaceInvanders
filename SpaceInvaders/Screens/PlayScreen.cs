@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Infrastructure.ObjectModel.Screens;
 using Infrastructure.ServiceInterfaces;
 using Microsoft.Xna.Framework;
@@ -64,6 +65,8 @@ namespace SpaceInvaders.Screens
             {
                 ScreensManager.SetCurrentScreen(r_PauseScreen);
             }
+
+            // Chaets!!!
 
             if(InputManager.KeyPressed(Keys.T))
             {
