@@ -69,15 +69,33 @@ namespace Infrastructure.Menu
                     r_AnimatedSpriteText[m_ActiveItemIndex].Animations.Enabled = true;
                     r_AnimatedSpriteText[m_ActiveItemIndex].TintColor = r_MenuConfiguration.ActiveColor;
 
-                    if (InputManager.ButtonPressed(eInputButtons.Left))
-                    {
-                        string newValue = r_MenuItem[m_ActiveItemIndex].ItemSelected(this, r_MenuConfiguration.ScrollUpKey);
-                        SoundManager.PlaySoundEffect(r_MenuConfiguration.MenuMoveSoundAssetName);
-                        r_AnimatedSpriteText[m_ActiveItemIndex].TextValue = newValue;
-                        r_MenuItem[m_ActiveItemIndex].EnterScreen(this);
-                    }
+                    handleMouseClick();
                 }
             }
+        }
+
+        private void handleMouseClick()
+        {
+            if (InputManager.ButtonPressed(eInputButtons.Right))
+            {
+                string newValue = r_MenuItem[m_ActiveItemIndex].ItemSelected(this, r_MenuConfiguration.ScrollDownKey);
+                updateMenuTextValue(newValue);
+            }
+            else
+            {
+                if (InputManager.ButtonPressed(eInputButtons.Left))
+                {
+                    string newValue = r_MenuItem[m_ActiveItemIndex].ItemSelected(this, r_MenuConfiguration.ScrollUpKey);
+                    updateMenuTextValue(newValue);
+                    r_MenuItem[m_ActiveItemIndex].EnterScreen(this);
+                }
+            }
+        }
+
+        private void updateMenuTextValue(string newValue)
+        {
+            SoundManager.PlaySoundEffect(r_MenuConfiguration.MenuMoveSoundAssetName);
+            r_AnimatedSpriteText[m_ActiveItemIndex].TextValue = newValue;
         }
 
         private void handleKeyboard()
