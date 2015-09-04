@@ -206,12 +206,6 @@
 /processorParam:Quality=Best
 /build:Sounds/SSGunShot.wav
 
-#begin Sounds/BGMusic.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:Sounds/BGMusic.mp3
-
 #begin Sprites/GameOverMessage.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -222,4 +216,10 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:TextureFormat=Color
 /build:Sprites/GameOverMessage.png
+
+#begin Sounds/BGMusic.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Sounds/BGMusic.wav
 

@@ -52,7 +52,7 @@ namespace SpaceInvaders.ObjectModel.Sprites
         {
             base.Initialize();
             initAnimations();
-            m_SoundManager = Game.Services.GetService(typeof(ISoundManager)) as ISoundManager;
+            m_SoundManager = Game.Services.GetService<ISoundManager>();
         }
         
         protected override void LoadContent()
@@ -64,12 +64,12 @@ namespace SpaceInvaders.ObjectModel.Sprites
         private void startDieAnimation()
         {
             IsDying = true;
+            m_SoundManager.PlaySoundEffect(Sounds.k_MotherShipKill);
             Animations.Restart();
         }
 
         private void onMotherShipDied()
         {
-            m_SoundManager.PlaySoundEffect(Sounds.k_MotherShipKill);
             if (MotherShipDied != null)
             {
                 MotherShipDied.Invoke(this, EventArgs.Empty);

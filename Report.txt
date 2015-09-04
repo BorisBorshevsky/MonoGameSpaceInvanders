@@ -2,7 +2,7 @@
 Exercise No...........: 3
 First Student Details.: 302848197 - Rami Moshe
 Second Student Details: 311898746 - Boris Borshevsky
-Delivery Date.........: 20 - August - 2015
+Delivery Date.........: 03 - September - 2015
 Delivered In Delay....: No
 Delay Reason..........: -
 Comments..............: -
